@@ -766,7 +766,7 @@ const HOTSPOTS = [
     if (!F('wardOpen')) { setF('wardOpen'); say('', '衣柜门滑开。衣服按季节挂得整齐，最底层——嵌着一只保险箱。'); }
     else say('', '衣柜里是他的四季。最底层的保险箱，等着一个日子。');
   } },
-  { view: 'bedroom', id: 'safe', x: 308, y: 374, w: 122, h: 114, label: '保险箱', kind: 'act', when: () => F('wardOpen'), onAct(actor) {
+  { view: 'bedroom', id: 'safe', x: 322, y: 320, w: 106, h: 126, label: '保险箱', kind: 'act', when: () => F('wardOpen'), onAct(actor) {
     if (F('safeOpen')) { say('', '保险箱开着，空了。契和信，你都拿走了。'); return; }
     say('', '四位密码。箱体冰凉，凉得不像在屋里放了三年，像在别处放了很久。');
     offer([
@@ -824,6 +824,10 @@ if (window.addEventListener) {
 
 /* 实景图（AI 生成的写实场景）＋状态叠加层；序章仍用矢量兜底 */
 const PHOTOS = { corridor: 'assets/corridor.jpg', living: 'assets/living.jpg', bedroom: 'assets/bedroom.jpg' };
+function photoFor(view) {
+  if (view === 'bedroom' && G && F('wardOpen')) return 'assets/bedroom-open.jpg';
+  return PHOTOS[view];
+}
 let closedTvShow = 0;
 function pct(x, y, w, h) { return 'left:' + (x / 9) + '%;top:' + (y / 6.2) + '%;width:' + (w / 9) + '%;height:' + (h / 6.2) + '%;'; }
 function renderFx() {
@@ -854,10 +858,6 @@ function renderFx() {
     if (F('candlesDone') && !G.ended) html += '<div class="shadow-fig" style="left:46.5%;top:16.5%;width:8.5%;height:36%;"><div class="sf-body"></div><div class="sf-head"></div><div class="sf-eye" style="left:36%;"></div><div class="sf-eye" style="left:57%;"></div></div>';
     if (G.tvShow && G.tvShow !== closedTvShow && F('videoSeen')) { tvFull = true; html += '<div class="tv-full" id="tv-full"><img src="assets/tv.jpg" alt=""></div>'; }
   }
-  if (myView === 'bedroom' && F('wardOpen')) {
-    html += '<div class="ward-open" style="' + pct(300, 362, 138, 138) + '"></div>';
-    html += '<div class="safe-box' + (F('safeOpen') ? ' open' : '') + '" style="' + pct(308, 374, 122, 114) + '"><div class="dial"></div></div>';
-  }
   fx.style.zIndex = tvFull ? 6 : 3;
   fx.innerHTML = html;
   const tf = $('tv-full');
@@ -869,7 +869,7 @@ function renderScene() {
     paintScene((SCENE_SVG[myView] || blackSvg)());
     $('fx').innerHTML = '';
   } else {
-    $('scene').innerHTML = '<img class="photo" src="' + PHOTOS[myView] + '" alt="">';
+    $('scene').innerHTML = '<img class="photo" src="' + photoFor(myView) + '" alt="">';
     renderFx();
   }
   const layer = $('hotspots'); layer.innerHTML = '';

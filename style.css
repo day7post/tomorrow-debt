@@ -95,7 +95,7 @@ body.fs #dialog, body.fs #invbar, body.theater #dialog, body.theater #invbar { m
 .paper { position: absolute; background: #e6ddc4; border: 1px solid #b8ab84; transform: rotate(-3deg); box-shadow: 0 2px 8px rgba(0,0,0,.5); }
 .flame { position: absolute; width: 2.2%; height: 5.4%; transform: translateX(-50%); background: radial-gradient(ellipse at 50% 78%, #fff3b0 0%, #ffb347 42%, rgba(255,120,40,.55) 68%, rgba(255,90,20,0) 78%); border-radius: 50% 50% 50% 50% / 62% 62% 38% 38%; animation: flick .3s infinite alternate; }
 @keyframes flick { from { transform: translateX(-50%) scaleY(1); } to { transform: translateX(-50%) scaleY(1.14); } }
-.shadow-fig { position: absolute; }
+.shadow-fig { position: absolute; opacity: .82; filter: blur(1.5px); }
 .shadow-fig .sf-body { position: absolute; left: 0; right: 0; top: 16%; bottom: 0; background: rgba(4,4,9,.88); border-radius: 46% 46% 6% 6% / 26% 26% 4% 4%; }
 .shadow-fig .sf-head { position: absolute; left: 50%; top: 0; width: 44%; aspect-ratio: 1; transform: translateX(-50%); background: rgba(4,4,9,.9); border-radius: 50%; }
 .shadow-fig .sf-eye { position: absolute; top: 7.5%; width: 7%; aspect-ratio: 1; border-radius: 50%; background: #ff5d6e; box-shadow: 0 0 7px 2px rgba(255,60,90,.55); }
