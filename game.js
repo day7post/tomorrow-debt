@@ -603,6 +603,7 @@ function actImpl(a, actor) {
       break;
     }
     case 'hs': {
+      if (a.id === '__dark') { say('', '太暗了，什么都看不清。先把电送回来。'); break; }
       const hs = HOTSPOTS.find(h => h.id === a.id);
       if (hs && hs.onAct) hs.onAct(actor);
       break;
@@ -716,7 +717,7 @@ const HOTSPOTS = [
     } else { G.tvShow = (G.tvShow || 0) + 1; say('电视', '你又按下了播放键。角落里师父的背影，一动不动。'); }
   } },
   { view: 'living', id: 'remote', x: 640, y: 262, w: 130, h: 26, label: '遥控器', kind: 'act', onAct(actor) {
-    say('', F('tvBattery') ? '遥控器的红灯亮着。' : '遥控器躺在茶几上，电池仓盖开着，空的。');
+    say('', F('tvBattery') ? '遥控器的红灯亮着。' : '遥控器压在电视机顶上，电池仓盖开着，空的。');
   } },
   { view: 'living', id: 'altar', x: 396, y: 186, w: 225, h: 330, label: '遗像与供桌', kind: 'act', onAct(actor) {
     if (G.candle) { say('', '烛还亮着，先把顺序走完。'); return; }
@@ -724,6 +725,9 @@ const HOTSPOTS = [
     if (F('contractPlaced')) { say('送契人', '契在遗像前了。还差点烛——看着顺序点，别抢。'); offer([{ label: '点烛（看顺序）', act: { k: 'startCandles' } }], actor); return; }
     if (has('contract')) { say('', '遗像里的老人看着你，眼睛是照片的眼睛，可你觉得他在等你手里那封契。'); offer([{ label: '把契放到遗像前', act: { k: 'placeContract' } }], actor); return; }
     say('', '遗像、香炉、三根没点的烛。相框玻璃上有一层灰，唯独眼睛的位置，被谁擦得干干净净。');
+  } },
+  { view: 'living', id: 'sofa', x: 0, y: 345, w: 290, h: 270, label: '沙发', kind: 'act', onAct(actor) {
+    say('', '沙发扶手上搭着一件中山装，口袋是空的。坐垫中间凹下去一块——有人在这儿坐着等过很久。');
   } },
   { view: 'living', id: 'altar_drawer', x: 70, y: 490, w: 390, h: 120, label: '茶几抽屉', kind: 'act', onAct(actor) {
     if (!F('drawerOpen')) {
@@ -739,13 +743,10 @@ const HOTSPOTS = [
     say('', '全家福背面写着：「出院那天，儿子背我下楼。楼道里那盏灯，那天是亮的。」');
   } },
   { view: 'living', id: 'clock', x: 795, y: 30, w: 105, h: 520, label: '落地挂钟', kind: 'modal', local: 'clock' },
-  { view: 'living', id: 'bedroom_door', x: 300, y: 120, w: 85, h: 300, label: '卧室门', kind: 'nav', target: 'bedroom',
+  { view: 'living', id: 'bedroom_door', x: 200, y: 55, w: 100, h: 420, label: '卧室门', kind: 'nav', target: 'bedroom',
     guard: () => has('roomkey'),
     guardFail() { showLines([{ who: '', text: '卧室门锁着。锁眼是老式的——得找到这把门的钥匙。（钟，认一个时刻。）' }]); } },
-  { view: 'living', id: 'sw_kitchen', x: 408, y: 238, w: 26, h: 34, label: '分闸 · 厨房', kind: 'act', onAct(actor) { toggleSwitch('kitchen', actor); } },
-  { view: 'living', id: 'sofa', x: 0, y: 345, w: 290, h: 270, label: '沙发', kind: 'act', onAct(actor) {
-    say('', '沙发扶手上搭着一件中山装，口袋是空的。坐垫中间凹下去一块——有人在这儿坐着等过很久。');
-  } },
+  { view: 'living', id: 'sw_kitchen', x: 171, y: 290, w: 26, h: 32, label: '分闸 · 厨房', kind: 'act', onAct(actor) { toggleSwitch('kitchen', actor); } },
   /* 卧室 */
   { view: 'bedroom', id: 'bed', x: 5, y: 265, w: 480, h: 340, label: '床', kind: 'act', onAct(actor) {
     say('', '被子叠成豆腐块。枕边放着一本相册，第一页是孙女满月的照片，背面写着：「看见了。够本了。」');
@@ -773,8 +774,8 @@ const HOTSPOTS = [
       { label: '借命 · 烧穿它（+1 命债）', borrow: true, act: { k: 'borrowSafe' } }
     ], actor);
   } },
-  { view: 'bedroom', id: 'sw_bed', x: 330, y: 110, w: 70, h: 60, label: '配电箱', kind: 'act', onAct(actor) { say('', '卧室墙上的配电箱是备用闸，推上去没有反应——要合的闸不在这间屋。'); } },
-  { view: 'living', id: 'sw_bath', x: 660, y: 330, w: 24, h: 32, label: '分闸 · 卫浴', kind: 'act', onAct(actor) { toggleSwitch('bath', actor); } },
+  { view: 'bedroom', id: 'sw_bed', x: 345, y: 105, w: 75, h: 55, label: '墙上的铁盒', kind: 'act', onAct(actor) { say('', '卧室墙上的配电箱是备用闸，推上去没有反应——要合的闸不在这间屋。'); } },
+  { view: 'living', id: 'sw_bath', x: 171, y: 330, w: 26, h: 32, label: '分闸 · 卫浴', kind: 'act', onAct(actor) { toggleSwitch('bath', actor); } },
   { view: 'bedroom', id: 'bwindow', x: 745, y: 15, w: 150, h: 340, label: '窗', kind: 'act', onAct(actor) {
     say('', '对楼还亮着几盏灯。有一盏，在你看它的时候，灭了。');
   } }
@@ -840,8 +841,8 @@ function renderFx() {
   if (myView === 'living' && !dark) {
     if (F('tvOn') && !F('videoSeen')) html += '<div class="tv-static" style="' + pct(640, 295, 118, 98) + '"></div>';
     if (F('contractPlaced')) html += '<div class="paper" style="' + pct(492, 326, 62, 28) + '"></div>';
-    if (F('sw_kitchen')) html += '<div class="sw-on" style="left:47%;top:41%;"></div>';
-    if (F('sw_bath')) html += '<div class="sw-on" style="left:74.5%;top:55.5%;"></div>';
+    if (F('sw_kitchen')) html += '<div class="sw-on" style="left:20.4%;top:49%;"></div>';
+    if (F('sw_bath')) html += '<div class="sw-on" style="left:20.4%;top:55.8%;"></div>';
     const cd = G.candle;
     const litSet = new Set();
     if (F('candlesDone')) { for (let i = 0; i < 4; i++) litSet.add(i); }
@@ -873,6 +874,14 @@ function renderScene() {
   }
   const layer = $('hotspots'); layer.innerHTML = '';
   if (!G) return;
+  if ((myView === 'living' || myView === 'bedroom') && !F('power') && !F('borrowPower')) {
+    const db = document.createElement('button');
+    db.className = 'hs';
+    db.style.left = '0%'; db.style.top = '0%'; db.style.width = '100%'; db.style.height = '100%';
+    db.innerHTML = '<span class="hs-tag"></span>';
+    db.onclick = ev => { ev.stopPropagation(); doAct({ k: 'hs', id: '__dark' }); };
+    layer.appendChild(db);
+  }
   HOTSPOTS.filter(h => h.view === myView && (!h.when || h.when())).forEach(h => {
     const b = document.createElement('button');
     b.className = 'hs';
@@ -1111,6 +1120,25 @@ $('navback').addEventListener('click', () => { myView = $('navback').dataset.to;
   b.addEventListener('pointercancel', off);
   b.addEventListener('contextmenu', e => e.preventDefault());
 })();
+
+/* 全屏沉浸：系统全屏优先；被环境拒绝时退回剧场模式（应用占满窗口） */
+function syncFsBtn() {
+  const on = !!document.fullscreenElement || document.body.classList.contains('theater');
+  document.body.classList.toggle('fs', !!document.fullscreenElement);
+  $('btn-fs').textContent = on ? '退出全屏' : '全屏';
+}
+function toggleFullscreen() {
+  if (document.fullscreenElement) { if (document.exitFullscreen) document.exitFullscreen(); return; }
+  if (document.body.classList.contains('theater')) { document.body.classList.remove('theater'); syncFsBtn(); return; }
+  const el = document.documentElement;
+  if (el && el.requestFullscreen) {
+    const p = el.requestFullscreen();
+    if (p && p.catch) p.catch(() => { document.body.classList.add('theater'); syncFsBtn(); });
+  } else document.body.classList.add('theater');
+  syncFsBtn();
+}
+$('btn-fs').addEventListener('click', toggleFullscreen);
+if (document.addEventListener) document.addEventListener('fullscreenchange', syncFsBtn);
 
 /* ---------------- 联机接线 ---------------- */
 if (window.TDNet) {

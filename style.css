@@ -76,7 +76,11 @@ body { font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif
 #debt-chip b { color: #ff8fa3; font-size: 15px; }
 .mini-btn.wide { width: auto; padding: 0 13px; border-radius: 999px; font-size: 13px; font-weight: 700; }
 #stage { flex: 1; min-height: 0; width: 100%; display: flex; align-items: center; justify-content: center; }
-#frame { position: relative; aspect-ratio: 3 / 2; width: min(100%, calc((100vh - 240px) * 1.5)); max-width: 980px; }
+#frame { position: relative; aspect-ratio: 3 / 2; width: min(100%, calc((100dvh - 240px) * 1.5)); max-width: 980px; }
+body.fs, body.theater { background: #000; }
+body.fs #app, body.theater #app { max-width: none; }
+body.fs #frame, body.theater #frame { width: min(100%, calc((100dvh - 185px) * 1.5)); max-width: none; }
+body.fs #dialog, body.fs #invbar, body.theater #dialog, body.theater #invbar { max-width: 920px; margin-left: auto; margin-right: auto; width: 100%; }
 #scene { position: absolute; inset: 0; }
 #scene svg { width: 100%; height: 100%; display: block; }
 #scene img.photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
