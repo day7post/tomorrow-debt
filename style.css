@@ -75,10 +75,32 @@ body { font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif
 .mini-btn { flex-shrink: 0; }
 #debt-chip b { color: #ff8fa3; font-size: 15px; }
 .mini-btn.wide { width: auto; padding: 0 13px; border-radius: 999px; font-size: 13px; font-weight: 700; }
-#stage { position: relative; flex: 1; min-height: 0; margin: 0 auto; width: min(100%, calc((100vh - 210px) * 1.45)); max-width: 980px; }
-@media (max-aspect-ratio: 1/1) { #stage { width: 100%; } }
+#stage { flex: 1; min-height: 0; width: 100%; display: flex; align-items: center; justify-content: center; }
+#frame { position: relative; aspect-ratio: 3 / 2; width: min(100%, calc((100vh - 240px) * 1.5)); max-width: 980px; }
 #scene { position: absolute; inset: 0; }
 #scene svg { width: 100%; height: 100%; display: block; }
+#scene img.photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+#fx { position: absolute; inset: 0; pointer-events: none; z-index: 3; }
+.fx-dark { position: absolute; inset: 0; background: rgba(3,4,10,.88); display: flex; align-items: center; justify-content: center; }
+.fx-dark p { color: #5f6c8a; font-size: 16.5px; text-align: center; line-height: 1.9; padding: 0 30px; }
+.door-open { position: absolute; background: linear-gradient(180deg, #05060a, #0d0a08); box-shadow: inset 0 0 42px rgba(0,0,0,.95), inset 0 0 10px rgba(255,170,80,.22); }
+.tv-static { position: absolute; background: repeating-linear-gradient(0deg, #3a4152 0 3px, rgba(89,98,116,.6) 3px 5px, rgba(35,40,51,.6) 5px 8px); opacity: .85; animation: tvjump .18s infinite steps(2); }
+@keyframes tvjump { from { transform: translateY(0); } to { transform: translateY(2px); } }
+.tv-full { position: absolute; inset: 0; pointer-events: auto; cursor: pointer; }
+.tv-full img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.paper { position: absolute; background: #e6ddc4; border: 1px solid #b8ab84; transform: rotate(-3deg); box-shadow: 0 2px 8px rgba(0,0,0,.5); }
+.flame { position: absolute; width: 2.2%; height: 5.4%; transform: translateX(-50%); background: radial-gradient(ellipse at 50% 78%, #fff3b0 0%, #ffb347 42%, rgba(255,120,40,.55) 68%, rgba(255,90,20,0) 78%); border-radius: 50% 50% 50% 50% / 62% 62% 38% 38%; animation: flick .3s infinite alternate; }
+@keyframes flick { from { transform: translateX(-50%) scaleY(1); } to { transform: translateX(-50%) scaleY(1.14); } }
+.shadow-fig { position: absolute; }
+.shadow-fig .sf-body { position: absolute; left: 0; right: 0; top: 16%; bottom: 0; background: rgba(4,4,9,.88); border-radius: 46% 46% 6% 6% / 26% 26% 4% 4%; }
+.shadow-fig .sf-head { position: absolute; left: 50%; top: 0; width: 44%; aspect-ratio: 1; transform: translateX(-50%); background: rgba(4,4,9,.9); border-radius: 50%; }
+.shadow-fig .sf-eye { position: absolute; top: 7.5%; width: 7%; aspect-ratio: 1; border-radius: 50%; background: #ff5d6e; box-shadow: 0 0 7px 2px rgba(255,60,90,.55); }
+.ward-open { position: absolute; background: linear-gradient(180deg, #0a0705, #141008); box-shadow: inset 0 0 30px rgba(0,0,0,.9); }
+.safe-box { position: absolute; background: #23262e; border: 2px solid #4a5163; border-radius: 7px; }
+.safe-box .dial { position: absolute; left: 50%; top: 34%; width: 26%; aspect-ratio: 1; transform: translateX(-50%); border-radius: 50%; border: 2.5px solid #6a7387; background: #171a21; }
+.safe-box.open { background: #101216; }
+.safe-box.open .dial { left: 12%; }
+.sw-on { position: absolute; width: 10px; height: 10px; border-radius: 50%; background: #7dd87d; box-shadow: 0 0 8px 2px rgba(110,255,140,.5); transform: translate(-50%, -50%); }
 #hotspots { position: absolute; inset: 0; }
 .hs { position: absolute; border: 1.5px dashed rgba(255,215,110,0); border-radius: 10px; background: rgba(255,215,110,0); cursor: pointer; padding: 0; }
 .hs::after { content: ''; position: absolute; right: 6px; top: 6px; width: 9px; height: 9px; border-radius: 50%; background: rgba(255,215,110,.85); box-shadow: 0 0 9px 2px rgba(255,215,110,.5); opacity: 0; transition: opacity .25s; }

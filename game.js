@@ -25,8 +25,8 @@ function chime(n) { beep(520 + (n || 0) * 70, 0.12, 'sine', 0.045);}
 
 /* ---------------- 道具 ---------------- */
 const ITEMS = {
-postcard: { name: '旧明信片', desc: '照片里是这栋楼刚交付时的样子。背面钢笔字：「1998.6.12，搬进新家，307。从此落地生根。」'},
-bill: { name: '电费催缴单', desc: '户号 307，户名周守义。欠费栏空着——三年了，没人再用电，表却还在走。'},
+postcard: { name: '旧明信片', desc: '照片里是这栋楼刚交付时的样子。背面钢笔字：「1998.6.12，搬进新家，302。从此落地生根。」'},
+bill: { name: '电费催缴单', desc: '户号 302，户名周守义。欠费栏空着——三年了，没人再用电，表却还在走。'},
 battery: { name: '电池', desc: '两节五号电池，还有电。'},
 smallkey: { name: '小钥匙', desc: '黄铜小钥匙，匙柄刻着一个「床」字。'},
 page1: { name: '契文 · 上半页', page: true, text: '\n立契人：周守义。今向时契行借取阳寿三年，\n自二〇一九年七月十九日起，至二〇二二年七月十九日止。\n所借之命，非行里之命，乃立契人未来之命。\n到期之日，由送契人亲手送达此契，账目两清。'},
@@ -156,8 +156,8 @@ L.push('一、契向未来借：你借的命，是未来的你在替你过。债
 L.push('二、契须亲手送达：隔手无效。逾期未达的契，会自己找路。');
 L.push('三、见契纹者，皆欠债人：普通人看不见契纹。');
 L.push('');
-L.push('契主周守义，307 户，退休钳工。三年前向行里借命三年，契逾期未达，人已过世。今夜把契送到，账目两清。');
-if (F('postcardSeen')) L.push('· 明信片：1998.6.12 搬进 307。');
+L.push('契主周守义，302 户，退休钳工。三年前向行里借命三年，契逾期未达，人已过世。今夜把契送到，账目两清。');
+if (F('postcardSeen')) L.push('· 明信片：1998.6.12 搬进 302。');
 if (F('videoSeen')) L.push('· 录像里他说：钟停在 3:15，那是他从医院回来的时辰，柜子认这个时辰。');
 if (F('medicalSeen')) L.push('· 病历：2019 年 7 月 19 日入院，3 床。');
 if (F('letterSeen')) L.push('· 绝笔信：他等的人都等到了。师父那晚雨大没走到，他说不怪。');
@@ -275,13 +275,13 @@ function corridorSvg() {
   <rect x="30" y="452" width="212" height="118" rx="6" fill="#39404f"/>
   ${[0,1,2,3,4,5,6,7].map(i => `<rect x="${42 + (i % 4) * 50}" y="${464 + Math.floor(i / 4) * 52}" width="42" height="44" rx="3" fill="#4a5265" stroke="#232833" stroke-width="2"/><circle cx="${63 + (i % 4) * 50}" cy="486" r="3.4" fill="#22262f"/>`).join('')}
 
-  <!-- 307 门 -->
+  <!-- 302 门 -->
   <rect x="520" y="96" width="212" height="352" rx="4" fill="#10131d"/>
   <rect x="532" y="108" width="188" height="328" rx="3" fill="${doorOpen ? '#06070c' : '#4a3423'}"/>
   ${doorOpen ? '' : `<rect x="540" y="116" width="172" height="312" fill="none" stroke="#2e1f14" stroke-width="5"/>
   <rect x="548" y="128" width="14" height="120" fill="#7d1f24"/><text x="555" y="146" font-size="12" fill="#e8d9a0" text-anchor="middle" writing-mode="tb">千门万户</text>
   <rect x="690" y="128" width="14" height="120" fill="#7d1f24"/><text x="697" y="146" font-size="12" fill="#e8d9a0" text-anchor="middle" writing-mode="tb">曈曈日</text>
-  <rect x="606" y="112" width="42" height="15" fill="#7d1f24"/><text x="627" y="124" font-size="11.5" fill="#e8d9a0" text-anchor="middle">307</text>
+  <rect x="606" y="112" width="42" height="15" fill="#7d1f24"/><text x="627" y="124" font-size="11.5" fill="#e8d9a0" text-anchor="middle">302</text>
   <circle cx="700" cy="286" r="8" fill="#c9ccd6"/><rect x="672" y="252" width="34" height="46" rx="4" fill="#20242f" stroke="#3c4356" stroke-width="2"/><circle cx="689" cy="268" r="4" fill="#ffd76e"/>`}
   <!-- 右：电表箱与通知 -->
   <rect x="768" y="150" width="104" height="150" rx="5" fill="#2f3644" stroke="#454e61" stroke-width="2"/>
@@ -635,7 +635,7 @@ function checkPower() {
   const req = requiredSwitches();
   if (req.every(id => G.switches[id] === Infinity || (G.switches[id] || 0) > G.time)) {
     setF('power');
-    say('', '咔。整层楼的灯管闪了两下——307 的屋里，亮了。');
+    say('', '咔。整层楼的灯管闪了两下——302 的屋里，亮了。');
     say('送契人', '电视柜上的指示灯亮起一点红。这屋子，像是刚睡醒。');
   }
 }
@@ -672,17 +672,17 @@ setInterval(() => {
 function hsAct(id, onAct) { return { id, kind: 'act', onAct }; }
 const HOTSPOTS = [
   /* 楼道 */
-  { view: 'corridor', id: 'mailbox', x: 30, y: 452, w: 212, h: 118, label: '信箱', kind: 'act', onAct(actor) {
+  { view: 'corridor', id: 'mailbox', x: 55, y: 145, w: 225, h: 305, label: '信箱', kind: 'act', onAct(actor) {
     if (!F('mailLoot')) {
       setF('mailLoot'); give('postcard'); give('bill');
-      say('', '307 的信箱塞满了广告，底下压着两张薄薄的纸：一张老明信片，一张电费催缴单。你都抽了出来。');
+      say('', '302 的信箱塞满了广告，底下压着两张薄薄的纸：一张老明信片，一张电费催缴单。你都抽了出来。');
     } else say('', '信箱空了，只剩灰。');
   } },
-  { view: 'corridor', id: 'meterbox', x: 768, y: 150, w: 104, h: 88, label: '电表箱', kind: 'act', onAct(actor) {
-    say('', '电表箱里一排表。307 那块的玻璃蒙着灰，数字停在三年前——不对，还在极慢地走。没人用电，它走的是什么？');
+  { view: 'corridor', id: 'meterbox', x: 666, y: 186, w: 72, h: 105, label: '电表箱', kind: 'act', onAct(actor) {
+    say('', '电表箱里一排表。302 那块的玻璃蒙着灰，数字停在三年前——不对，还在极慢地走。没人用电，它走的是什么？');
   } },
-  { view: 'corridor', id: 'sw_meter', x: 772, y: 242, w: 96, h: 56, label: '分闸 · 楼道', kind: 'act', onAct(actor) { toggleSwitch('meter', actor); } },
-  { view: 'corridor', id: 'door307', x: 520, y: 96, w: 212, h: 352, label: '307 的门', kind: 'nav', target: 'living',
+  { view: 'corridor', id: 'sw_meter', x: 678, y: 232, w: 55, h: 56, label: '分闸 · 楼道', kind: 'act', onAct(actor) { toggleSwitch('meter', actor); } },
+  { view: 'corridor', id: 'door', x: 460, y: 192, w: 160, h: 320, label: '302 的门', kind: 'nav', target: 'living',
     guard: () => F('doorOpen'),
     guardFail() {
       showLines([{ who: '', text: '防盗门，密码锁。门上的对联褪成粉红色，是三年前那一副。锁还活着。' }]);
@@ -692,12 +692,12 @@ const HOTSPOTS = [
       ] };
       renderChoices();
     } },
-  { view: 'corridor', id: 'doorlock', x: 664, y: 246, w: 46, h: 58, label: '密码锁', kind: 'modal', local: 'kp:door', when: () => !F('doorOpen') },
-  { view: 'corridor', id: 'stairs', x: 18, y: 120, w: 150, h: 310, label: '楼梯', kind: 'act', onAct(actor) {
+  { view: 'corridor', id: 'doorlock', x: 473, y: 292, w: 36, h: 92, label: '密码锁', kind: 'modal', local: 'kp:door', when: () => !F('doorOpen') },
+  { view: 'corridor', id: 'stairs', x: 315, y: 175, w: 108, h: 250, label: '楼梯', kind: 'act', onAct(actor) {
     say('', '声控灯坏了，楼梯间黑着。往上是没人住的四层，往下是雨——今晚的雨，和三年前那晚一样大。');
   } },
   /* 客厅 */
-  { view: 'living', id: 'tv', x: 610, y: 144, w: 228, h: 152, label: '电视', kind: 'act', onAct(actor) {
+  { view: 'living', id: 'tv', x: 620, y: 272, w: 165, h: 145, label: '电视', kind: 'act', onAct(actor) {
     if (!F('power') && !F('borrowPower')) { say('', '黑着。先把电送回来——光靠契纹的光，可带不动电视。'); return; }
     if (!F('power')) { say('', '契纹的光够看清屋子，可电视要的是电。分闸还没全合上。'); return; }
     if (!F('tvBattery')) {
@@ -708,63 +708,64 @@ const HOTSPOTS = [
     }
     if (!F('videoSeen')) {
       setF('tvOn'); setF('videoSeen');
+      G.tvShow = (G.tvShow || 0) + 1;
       say('电视', '录像带自动转起来。画面里是医院的走廊，一个老人对着镜头，身后病房门牌写着 3 床。');
       say('周守义（录像）', '「小师傅，我不知道你哪天来。我把话留在这盘带子里。」');
       say('周守义（录像）', '「钟，停在三点一刻。那是我出院那天夜里，到家的时辰。从那天起，这个家的时间就停在那儿了——柜子，也认这个时辰。」');
       say('电视', '录像到此为止。最后三秒，画面角落里，站着一个背对镜头的人——穿着送契人的褂子，是师父。');
-    } else say('电视', '录像又放了一遍。角落里师父的背影，一动不动。');
+    } else { G.tvShow = (G.tvShow || 0) + 1; say('电视', '你又按下了播放键。角落里师父的背影，一动不动。'); }
   } },
-  { view: 'living', id: 'remote', x: 556, y: 396, w: 42, h: 28, label: '遥控器', kind: 'act', onAct(actor) {
+  { view: 'living', id: 'remote', x: 640, y: 262, w: 130, h: 26, label: '遥控器', kind: 'act', onAct(actor) {
     say('', F('tvBattery') ? '遥控器的红灯亮着。' : '遥控器躺在茶几上，电池仓盖开着，空的。');
   } },
-  { view: 'living', id: 'altar', x: 400, y: 108, w: 84, h: 168, label: '遗像与供桌', kind: 'act', onAct(actor) {
+  { view: 'living', id: 'altar', x: 396, y: 186, w: 225, h: 330, label: '遗像与供桌', kind: 'act', onAct(actor) {
     if (G.candle) { say('', '烛还亮着，先把顺序走完。'); return; }
     if (F('candlesDone')) { say('', '烛齐了。供桌后面那声叹息，还没散。'); offer([{ label: '上前一步，封门', act: { k: 'openSeal' } }], actor); return; }
     if (F('contractPlaced')) { say('送契人', '契在遗像前了。还差点烛——看着顺序点，别抢。'); offer([{ label: '点烛（看顺序）', act: { k: 'startCandles' } }], actor); return; }
     if (has('contract')) { say('', '遗像里的老人看着你，眼睛是照片的眼睛，可你觉得他在等你手里那封契。'); offer([{ label: '把契放到遗像前', act: { k: 'placeContract' } }], actor); return; }
     say('', '遗像、香炉、三根没点的烛。相框玻璃上有一层灰，唯独眼睛的位置，被谁擦得干干净净。');
   } },
-  { view: 'living', id: 'altar_drawer', x: 322, y: 330, w: 236, h: 52, label: '供桌抽屉', kind: 'act', onAct(actor) {
+  { view: 'living', id: 'altar_drawer', x: 70, y: 490, w: 390, h: 120, label: '茶几抽屉', kind: 'act', onAct(actor) {
     if (!F('drawerOpen')) {
       setF('drawerOpen'); give('battery'); give('smallkey');
-      say('', '抽屉里整整齐齐：两节电池，一把黄铜小钥匙，一叠黄纸。都是给今晚准备的——像是知道有人要来翻。');
-    } else say('', '抽屉空了。黄纸还在，压得平平整整。');
+      say('', '茶几的抽屉里整整齐齐：两节电池，一把黄铜小钥匙，一叠黄纸。都是给今晚准备的——像是知道有人要来翻。');
+    } else say('', '茶几抽屉空了。黄纸还在，压得平平整整。');
   } },
-  { view: 'living', id: 'calendar', x: 268, y: 86, w: 86, h: 110, label: '挂历', kind: 'act', onAct(actor) {
+  { view: 'living', id: 'calendar', x: 492, y: 25, w: 120, h: 150, label: '挂历', kind: 'act', onAct(actor) {
     say('', '撕历停在 2019 年 7 月 19 日，那一天被红笔圈了三圈。之后的日子，一页都没撕过。');
   } },
-  { view: 'living', id: 'photo', x: 392, y: 88, w: 104, h: 88, label: '全家福', kind: 'act', onAct(actor) {
+  { view: 'living', id: 'photo', x: 398, y: 150, w: 80, h: 75, label: '全家福', kind: 'act', onAct(actor) {
     setF('photoSeen');
     say('', '全家福背面写着：「出院那天，儿子背我下楼。楼道里那盏灯，那天是亮的。」');
   } },
-  { view: 'living', id: 'clock', x: 782, y: 116, w: 84, h: 298, label: '落地挂钟', kind: 'modal', local: 'clock' },
-  { view: 'living', id: 'bedroom_door', x: 234, y: 146, w: 94, h: 264, label: '卧室门', kind: 'nav', target: 'bedroom',
+  { view: 'living', id: 'clock', x: 795, y: 30, w: 105, h: 520, label: '落地挂钟', kind: 'modal', local: 'clock' },
+  { view: 'living', id: 'bedroom_door', x: 300, y: 120, w: 85, h: 300, label: '卧室门', kind: 'nav', target: 'bedroom',
     guard: () => has('roomkey'),
     guardFail() { showLines([{ who: '', text: '卧室门锁着。锁眼是老式的——得找到这把门的钥匙。（钟，认一个时刻。）' }]); } },
-  { view: 'living', id: 'sw_kitchen', x: 534, y: 414, w: 42, h: 54, label: '分闸 · 厨房', kind: 'act', onAct(actor) { toggleSwitch('kitchen', actor); } },
-  { view: 'living', id: 'sofa', x: 56, y: 356, w: 258, h: 126, label: '沙发', kind: 'act', onAct(actor) {
+  { view: 'living', id: 'sw_kitchen', x: 408, y: 238, w: 26, h: 34, label: '分闸 · 厨房', kind: 'act', onAct(actor) { toggleSwitch('kitchen', actor); } },
+  { view: 'living', id: 'sofa', x: 0, y: 345, w: 290, h: 270, label: '沙发', kind: 'act', onAct(actor) {
     say('', '沙发扶手上搭着一件中山装，口袋是空的。坐垫中间凹下去一块——有人在这儿坐着等过很久。');
   } },
   /* 卧室 */
-  { view: 'bedroom', id: 'bed', x: 56, y: 248, w: 388, h: 140, label: '床', kind: 'act', onAct(actor) {
+  { view: 'bedroom', id: 'bed', x: 5, y: 265, w: 480, h: 340, label: '床', kind: 'act', onAct(actor) {
     say('', '被子叠成豆腐块。枕边放着一本相册，第一页是孙女满月的照片，背面写着：「看见了。够本了。」');
   } },
-  { view: 'bedroom', id: 'bedDrawer', x: 466, y: 314, w: 128, h: 118, label: '床头柜', kind: 'act', onAct(actor) {
+  { view: 'bedroom', id: 'bedDrawer', x: 342, y: 300, w: 108, h: 128, label: '床头柜', kind: 'act', onAct(actor) {
     if (F('bedDrawerOpen')) { say('', '抽屉开着。病历本你已经拿走了，只剩一板吃了一半的药。'); return; }
     if (has('smallkey')) {
       setF('bedDrawerOpen'); give('medical');
       say('', '小钥匙对上了。抽屉里是一本病历，和一封压在病历下面的车票底联的复印件。你收好病历。');
     } else say('', '床头柜的抽屉锁着。小锁眼，黄铜的——得有把小钥匙。');
   } },
-  { view: 'bedroom', id: 'desk', x: 92, y: 442, w: 228, h: 48, label: '书桌', kind: 'act', onAct(actor) {
+  { view: 'bedroom', id: 'desk', x: 570, y: 410, w: 325, h: 200, label: '书桌', kind: 'act', onAct(actor) {
     if (!F('ticketTaken')) { setF('ticketTaken'); give('ticket'); say('', '桌上压着一张长途车票：明早 06:40，城郊汽车站发车，座位 12。日期是明天——这张票还没过期，因为它等的明天，还没来。'); }
     else say('', '桌上还有半杯水。水面平的，像三年来没人碰过。');
   } },
-  { view: 'bedroom', id: 'wardrobe', x: 632, y: 326, w: 238, h: 188, label: '衣柜', kind: 'act', onAct(actor) {
+  { view: 'bedroom', id: 'wardrobe', x: 445, y: 30, w: 295, h: 520, label: '衣柜', kind: 'act', onAct(actor) {
     if (!F('wardOpen')) { setF('wardOpen'); say('', '衣柜门滑开。衣服按季节挂得整齐，最底层——嵌着一只保险箱。'); }
     else say('', '衣柜里是他的四季。最底层的保险箱，等着一个日子。');
   } },
-  { view: 'bedroom', id: 'safe', x: 672, y: 400, w: 148, h: 96, label: '保险箱', kind: 'act', when: () => F('wardOpen'), onAct(actor) {
+  { view: 'bedroom', id: 'safe', x: 495, y: 384, w: 153, h: 143, label: '保险箱', kind: 'act', when: () => F('wardOpen'), onAct(actor) {
     if (F('safeOpen')) { say('', '保险箱开着，空了。契和信，你都拿走了。'); return; }
     say('', '四位密码。箱体冰凉，凉得不像在屋里放了三年，像在别处放了很久。');
     offer([
@@ -772,15 +773,15 @@ const HOTSPOTS = [
       { label: '借命 · 烧穿它（+1 命债）', borrow: true, act: { k: 'borrowSafe' } }
     ], actor);
   } },
-  { view: 'bedroom', id: 'sw_bed', x: 462, y: 480, w: 50, h: 52, label: '配电箱', kind: 'act', onAct(actor) { say('', '卧室墙上的配电箱是备用闸，推上去没有反应——要合的闸不在这间屋。'); } },
-  { view: 'living', id: 'sw_bath', x: 242, y: 410, w: 38, h: 52, label: '分闸 · 卫浴', kind: 'act', onAct(actor) { toggleSwitch('bath', actor); } },
-  { view: 'bedroom', id: 'bwindow', x: 636, y: 62, w: 208, h: 238, label: '窗', kind: 'act', onAct(actor) {
+  { view: 'bedroom', id: 'sw_bed', x: 330, y: 110, w: 70, h: 60, label: '配电箱', kind: 'act', onAct(actor) { say('', '卧室墙上的配电箱是备用闸，推上去没有反应——要合的闸不在这间屋。'); } },
+  { view: 'living', id: 'sw_bath', x: 660, y: 330, w: 24, h: 32, label: '分闸 · 卫浴', kind: 'act', onAct(actor) { toggleSwitch('bath', actor); } },
+  { view: 'bedroom', id: 'bwindow', x: 745, y: 15, w: 150, h: 340, label: '窗', kind: 'act', onAct(actor) {
     say('', '对楼还亮着几盏灯。有一盏，在你看它的时候，灭了。');
   } }
 ];
 /* 点烛热点（演示与输入阶段） */
 for (let i = 0; i < 4; i++) {
-  HOTSPOTS.push({ view: 'living', id: 'candle' + i, x: 344 + i * 52, y: 206, w: 26, h: 72, label: '烛 ' + (i + 1), kind: 'act',
+  HOTSPOTS.push({ view: 'living', id: 'candle' + i, x: 488 + i * 26, y: 288, w: 24, h: 56, label: '烛 ' + (i + 1), kind: 'act',
     when: () => !!(G && G.candle && G.candle.phase === 'input'),
     onAct(actor) { actImpl({ k: 'candle', i }, actor); } });
 }
@@ -790,7 +791,7 @@ for (let i = 0; i < 4; i++) {
 const sceneImgCache = {};
 function paintScene(svgStr) {
   const wrap = $('scene');
-  const stage = $('stage');
+  const stage = $('frame');
   const w = stage && stage.clientWidth, h = stage && stage.clientHeight;
   if (!w || !h || typeof Image === 'undefined' || !window.URL || !URL.createObjectURL) { wrap.innerHTML = svgStr; return; }
   let cv = $('scene-canvas');
@@ -820,9 +821,56 @@ if (window.addEventListener) {
   window.addEventListener('resize', () => { clearTimeout(rszT); rszT = setTimeout(() => { if (G) renderScene(); }, 180); });
 }
 
+/* 实景图（AI 生成的写实场景）＋状态叠加层；序章仍用矢量兜底 */
+const PHOTOS = { corridor: 'assets/corridor.jpg', living: 'assets/living.jpg', bedroom: 'assets/bedroom.jpg' };
+let closedTvShow = 0;
+function pct(x, y, w, h) { return 'left:' + (x / 9) + '%;top:' + (y / 6.2) + '%;width:' + (w / 9) + '%;height:' + (h / 6.2) + '%;'; }
+function renderFx() {
+  const fx = $('fx');
+  let html = '';
+  const dark = !F('power') && !F('borrowPower');
+  let tvFull = false;
+  if (myView === 'corridor') {
+    if (F('doorOpen')) html += '<div class="door-open" style="' + pct(463, 198, 157, 318) + '"></div>';
+    if (F('sw_meter')) html += '<div class="sw-on" style="left:79.5%;top:41%;"></div>';
+  }
+  if ((myView === 'living' || myView === 'bedroom') && dark) {
+    html += '<div class="fx-dark"><p>' + (myView === 'living' ? '屋里没电。只有窗外对楼的灯，<br>和供桌上没点的烛。' : '卧室更暗。先把电送回来。') + '</p></div>';
+  }
+  if (myView === 'living' && !dark) {
+    if (F('tvOn') && !F('videoSeen')) html += '<div class="tv-static" style="' + pct(640, 295, 118, 98) + '"></div>';
+    if (F('contractPlaced')) html += '<div class="paper" style="' + pct(492, 326, 62, 28) + '"></div>';
+    if (F('sw_kitchen')) html += '<div class="sw-on" style="left:47%;top:41%;"></div>';
+    if (F('sw_bath')) html += '<div class="sw-on" style="left:74.5%;top:55.5%;"></div>';
+    const cd = G.candle;
+    const litSet = new Set();
+    if (F('candlesDone')) { for (let i = 0; i < 4; i++) litSet.add(i); }
+    else if (cd) {
+      if (cd.phase === 'show' && cd.idx > 0) litSet.add(cd.seq[cd.idx - 1]);
+      if (cd.phase === 'input' && cd.input.length) litSet.add(cd.input[cd.input.length - 1]);
+    }
+    litSet.forEach(i => { html += '<div class="flame" style="left:' + (54.6 + i * 2.8) + '%;top:45.4%;"></div>'; });
+    if (F('candlesDone') && !G.ended) html += '<div class="shadow-fig" style="left:46.5%;top:16.5%;width:8.5%;height:36%;"><div class="sf-body"></div><div class="sf-head"></div><div class="sf-eye" style="left:36%;"></div><div class="sf-eye" style="left:57%;"></div></div>';
+    if (G.tvShow && G.tvShow !== closedTvShow && F('videoSeen')) { tvFull = true; html += '<div class="tv-full" id="tv-full"><img src="assets/tv.jpg" alt=""></div>'; }
+  }
+  if (myView === 'bedroom' && F('wardOpen')) {
+    html += '<div class="ward-open" style="' + pct(498, 380, 160, 152) + '"></div>';
+    html += '<div class="safe-box' + (F('safeOpen') ? ' open' : '') + '" style="' + pct(508, 392, 144, 126) + '"><div class="dial"></div></div>';
+  }
+  fx.style.zIndex = tvFull ? 6 : 3;
+  fx.innerHTML = html;
+  const tf = $('tv-full');
+  if (tf) tf.onclick = () => { closedTvShow = G.tvShow; renderFx(); };
+}
+
 function renderScene() {
-  const svgFn = SCENE_SVG[myView] || blackSvg;
-  paintScene(svgFn());
+  if (myView === 'black' || !PHOTOS[myView]) {
+    paintScene((SCENE_SVG[myView] || blackSvg)());
+    $('fx').innerHTML = '';
+  } else {
+    $('scene').innerHTML = '<img class="photo" src="' + PHOTOS[myView] + '" alt="">';
+    renderFx();
+  }
   const layer = $('hotspots'); layer.innerHTML = '';
   if (!G) return;
   HOTSPOTS.filter(h => h.view === myView && (!h.when || h.when())).forEach(h => {
@@ -862,7 +910,7 @@ function renderAll() {
 let kpBuf = '';
 function openKeypad(ctx) {
   kpCtx = ctx; kpBuf = '';
-  $('kp-title').textContent = ctx === 'door' ? '307 · 密码锁' : '保险箱';
+  $('kp-title').textContent = ctx === 'door' ? '302 · 密码锁' : '保险箱';
   updKp();
   const grid = $('kp-grid'); grid.innerHTML = '';
   ['1','2','3','4','5','6','7','8','9','⌫','0','✓'].forEach(d => {
@@ -1022,7 +1070,7 @@ const PROLOGUE = [
   { who: '铁律', text: '二、契须亲手送达，隔手无效。逾期未达的契，会自己找路。' },
   { who: '铁律', text: '三、见契纹者，皆欠债人。' },
   { who: '送契人', text: '师父姓陆。三年前一个雨夜，他出门送一封契，再没回来。行里的规矩：送契人死在路上，未送达的契，徒弟接着送。' },
-  { who: '送契人', text: '那封契在柜上压了三年。今晚，我把它送到——老居民楼，307，周守义。' },
+  { who: '送契人', text: '那封契在柜上压了三年。今晚，我把它送到——老居民楼，302，周守义。' },
   { who: '', text: '雨还在下。楼道灯亮着，像是专门为你亮的。' }
 ];
 function startGame() {
