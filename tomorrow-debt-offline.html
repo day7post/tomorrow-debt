@@ -76,81 +76,166 @@ body { font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif
   .skill-btn { height: 58px; }
 }
 
+/* ================= v0.4 解谜版 UI ================= */
+#app2 { position: fixed; inset: 0; display: flex; flex-direction: column; background: #07080f; }
+#topbar { display: flex; justify-content: space-between; align-items: center; padding: calc(8px + env(safe-area-inset-top)) 12px 8px; gap: 8px; z-index: 6; }
+#chap-label { font-size: 15px; font-weight: 800; letter-spacing: .12em; }
+.top-right { display: flex; gap: 7px; align-items: center; }
+#debt-chip, #crew-chip { background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.22); border-radius: 999px; padding: 7px 11px; font-size: 12.5px; }
+#debt-chip b { color: #ff8fa3; font-size: 15px; }
+.mini-btn.wide { width: auto; padding: 0 13px; border-radius: 999px; font-size: 13px; font-weight: 700; }
+#stage { position: relative; flex: 1; min-height: 0; margin: 0 auto; width: min(100%, calc((100vh - 210px) * 1.45)); max-width: 980px; }
+@media (max-aspect-ratio: 1/1) { #stage { width: 100%; } }
+#scene { position: absolute; inset: 0; }
+#scene svg { width: 100%; height: 100%; display: block; }
+#hotspots { position: absolute; inset: 0; }
+.hs { position: absolute; border: 1.5px dashed rgba(255,215,110,0); border-radius: 10px; background: rgba(255,215,110,0); cursor: pointer; padding: 0; }
+.hs::after { content: ''; position: absolute; right: 6px; top: 6px; width: 9px; height: 9px; border-radius: 50%; background: rgba(255,215,110,.85); box-shadow: 0 0 9px 2px rgba(255,215,110,.5); animation: pulse 1.6s infinite alternate; }
+.hs:active, .hs:hover { border-color: rgba(255,215,110,.75); background: rgba(255,215,110,.10); }
+.hs .hs-tag { position: absolute; left: 50%; bottom: -22px; transform: translateX(-50%); white-space: nowrap; font-size: 11.5px; color: #ffe9a8; background: rgba(5,6,14,.85); padding: 2.5px 9px; border-radius: 999px; opacity: 0; pointer-events: none; }
+.hs:active .hs-tag, .hs:hover .hs-tag { opacity: 1; }
+#navback { position: absolute; left: 12px; bottom: 12px; z-index: 8; padding: 11px 18px; border-radius: 999px; border: 1.5px solid rgba(255,255,255,.4); background: rgba(10,12,24,.88); color: #eef1ff; font-size: 14px; font-weight: 700; cursor: pointer; }
+#navback:active { transform: scale(.95); }
+#toast { position: absolute; top: 14px; left: 50%; transform: translateX(-50%); background: rgba(20,8,12,.88); border: 1px solid rgba(255,143,163,.65); color: #ffd9de; padding: 8px 18px; border-radius: 999px; font-size: 13.5px; z-index: 7; max-width: 92%; text-align: center; }
+#dialog { margin: 8px auto 0; width: min(96%, 980px); min-height: 96px; background: rgba(13,15,30,.96); border: 1px solid rgba(255,255,255,.25); border-radius: 14px; padding: 12px 16px 10px; position: relative; cursor: pointer; z-index: 6; }
+#dlg-name { font-size: 12px; color: #ffd76e; font-weight: 800; letter-spacing: .15em; margin-bottom: 4px; }
+#dlg-text { font-size: 15.5px; line-height: 1.75; white-space: pre-line; }
+#dlg-next { position: absolute; right: 12px; bottom: 6px; font-size: 11px; opacity: .7; animation: pulse 0.8s infinite alternate; }
+#dlg-choices { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+.dlg-choice { padding: 10px 16px; border-radius: 999px; border: 1.5px solid rgba(255,209,102,.7); background: rgba(50,36,8,.85); color: #ffe9b0; font-size: 14px; font-weight: 700; cursor: pointer; }
+.dlg-choice:active { transform: scale(.96); }
+.dlg-choice.borrow { border-color: rgba(255,110,130,.8); background: rgba(60,12,22,.85); color: #ffc2cc; }
+#invbar { width: min(96%, 980px); margin: 8px auto calc(10px + env(safe-area-inset-bottom)); z-index: 6; }
+#inv-items { display: flex; gap: 8px; flex-wrap: wrap; min-height: 46px; }
+.inv-item { min-width: 64px; padding: 9px 10px; border-radius: 12px; border: 1.5px solid rgba(255,255,255,.3); background: rgba(23,26,50,.95); color: #eef1ff; font-size: 13px; font-weight: 700; cursor: pointer; text-align: center; }
+.inv-item small { display: block; font-size: 10px; font-weight: 400; opacity: .65; margin-top: 2px; }
+.inv-item.sel { border-color: #ffd166; background: rgba(80,58,10,.9); box-shadow: 0 0 0 2px rgba(255,209,102,.35); }
+.inv-item:active { transform: scale(.95); }
+#inv-hint { font-size: 11px; opacity: .55; margin-top: 5px; }
+.overlay2 { position: fixed; inset: 0; background: rgba(3,4,10,.82); display: flex; align-items: center; justify-content: center; z-index: 20; padding: 16px; }
+.sheet { width: min(94vw, 560px); max-height: 88vh; overflow-y: auto; background: #12142a; border: 1px solid rgba(255,255,255,.28); border-radius: 18px; padding: 20px; text-align: left; }
+.sheet.narrow { width: min(94vw, 380px); text-align: center; }
+.sheet h3 { font-size: 18px; letter-spacing: .1em; margin-bottom: 12px; text-align: center; }
+.sheet-note { font-size: 13px; line-height: 1.7; opacity: .8; text-align: center; margin-bottom: 10px; }
+#note-body { font-size: 14px; line-height: 1.85; white-space: pre-line; }
+#note-body .nb-sec { color: #ffd76e; font-weight: 800; }
+#kp-display { font-size: 30px; letter-spacing: .5em; text-align: center; background: rgba(0,0,0,.45); border: 1px solid rgba(255,255,255,.25); border-radius: 10px; padding: 10px 0 10px .5em; margin-bottom: 12px; font-family: ui-monospace, monospace; }
+#kp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
+.kp-key { padding: 15px 0; font-size: 19px; font-weight: 800; border-radius: 12px; border: 1.5px solid rgba(255,255,255,.3); background: rgba(255,255,255,.06); color: #fff; cursor: pointer; }
+.kp-key:active { transform: scale(.94); background: rgba(255,209,102,.25); }
+#clock-face { font-size: 44px; text-align: center; font-family: ui-monospace, monospace; letter-spacing: .12em; margin: 6px 0 14px; color: #ffe9a8; }
+.clock-btns { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; margin-bottom: 12px; }
+.clock-btns button { padding: 12px 0; font-size: 14px; font-weight: 700; border-radius: 10px; border: 1.5px solid rgba(255,255,255,.3); background: rgba(255,255,255,.06); color: #fff; cursor: pointer; }
+.clock-btns button:active { transform: scale(.94); }
+#seal-canvas { width: 100%; height: auto; background: radial-gradient(ellipse at center, #241722, #0d0710); border: 1px solid rgba(255,143,163,.4); border-radius: 12px; touch-action: none; }
+#seal-timer { text-align: center; font-size: 14px; color: #ff8fa3; margin: 8px 0; min-height: 20px; }
+.sheet .big-btn { width: 100%; margin-top: 8px; }
+
 </style>
 </head>
 <body>
-<div id="app">
-  <canvas id="game"></canvas>
-
-  <!-- HUD -->
-  <div id="hud" class="hidden">
-    <div class="hud-left">
-      <div id="hpwrap"><div id="hpfill"></div><span id="hptext"></span></div>
-      <div id="p2wrap" class="hidden"><div id="p2fill"></div><span id="p2text"></span></div>
-      <div id="scene-label"></div>
-      <div id="wave-label"></div>
+<div id="app2">
+  <!-- 顶栏 -->
+  <div id="topbar" class="hidden">
+    <div id="chap-label">第一章 · 老居民楼</div>
+    <div class="top-right">
+      <span id="debt-chip" title="命债">命债 <b id="debt-n">0</b></span>
+      <span id="crew-chip" title="同行人数">1 人</span>
+      <button id="btn-note" class="mini-btn wide">笔记本</button>
+      <button id="btn-hint" class="mini-btn wide">提示</button>
+      <button id="btn-mute2" class="mini-btn">♪</button>
     </div>
-    <div class="hud-right">
-      <div id="debt-label" title="未偿命债">命债 <b id="debt-count">0</b></div>
-      <div id="score-label">时尘 <b id="score-count">0</b></div>
-      <button id="btn-mute" class="mini-btn" aria-label="静音">♪</button>
-      <button id="btn-pause" class="mini-btn" aria-label="暂停">Ⅱ</button>
-    </div>
-    <div id="debt-alert" class="hidden">它来讨债了</div>
   </div>
 
-  <!-- 技能按钮（大点击区） -->
-  <div id="skills" class="hidden">
-    <button class="skill-btn" data-skill="nova"><span class="sk-name">阴爆</span><span class="sk-key">J · 借命</span><span class="sk-cd"></span></button>
-    <button class="skill-btn" data-skill="blades"><span class="sk-name">纸人</span><span class="sk-key">K · 借命</span><span class="sk-cd"></span></button>
-    <button class="skill-btn" data-skill="chrono"><span class="sk-name">凝时</span><span class="sk-key">L · 借命</span><span class="sk-cd"></span></button>
-    <button id="btn-dash" class="skill-btn dash"><span class="sk-name">冲刺</span><span class="sk-key">空格</span><span class="sk-cd"></span></button>
+  <!-- 场景舞台 -->
+  <div id="stage" class="hidden">
+    <div id="scene"></div>
+    <div id="hotspots"></div>
+    <button id="navback" class="hidden">← 回楼道</button>
+    <div id="toast" class="hidden"></div>
+  </div>
+
+  <!-- 对话框 -->
+  <div id="dialog" class="hidden">
+    <div id="dlg-name"></div>
+    <div id="dlg-text"></div>
+    <div id="dlg-choices"></div>
+    <div id="dlg-next">▼</div>
+  </div>
+
+  <!-- 道具栏 -->
+  <div id="invbar" class="hidden"><div id="inv-items"></div><div id="inv-hint">点道具选中，再点场景使用；点已选道具看详情</div></div>
+
+  <!-- 笔记本 -->
+  <div id="notebook" class="overlay2 hidden">
+    <div class="sheet">
+      <h3>送契人的笔记本</h3>
+      <div id="note-body"></div>
+      <button class="big-btn" id="btn-note-close">合上</button>
+    </div>
+  </div>
+
+  <!-- 密码键盘 -->
+  <div id="keypad" class="overlay2 hidden">
+    <div class="sheet narrow">
+      <h3 id="kp-title">密码锁</h3>
+      <div id="kp-display">____</div>
+      <div id="kp-grid"></div>
+      <button class="big-btn ghost" id="btn-kp-cancel">放下</button>
+    </div>
+  </div>
+
+  <!-- 挂钟 -->
+  <div id="clockui" class="overlay2 hidden">
+    <div class="sheet narrow">
+      <h3>落地挂钟</h3>
+      <div id="clock-face">03:00</div>
+      <div class="clock-btns">
+        <button data-ck="h+">时 +</button><button data-ck="h-">时 −</button>
+        <button data-ck="m+">分 +5</button><button data-ck="m-">分 −5</button>
+      </div>
+      <p class="sheet-note">调好后点「上弦」——钟只认一个时刻。</p>
+      <button class="big-btn" id="btn-clock-set">上弦</button>
+      <button class="big-btn ghost" id="btn-clock-cancel">先放下</button>
+    </div>
+  </div>
+
+  <!-- 封门仪式 -->
+  <div id="sealui" class="overlay2 hidden">
+    <div class="sheet">
+      <h3>封门 · 画符</h3>
+      <p class="sheet-note" id="seal-note">用手指或鼠标，在门上画一个闭合的圈，圈住中央的契纹。影子在靠近。</p>
+      <canvas id="seal-canvas" width="520" height="360"></canvas>
+      <div id="seal-timer"></div>
+      <button class="big-btn ghost" id="btn-seal-borrow">借命稳印（+1 命债，时间与判定放宽）</button>
+      <button class="big-btn ghost" id="btn-seal-giveup">退后一步</button>
+    </div>
   </div>
 
   <!-- 主菜单 -->
   <div id="menu" class="overlay">
     <h1>明日债</h1>
-    <p class="subtitle">Tomorrow's Debt</p>
-    <p class="intro">你要把一封契，送给死去的未来的自己。<br>你没有武器，只有一支朱砂笔——绕着邪祟走满一圈，印合上，才封得住。<br>借命的咒随借随用，但借过的每一咒，讨债影都会拿来对付你。</p>
-    <button id="btn-start" class="big-btn">开始送契</button>
-    <button id="btn-endless" class="big-btn ghost hidden">无尽模式</button>
+    <p class="subtitle">Tomorrow's Debt · 恐怖悬疑解谜</p>
+    <p class="intro">一封迟到三年的契，要送进一栋老居民楼。<br>契主已经死了。债主，是未来的你。<br>调查、拼凑、解开每一道锁——卡住时可以借命，但账要还。</p>
+    <button id="btn-start" class="big-btn">开始送契 · 第一章</button>
     <div id="online-box">
       <div class="online-row">
         <button id="btn-host" class="mini-wide">建房联机</button>
         <input id="room-input" maxlength="4" placeholder="4 位房码" autocomplete="off">
         <button id="btn-join" class="mini-wide">加入房间</button>
       </div>
-      <p id="net-status">双人合作：建房把房码给同伴，或输入同伴的房码加入</p>
+      <p id="net-status">多人合作（最多 4 人）：人数越多，谜题越难——契文分着拿、闸要一起拉</p>
     </div>
-    <p class="howto">电脑：WASD 移动绕圈 · 空格冲刺 · J/K/L 借咒<br>同屏双人：开始后按 Enter 加入，P2 用方向键移动、小键盘 1/2/3 借咒、右 Shift 冲刺<br>手机：左半屏摇杆绕圈 · 右侧大按钮</p>
+    <p class="howto">点场景里的发光处调查 · 道具在底部栏 · 笔记本记着所有线索<br>同屏共玩：一台设备轮流点按即可（按 1 人难度）</p>
     <p id="best-line" class="best"></p>
   </div>
 
-  <!-- 章节卡 -->
-  <div id="chapter" class="overlay hidden">
-    <h2 id="chapter-title"></h2>
-    <p id="chapter-text"></p>
-    <button id="btn-chapter" class="big-btn">进入</button>
-  </div>
-
-  <!-- 升级三选一 -->
-  <div id="upgrade" class="overlay hidden">
-    <h2>时尘凝形 · 三选一</h2>
-    <div id="upgrade-cards"></div>
-  </div>
-
-  <!-- 结算 -->
+  <!-- 章节结算 -->
   <div id="end" class="overlay hidden">
     <h2 id="end-title"></h2>
     <p id="end-stats"></p>
-    <button id="btn-retry" class="big-btn">再来一局</button>
+    <button id="btn-again" class="big-btn">再送一程</button>
     <button id="btn-tomenu" class="big-btn ghost">回主菜单</button>
-  </div>
-
-  <div id="pause" class="overlay hidden">
-    <h2>已暂停</h2>
-    <button id="btn-resume" class="big-btn">继续</button>
-    <button id="btn-quit" class="big-btn ghost">放弃本局</button>
   </div>
 </div>
 <script>
@@ -166,21 +251,25 @@ body { font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif
 </script>
 <script>
 'use strict';
-/* 联机传输层：PeerJS（WebRTC 点对点）+ 免费公共信令。
-   房主权威：房主跑全部游戏逻辑，客人只发输入、收状态快照渲染。
-   库文件 peerjs.min.js 与游戏同源托管，不依赖第三方 CDN。 */
+/* 联机层 v2（v0.4 解谜版）：房主权威 + 状态同步，最多 4 人（房主 + 3 位客人）。
+   房主持有全部游戏状态，客人发送「动作意图」，房主校验执行后广播全量状态。
+   传输：PeerJS（WebRTC 点对点）+ 免费公共信令；库文件同源托管。 */
 window.TDNet = {
-  role: 'solo',           // solo | host | guest
-  peer: null, conn: null, code: null,
-  guestInput: { mx: 0, my: 0 },
-  guestBorrow: [],
-  guestDash: false,
-  onMsg: null,            // game.js 注册：收到对方消息
-  onStatus: null,         // game.js 注册：状态文案回调
-  onPeerJoin: null,       // 房主：客人连入
-  onPeerLeave: null,      // 任一端：连接断开
+  role: 'solo', peer: null, code: null, myId: 0,
+  conns: {},            // 房主：guestId -> conn
+  hostConn: null,       // 客人：到房主的连接
+  knownCount: 1,        // 客人端已知的总人数
+  onMsg: null,          // 客人：收到房主消息
+  onGuestMsg: null,     // 房主：收到某客人消息 (data, guestId)
+  onRoster: null,       // 人数变化回调 (count)
+  onStatus: null,
 
   _status: function (s) { if (this.onStatus) this.onStatus(s); },
+  playerCount: function () {
+    if (this.role === 'host') return 1 + Object.keys(this.conns).length;
+    if (this.role === 'guest') return this.knownCount;
+    return 1;
+  },
 
   makeCode: function () {
     const abc = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
@@ -190,43 +279,57 @@ window.TDNet = {
   },
 
   host: function () {
-    if (typeof Peer === 'undefined') { this._status('联机组件未加载，只能同屏双人'); return; }
+    if (typeof Peer === 'undefined') { this._status('联机组件未加载，只能单人或同屏'); return; }
     this.close();
-    this.role = 'host';
+    this.role = 'host'; this.myId = 0;
     this.code = this.makeCode();
     const self = this;
-    this.peer = new Peer('td3-' + this.code);
-    this.peer.on('open', function () {
-      self._status('房间已建 · 把房码告诉同行者： ' + self.code);
-    });
+    this.peer = new Peer('td4-' + this.code);
+    this.peer.on('open', function () { self._status('房间已建 · 房码告诉同行者： ' + self.code + '（最多 4 人）'); });
     this.peer.on('connection', function (conn) {
-      if (self.conn && self.conn.open) { conn.close(); return; } // 只收一位同行者
-      self.conn = conn;
-      self._bindConn();
       conn.on('open', function () {
-        self._status('同行者已连入 · 房码 ' + self.code);
-        if (self.onPeerJoin) self.onPeerJoin();
+        const ids = Object.keys(self.conns).map(Number);
+        if (ids.length >= 3) { try { conn.send({ t: 'full' }); } catch (e) {} setTimeout(() => conn.close(), 300); return; }
+        let id = 1; while (ids.includes(id)) id++;
+        self.conns[id] = conn;
+        conn._gid = id;
+        conn.send({ t: 'welcome', id, count: self.playerCount() });
+        self.broadcast({ t: 'roster', count: self.playerCount() });
+        self._status('同行者 ' + id + ' 号连入 · 现在 ' + self.playerCount() + ' 人');
+        if (self.onRoster) self.onRoster(self.playerCount());
+        conn.on('data', function (d) { if (self.onGuestMsg) self.onGuestMsg(d, id); });
+        conn.on('close', function () {
+          delete self.conns[id];
+          self.broadcast({ t: 'roster', count: self.playerCount() });
+          self._status('同行者 ' + id + ' 号离开 · 现在 ' + self.playerCount() + ' 人');
+          if (self.onRoster) self.onRoster(self.playerCount());
+        });
       });
     });
     this.peer.on('error', function (err) {
-      if (err.type === 'unavailable-id') { self.host(); return; } // 房码撞了，换一个
-      self._status('联机出错：' + err.type + '（可改用同屏双人）');
+      if (err.type === 'unavailable-id') { self.host(); return; }
+      self._status('联机出错：' + err.type + '（可改用单人）');
     });
   },
 
   join: function (code) {
-    if (typeof Peer === 'undefined') { this._status('联机组件未加载，只能同屏双人'); return; }
+    if (typeof Peer === 'undefined') { this._status('联机组件未加载，只能单人或同屏'); return; }
     code = (code || '').trim().toUpperCase();
     if (code.length !== 4) { this._status('房码是 4 位字符'); return; }
     this.close();
-    this.role = 'guest';
-    this.code = code;
+    this.role = 'guest'; this.code = code;
     const self = this;
     this.peer = new Peer();
     this.peer.on('open', function () {
-      self.conn = self.peer.connect('td3-' + code, { reliable: true });
-      self._bindConn();
-      self.conn.on('open', function () { self._status('已连入房间 ' + code + ' · 等待房主开始'); });
+      self.hostConn = self.peer.connect('td4-' + code, { reliable: true });
+      self.hostConn.on('open', function () { self._status('已连上房间 ' + code + ' · 等待房主同步'); });
+      self.hostConn.on('data', function (d) {
+        if (d.t === 'welcome') { self.myId = d.id; self.knownCount = d.count; self._status('你是 ' + d.id + ' 号同行者 · 共 ' + d.count + ' 人'); }
+        else if (d.t === 'roster') { self.knownCount = d.count; if (self.onRoster) self.onRoster(d.count); }
+        else if (d.t === 'full') { self._status('房间满了（最多 4 人）'); }
+        if (self.onMsg) self.onMsg(d);
+      });
+      self.hostConn.on('close', function () { self._status('与房主的连接断开了'); });
     });
     this.peer.on('error', function (err) {
       if (err.type === 'peer-unavailable') self._status('找不到这个房间，核对房码或等房主先建房');
@@ -234,1403 +337,1041 @@ window.TDNet = {
     });
   },
 
-  _bindConn: function () {
-    const self = this;
-    this.conn.on('data', function (d) { if (self.onMsg) self.onMsg(d); });
-    this.conn.on('close', function () {
-      self._status('连接已断开');
-      if (self.onPeerLeave) self.onPeerLeave();
-    });
+  broadcast: function (obj) {
+    for (const id in this.conns) {
+      const c = this.conns[id];
+      if (c.open) { try { c.send(obj); } catch (e) {} }
+    }
   },
-
   send: function (obj) {
-    if (this.conn && this.conn.open) { try { this.conn.send(obj); } catch (e) { /* 断连静默 */ } }
+    if (this.hostConn && this.hostConn.open) { try { this.hostConn.send(obj); } catch (e) {} }
   },
 
   close: function () {
-    try { if (this.conn) this.conn.close(); } catch (e) {}
+    for (const id in this.conns) { try { this.conns[id].close(); } catch (e) {} }
+    try { if (this.hostConn) this.hostConn.close(); } catch (e) {}
     try { if (this.peer) this.peer.destroy(); } catch (e) {}
-    this.conn = null; this.peer = null; this.role = 'solo';
-    this.guestInput = { mx: 0, my: 0 }; this.guestBorrow = []; this.guestDash = false;
+    this.conns = {}; this.hostConn = null; this.peer = null;
+    this.role = 'solo'; this.myId = 0; this.knownCount = 1;
   }
 };
 
 </script>
 <script>
 'use strict';
-/* 《明日债 · Tomorrow's Debt》 v0.3.0「同行」
-   v0.3 新增（按玩家要求）：可联机 + 有解谜。
-   联机：双人合作三种进入方式——单人 / 同屏双人（Enter 加入，随时离线可玩）/
-        在线双人（PeerJS WebRTC 房间码，房主权威：房主跑逻辑，客人发输入收快照）。
-   解谜：每幕一个，嵌在波次之间——
-        一幕「踏符阵」记序踏符；二幕「双生祟」必须同一道印同时封住双生；
-        三幕「契文三问」站圈答题，答错会给最终 Boss 上强度。
-   合作机制：各自拖朱砂/青砂轨迹绕圈封印；队友倒地后，绕着他合印可救回。
-   核心战斗与借债/讨债影沿用 v0.2。 */
+/* 《明日债 · Tomorrow's Debt》 v0.4.0「解契」
+题材级转型：恐怖悬疑点击探索解谜。第一章《老居民楼》完整可通关。
+世界观见 LORE.md（时契行三条铁律）。多人合作：房主权威状态同步（最多 4 人），
+难度随人数上升：契文分持、分闸同拉、点烛记序变长。封印保留为封门画符仪式。 */
 
-const canvas = document.getElementById('game');
-const ctx = canvas.getContext('2d');
-let W = 0, H = 0, DPR = 1;
-
-function resize() {
-  DPR = Math.min(window.devicePixelRatio || 1, 2);
-  W = window.innerWidth; H = window.innerHeight;
-  canvas.width = Math.floor(W * DPR); canvas.height = Math.floor(H * DPR);
-  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-}
-window.addEventListener('resize', resize); resize();
-
-/* ---------------- 工具 ---------------- */
-const rand = (a, b) => a + Math.random() * (b - a);
-const dist2 = (a, b) => { const dx = a.x - b.x, dy = a.y - b.y; return dx * dx + dy * dy; };
+/* ---------------- 工具与音效 ---------------- */
+const $ = id => document.getElementById(id);
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
-function pointInPoly(px, py, poly) {
-  let inside = false;
-  for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
-    const xi = poly[i].x, yi = poly[i].y, xj = poly[j].x, yj = poly[j].y;
-    if (((yi > py) !== (yj > py)) && (px < (xj - xi) * (py - yi) / (yj - yi) + xi)) inside = !inside;
-  }
-  return inside;
-}
-function polyArea(poly) {
-  let a = 0;
-  for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) a += (poly[j].x + poly[i].x) * (poly[j].y - poly[i].y);
-  return Math.abs(a / 2);
-}
-function centroid(poly) {
-  let x = 0, y = 0;
-  poly.forEach(p => { x += p.x; y += p.y; });
-  return { x: x / poly.length, y: y / poly.length };
-}
-
-/* ---------------- 音效 ---------------- */
 let muted = false, audioCtx = null;
 function beep(freq, dur, type, vol) {
-  if (muted) return;
-  try {
-    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    const o = audioCtx.createOscillator(), g = audioCtx.createGain();
-    o.type = type || 'sine'; o.frequency.value = freq;
-    g.gain.value = vol || 0.04;
-    g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + dur);
-    o.connect(g); g.connect(audioCtx.destination);
-    o.start(); o.stop(audioCtx.currentTime + dur);
-  } catch (e) { /* 静默 */ }
+if (muted) return;
+try {
+if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+o.type = type || 'sine'; o.frequency.value = freq;
+g.gain.value = vol || 0.035;
+g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + dur);
+o.connect(g); g.connect(audioCtx.destination);
+o.start(); o.stop(audioCtx.currentTime + dur);
+} catch (e) {}
 }
+function buzz() { beep(110, 0.18, 'sawtooth', 0.05);}
+function chime(n) { beep(520 + (n || 0) * 70, 0.12, 'sine', 0.045);}
 
-/* ---------------- 三幕 ---------------- */
-const SCENES = [
-  {
-    name: '第一幕 · 雨夜凶宅', theme: 'house',
-    top: '#0a0d1c', bottom: '#020308', accent: '#9fb7ff', enemy: '#e6e1d5',
-    story: '老宅的门，自己开了。\n契主坐在堂屋正中——他已经过世三年了。\n行里规矩：活人不接死人的契。\n可《明日契》最后一页写着：债主，是未来的你。\n你没有武器，只有一支朱砂笔。绕着它们走满一圈，印合上，才封得住。',
-    waves: [
-      { chaser: 6, dart: 0, tank: 0, lurker: 0 },
-      { chaser: 8, dart: 3, tank: 0, lurker: 0 },
-      { chaser: 8, dart: 4, tank: 1, lurker: 1 }
-    ]
-  },
-  {
-    name: '第二幕 · 停尸走廊', theme: 'ward',
-    top: '#0a120e', bottom: '#010403', accent: '#8fe3b0', enemy: '#cfe6cf',
-    story: '送契的路穿过废弃医院的停尸走廊，灯一盏盏灭下去。\n尽头的停尸牌上挂着明天的日期，名字是你的。\n你开始分不清——是你在把契送向死人，\n还是它在把你，一步一步送过去。',
-    waves: [
-      { chaser: 7, dart: 4, tank: 1, lurker: 2 },
-      { chaser: 9, dart: 5, tank: 2, lurker: 2 },
-      { chaser: 10, dart: 6, tank: 2, lurker: 3 }
-    ]
-  },
-  {
-    name: '第三幕 · 血月祭坛', theme: 'altar',
-    top: '#1d0509', bottom: '#040102', accent: '#ff6a5e', enemy: '#ffb3a7',
-    story: '血月升到祭坛正上方，收契的人坐在坛心。\n他抬起头——是死去多年后，你自己的脸。\n「契，我收。」他说，\n「借我的命，一笔一笔，绕着我走回来还。」',
-    waves: [
-      { chaser: 10, dart: 6, tank: 2, lurker: 3 },
-      { chaser: 12, dart: 8, tank: 3, lurker: 4 },
-      { boss: true }
-    ]
-  }
-];
-
-const UPGRADES = [
-  { name: '镇煞契', desc: '全队封印伤害 +30%', apply: p => { p.sealDmg *= 1.30; } },
-  { name: '朱砂契', desc: '全队轨迹存留时间 +40%，能绕更大的圈', apply: p => { p.trailLife *= 1.40; } },
-  { name: '疾风契', desc: '全队移动速度 +13%', apply: p => { p.speed *= 1.13; } },
-  { name: '扩命契', desc: '全队生命上限 +25，并回复 40', apply: p => { p.maxHp += 25; p.hp = Math.min(p.maxHp, p.hp + 40); } },
-  { name: '破煞契', desc: '全队封印暴击率 +15%', apply: p => { p.crit += 0.15; } },
-  { name: '磁石契', desc: '全队拾取范围 +70%', apply: p => { p.magnet *= 1.7; } },
-  { name: '疾影契', desc: '全队冲刺冷却 -30%，冲刺后短暂加速', apply: p => { p.dashCdMax *= 0.7; p.dashBoost = true; } },
-  { name: '连环契', desc: '全队每次封印后 3 秒内，下一次封印伤害 +60%', apply: p => { p.chainSeal = true; } }
-];
-
-/* ---------------- 状态 ---------------- */
-const SKILL_CD = { nova: 7, blades: 12, chrono: 14 };
-const SKILL_NAME = { nova: '阴爆', blades: '纸人', chrono: '凝时' };
-const DEBT_DELAY = 22;
-const PUZZLE_AT = [1, 1, 2]; // 每幕在第几波之后出谜题
-
-let state = 'menu';
-let endless = false;
-let players = [], player = null;
-let enemies = [], shadows = [], parts = [], drops = [], debts = [], ebullets = [], sealFx = [];
-let sceneIdx = 0, waveIdx = 0, spawnQueue = [], spawnTimer = 0, waveActive = false;
-let score = 0, kills = 0, seals = 0, debtsTotal = 0, debtsRepaid = 0, runTime = 0;
-let borrowedSet = new Set(), borrowedHistory = [];
-let slowTimer = 0, shake = 0, bossRef = null;
-let puzzle = null, puzzleDone = [false, false, false], bossBuff = 0; // bossBuff: -1 弱化 / +1 强化
-let keys = {};
-let joy = { active: false, id: null, ox: 0, oy: 0, dx: 0, dy: 0 };
-let rings = [];
-
-function newPlayer(kind, idx) {
-  return {
-    kind, idx,
-    x: W / 2 + (idx === 1 ? 70 : -10), y: H / 2 + (idx === 1 ? 40 : 0), r: 14,
-    hp: 100, maxHp: 100, downed: false, reviveTimer: 0,
-    speed: 242, sealDmg: 85, trailLife: 7, crit: 0.05, magnet: 60, chainSeal: false,
-    dashTimer: 0, dashCd: 0, dashCdMax: 2.6, dashBoost: false, boostTimer: 0, face: 1,
-    skillCd: { nova: 0, blades: 0, chrono: 0 },
-    paperTimer: 0, paperAngle: 0, invuln: 0, sealBuffTimer: 0,
-    trail: [], input: { mx: 0, my: 0 }
-  };
-}
-
-function resetRun(isEndless) {
-  endless = isEndless;
-  player = newPlayer('local1', 0);
-  players = [player];
-  // 在线客人或同屏 P2 若在开局前已加入，保留席位
-  if (window.TDNet && TDNet.role === 'host' && TDNet.conn && TDNet.conn.open) addPlayer('remote');
-  enemies = []; shadows = []; parts = []; drops = []; debts = []; ebullets = []; sealFx = []; rings = [];
-  sceneIdx = 0; waveIdx = 0; score = 0; kills = 0; seals = 0;
-  debtsTotal = 0; debtsRepaid = 0; runTime = 0;
-  borrowedSet = new Set(); borrowedHistory = [];
-  slowTimer = 0; bossRef = null; spawnQueue = []; waveActive = false;
-  puzzle = null; puzzleDone = [false, false, false]; bossBuff = 0;
-}
-
-function addPlayer(kind) {
-  if (players.length >= 2) return null;
-  const p = newPlayer(kind, 1);
-  players.push(p);
-  updateP2HudVisibility();
-  return p;
-}
-
-function viewPl() {
-  if (window.TDNet && TDNet.role === 'guest') return players[1] || players[0] || player;
-  return player;
-}
-function alivePlayers() { return players.filter(p => !p.downed); }
-function nearestPlayer(x, y) {
-  let best = null, bd = Infinity;
-  alivePlayers().forEach(p => { const d = dist2(p, { x, y }); if (d < bd) { bd = d; best = p; } });
-  return best;
-}
-
-/* ---------------- DOM ---------------- */
-const $ = id => document.getElementById(id);
-const els = {
-  hud: $('hud'), skills: $('skills'), menu: $('menu'), chapter: $('chapter'),
-  upgrade: $('upgrade'), end: $('end'), pause: $('pause'),
-  hpFill: $('hpfill'), hpText: $('hptext'), p2wrap: $('p2wrap'), p2fill: $('p2fill'), p2text: $('p2text'),
-  scene: $('scene-label'), wave: $('wave-label'),
-  debtCount: $('debt-count'), scoreCount: $('score-count'), debtAlert: $('debt-alert'),
-  chapterTitle: $('chapter-title'), chapterText: $('chapter-text'),
-  endTitle: $('end-title'), endStats: $('end-stats'), best: $('best-line'),
-  endlessBtn: $('btn-endless'), netStatus: $('net-status')
+/* ---------------- 道具 ---------------- */
+const ITEMS = {
+postcard: { name: '旧明信片', desc: '照片里是这栋楼刚交付时的样子。背面钢笔字：「1998.6.12，搬进新家，307。从此落地生根。」'},
+bill: { name: '电费催缴单', desc: '户号 307，户名周守义。欠费栏空着——三年了，没人再用电，表却还在走。'},
+battery: { name: '电池', desc: '两节五号电池，还有电。'},
+smallkey: { name: '小钥匙', desc: '黄铜小钥匙，匙柄刻着一个「床」字。'},
+page1: { name: '契文 · 上半页', page: true, text: '\n立契人：周守义。今向时契行借取阳寿三年，\n自二〇一九年七月十九日起，至二〇二二年七月十九日止。\n所借之命，非行里之命，乃立契人未来之命。\n到期之日，由送契人亲手送达此契，账目两清。'},
+page2: { name: '契文 · 下半页', page: true, text: '\n若契逾期未达，未来之契主自会登门对账，\n其形貌、手段，皆如契主本人。\n立契人按印：周守义。见证：送契人 陆——（后一个字被水渍洇开了）'},
+contract: { name: '完整的《明日契》', desc: '两半页契文已经合上。纸是凉的，像刚从很远的地方回来。'},
+medical: { name: '病历本', desc: '县医院。入院日期：2019 年 7 月 19 日。床号：3 床。诊断一栏被折角盖住了，只露出一行小字：「患者要求出院，说，要回家等一个人。」'},
+letter: { name: '绝笔信', desc: '「守义绝笔：借这三年，我看着孙女落地，看着儿子成家，够本了。送契的小师傅若你看到这封信，替我谢谢你师父——那晚雨大，他没走到，不怪他。契放我遗像前就行，剩下的账，让未来的我自己来收。」'},
+ticket: { name: '长途车票', desc: '城郊汽车站 → 本市，明早 06:40 发车，座位 12。还没到日子——这张票，是给明天准备的。'}
 };
-function show(el, on) { el.classList.toggle('hidden', !on); }
-function updateP2HudVisibility() { show(els.p2wrap, players.length > 1); }
-function refreshBest() {
-  const best = JSON.parse(localStorage.getItem('td_best') || 'null');
-  els.best.textContent = best ? ('最佳：时尘 ' + best.score + ' · 封印 ' + (best.seals || 0) + ' 次 · 总借债 ' + best.debts) : '';
-  show(els.endlessBtn, !!localStorage.getItem('td_won'));
+
+/* ---------------- 世界状态（房主持有，广播同步） ---------------- */
+let G = null;
+let myView = 'black'; // 本地当前视图（各端独立导航）
+let mySel = null; // 本地选中的道具
+let dlgQueue = [], dlgChoices = null, dlgOnDone = null;
+let pendingLines = []; // act 执行期间收集的台词，执行后分发
+let candle = null; // {seq:[], input:[], phase:'show'|'input', idx}
+let kpCtx = null, clockVal = { h: 3, m: 0}, sealCtx = null;
+
+function newGame(playerCount) {
+return {
+started: true, ended: false, t0: Date.now(), time: 0,
+players: playerCount, flags: {}, inv: [], debt: 0,
+borrows: {}, solved: {}, pages: {}, switches: {}, hintUsed: {},
+candleSeqLen: 3 + playerCount
+};
 }
-refreshBest();
-function alertText(txt, ms) {
-  els.debtAlert.textContent = txt;
-  show(els.debtAlert, true);
-  setTimeout(() => show(els.debtAlert, false), ms || 1700);
+function F(k) { return!!(G && G.flags[k]);}
+function setF(k, v) { G.flags[k] = v === undefined? true: v;}
+function has(item) { return G.inv.includes(item);}
+function give(item) { if (!has(item)) G.inv.push(item);}
+function myId() { return window.TDNet? TDNet.myId: 0;}
+function isHostSide() { return!window.TDNet || TDNet.role!== 'guest';}
+
+/* ---------------- 台词 ---------------- */
+function say(who, text) { pendingLines.push({ who, text});}
+function flushSay(actorId) {
+const lines = pendingLines; pendingLines = [];
+if (!lines.length) return;
+if (isHostSide()) {
+showLines(lines);
+if (window.TDNet && TDNet.role === 'host') TDNet.broadcast({ t: 'lines', lines});
+}
+}
+function showLines(lines) {
+dlgQueue = dlgQueue.concat(lines);
+pumpDialog();
+}
+function pumpDialog() {
+const box = $('dialog');
+if (!dlgQueue.length) { show(box, false); dlgOnDone && (dlgOnDone(), dlgOnDone = null); return;}
+show(box, true);
+const cur = dlgQueue[0];
+$('dlg-name').textContent = cur.who || '';
+$('dlg-text').textContent = cur.text;
+$('dlg-next').style.visibility = dlgChoices? 'hidden': 'visible';
+renderChoices();
+}
+function renderChoices() {
+const box = $('dlg-choices'); box.innerHTML = '';
+if (!dlgChoices || !dlgChoices.list) return;
+dlgChoices.list.forEach(c => {
+const b = document.createElement('button');
+b.className = 'dlg-choice' + (c.borrow? ' borrow': '');
+b.textContent = c.label;
+b.onclick = e => { e.stopPropagation(); handleChoice(c); };
+box.appendChild(b);
+});
+}
+$('dialog').addEventListener('click', () => {
+if (dlgChoices) return;
+dlgQueue.shift();
+beep(660, 0.03, 'sine', 0.015);
+pumpDialog();
+});
+
+/* ---------------- 提示 ---------------- */
+const STAGES = [
+{ id: 'door', hint: '先看看楼道里的信箱。死人的信箱，往往还塞着活人的线索。', strong: '明信片背面写着搬家的日子：1998 年 6 月 12 日。门锁密码就是 0612。'},
+{ id: 'power', hint: '屋里跳了闸。电闸不止一处——楼道电表箱、厨房墙、卫浴墙，人数越多，要同时合上的越多。', strong: '把所有分闸都合上（多人时要在 4.5 秒内先后合上，让同伴分头去拉）。'},
+{ id: 'tv', hint: '电视没声，先找遥控器；遥控器没电，先翻供桌下面的抽屉。', strong: '供桌抽屉里有电池和小钥匙。电池装上后看录像，记住他说的那个时辰：3 点 15 分。'},
+{ id: 'clock', hint: '录像里那句话不是怀旧。钟，认一个时刻。', strong: '把挂钟调到 03:15，再上弦。钟座的暗格会开。'},
+{ id: 'drawer',hint: '卧室床头柜的抽屉锁着。你身上应该有一把对得上的小钥匙。', strong: '小钥匙开床头柜抽屉，里面是病历本——入院日期 7 月 19 日，就是保险箱密码 0719。'},
+{ id: 'safe', hint: '保险箱的密码，是他这辈子最忘不掉的那一天。病历本里写着。', strong: '保险箱密码 0719（入院日期）。里面是契文的下半页。'},
+{ id: 'contract', hint: '两半页契文都到手了，把它们合上，再放到他遗像前。', strong: '点道具栏里的半页契文合上契，再点供桌遗像，把完整的契放上去。'},
+{ id: 'candles', hint: '点烛是行里的规矩：看着烛火亮起的顺序，再按同样的顺序点一遍。人数越多，顺序越长。', strong: '顺序只演一遍。可以重看：再点一次遗像，会重新演。记不住，就分工——一人记一半。'},
+{ id: 'ritual', hint: '影子不怕你，它只认印。画一个闭合的圈，把门中央的契纹整个圈进去。', strong: '圈要闭合、要够大、要圈住契纹。画之前先借命稳印也行——但那是你的命。'}
+];
+function currentStage() {
+if (!G ||!G.started) return null;
+if (G.ended) return null;
+if (!F('doorOpen')) return 'door';
+if (!F('power') &&!F('borrowPower')) return 'power';
+if (!F('videoSeen')) return 'tv';
+if (!F('clockSolved')) return 'clock';
+if (!F('medicalSeen')) return 'drawer';
+if (!F('safeOpen')) return 'safe';
+if (!F('contractPlaced')) return 'contract';
+if (!F('candlesDone')) return 'candles';
+return 'ritual';
+}
+$('btn-hint').addEventListener('click', () => {
+const st = currentStage(); if (!st) return;
+const def = STAGES.find(s => s.id === st);
+const used = G.hintUsed[st] || 0;
+if (used === 0) {
+G.hintUsed[st] = 1;
+showLines([{ who: '契纹微光', text: def.hint}]);
+syncSoon();
+} else if (used === 1) {
+dlgChoices = { for: myId(), list: [
+{ label: '再想想', local: 'noop' },
+{ label: '借命换强提示（+1 命债）', borrow: true, act: { k: 'borrowHint', stage: st } }
+] };
+showLines([{ who: '契纹微光', text: '微光只够照到这里。再往前，是要付账的。'}]);
+renderChoices();
+} else {
+showLines([{ who: '契纹', text: def.strong}]);
+}
+});
+
+/* ---------------- 笔记本 ---------------- */
+function notebookText() {
+const L = [];
+L.push('时契行三条铁律');
+L.push('一、契向未来借：你借的命，是未来的你在替你过。债主，永远是未来的你自己。');
+L.push('二、契须亲手送达：隔手无效。逾期未达的契，会自己找路。');
+L.push('三、见契纹者，皆欠债人：普通人看不见契纹。');
+L.push('');
+L.push('契主周守义，307 户，退休钳工。三年前向行里借命三年，契逾期未达，人已过世。今夜把契送到，账目两清。');
+if (F('postcardSeen')) L.push('· 明信片：1998.6.12 搬进 307。');
+if (F('videoSeen')) L.push('· 录像里他说：钟停在 3:15，那是他从医院回来的时辰，柜子认这个时辰。');
+if (F('medicalSeen')) L.push('· 病历：2019 年 7 月 19 日入院，3 床。');
+if (F('letterSeen')) L.push('· 绝笔信：他等的人都等到了。师父那晚雨大没走到，他说不怪。');
+L.push('');
+L.push('');
+['page1', 'page2'].forEach(pid => {
+if (!has(pid) &&!(pid === 'page1' && has('contract')) &&!(pid === 'page2' && has('contract'))) { L.push('· ' + (pid === 'page1'? '上半页': '下半页') + '：尚未找到。'); return;}
+const owner = G.pages[pid];
+if (G.players > 1 && owner!== undefined && owner!== myId()) {
+L.push('· ' + (pid === 'page1'? '上半页': '下半页') + '：在 ' + owner + ' 号同行者手里——让他念给你听。');
+} else {
+L.push(ITEMS[pid].text);
+}
+L.push('');
+});
+L.push('已借 ' + G.debt + ' 笔。借得越多，终局的账越重。');
+return L.join('\n');
+}
+$('btn-note').addEventListener('click', () => { $('note-body').textContent = notebookText(); show($('notebook'), true);});
+$('btn-note-close').addEventListener('click', () => show($('notebook'), false));
+
+/* ---------------- 通用 UI ---------------- */
+function show(el, on) { el.classList.toggle('hidden',!on);}
+function toast(txt, ms) {
+const t = $('toast'); t.textContent = txt; show(t, true);
+setTimeout(() => show(t, false), ms || 2100);
+}
+function renderTop() {
+if (!G) return;
+$('debt-n').textContent = G.debt;
+$('crew-chip').textContent = G.players + ' 人' + (G.players > 1? ' · 难度↑': '');
+}
+function renderInv() {
+const box = $('inv-items'); box.innerHTML = '';
+(G? G.inv: []).forEach(id => {
+const b = document.createElement('button');
+b.className = 'inv-item' + (mySel === id? ' sel': '');
+const owner = ITEMS[id].page && G.players > 1? G.pages[id]: undefined;
+b.innerHTML = ITEMS[id].name + (owner!== undefined && owner!== myId()? '<small>在 ' + owner + ' 号手里</small>': '<small>道具</small>');
+b.onclick = () => {
+if (mySel === id) { examine(id); mySel = null;}
+else mySel = id;
+renderInv();
+};
+box.appendChild(b);
+});
+}
+function examine(id) {
+const it = ITEMS[id]; if (!it) return;
+if (it.page) {
+const owner = G.pages[id];
+if (G.players > 1 && owner!== undefined && owner!== myId()) {
+showLines([{ who: '契文', text: '这一页在 ' + owner + ' 号同行者手里。你只能看见纸背的纹路——内容，让他念给你听。'}]);
+return;
+}
+if (id === 'page1') setF('page1Seen');
+if (id === 'page2') setF('page2Seen');
+showLines([{ who: '契文', text: it.text}]);
+if (has('page1') && has('page2') && !has('contract')) doAct({ k: 'combine' });
+else syncSoon();
+return;
+}
+if (id === 'postcard') { setF('postcardSeen'); syncSoon();}
+if (id === 'medical') { setF('medicalSeen'); syncSoon();}
+if (id === 'letter') { setF('letterSeen'); syncSoon();}
+showLines([{ who: it.name, text: it.desc}]);
+}
+function maybeCombine() { /* 已并入房主 actImpl 的 combine 动作（跨端一致） */ }
+
+/* ---------------- 场景美术（写实向矢量场景） ---------------- */
+function corridorSvg() {
+  const doorOpen = F('doorOpen');
+  return `<svg viewBox="0 0 900 620" preserveAspectRatio="xMidYMid slice">
+  <defs><linearGradient id="cw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2b3242"/><stop offset="1" stop-color="#171b28"/></linearGradient>
+  <linearGradient id="cf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a3f4d"/><stop offset="1" stop-color="#101219"/></linearGradient></defs>
+  <rect width="900" height="430" fill="url(#cw)"/><rect y="430" width="900" height="190" fill="url(#cf)"/>
+  <polygon points="0,430 900,430 900,470 0,470" fill="#0c0e14"/>
+  ${[0,1,2,3,4,5].map(i => `<line x1="${60 + i * 150}" y1="470" x2="${30 + i * 150}" y2="620" stroke="#232733" stroke-width="3"/>`).join('')}
+  <rect x="392" y="8" width="116" height="10" rx="4" fill="#11131c"/>
+  <line x1="450" y1="18" x2="450" y2="58" stroke="#0d0f16" stroke-width="4"/>
+  <ellipse cx="450" cy="76" rx="26" ry="17" fill="#ffd98a" opacity="0.9"/><ellipse cx="450" cy="120" rx="120" ry="46" fill="#ffdf9e" opacity="0.10"/>
+  <!-- 左：楼梯口 -->
+  <rect x="18" y="120" width="150" height="310" fill="#1c2130"/><rect x="18" y="120" width="150" height="14" fill="#262c3e"/>
+  ${[0,1,2,3,4].map(i => `<rect x="${26 + i * 4}" y="${330 - i * 42}" width="${140 - i * 8}" height="12" fill="#313849"/>`).join('')}
+  <text x="93" y="105" font-size="17" fill="#8b93a7" text-anchor="middle">3 层</text>
+  <!-- 左下：信箱墙 -->
+  <rect x="30" y="452" width="212" height="118" rx="6" fill="#39404f"/>
+  ${[0,1,2,3,4,5,6,7].map(i => `<rect x="${42 + (i % 4) * 50}" y="${464 + Math.floor(i / 4) * 52}" width="42" height="44" rx="3" fill="#4a5265" stroke="#232833" stroke-width="2"/><circle cx="${63 + (i % 4) * 50}" cy="486" r="3.4" fill="#22262f"/>`).join('')}
+  <text x="136" y="588" font-size="13" fill="#77809480" text-anchor="middle" fill-opacity="0.75">信 箱</text>
+  <!-- 307 门 -->
+  <rect x="520" y="96" width="212" height="352" rx="4" fill="#10131d"/>
+  <rect x="532" y="108" width="188" height="328" rx="3" fill="${doorOpen ? '#06070c' : '#4a3423'}"/>
+  ${doorOpen ? '' : `<rect x="540" y="116" width="172" height="312" fill="none" stroke="#2e1f14" stroke-width="5"/>
+  <rect x="548" y="128" width="14" height="120" fill="#7d1f24"/><text x="555" y="146" font-size="12" fill="#e8d9a0" text-anchor="middle" writing-mode="tb">千门万户</text>
+  <rect x="690" y="128" width="14" height="120" fill="#7d1f24"/><text x="697" y="146" font-size="12" fill="#e8d9a0" text-anchor="middle" writing-mode="tb">曈曈日</text>
+  <rect x="606" y="112" width="42" height="15" fill="#7d1f24"/><text x="627" y="124" font-size="11.5" fill="#e8d9a0" text-anchor="middle">307</text>
+  <circle cx="700" cy="286" r="8" fill="#c9ccd6"/><rect x="672" y="252" width="34" height="46" rx="4" fill="#20242f" stroke="#3c4356" stroke-width="2"/><circle cx="689" cy="268" r="4" fill="#ffd76e"/>`}
+  <!-- 右：电表箱与通知 -->
+  <rect x="768" y="150" width="104" height="150" rx="5" fill="#2f3644" stroke="#454e61" stroke-width="2"/>
+  <rect x="780" y="164" width="80" height="54" rx="3" fill="#171c28"/><circle cx="820" cy="191" r="17" fill="#232b3c" stroke="#4d5871" stroke-width="2"/>
+  <text x="820" y="240" font-size="12.5" fill="#96a0b5" text-anchor="middle">电表箱</text>
+  <text x="820" y="262" font-size="11" fill="#6d7688" text-anchor="middle">307 · 表尾 4407</text>
+  <rect x="772" y="330" width="96" height="86" fill="#d8d3c3" opacity="0.92"/>
+  <text x="820" y="354" font-size="13" fill="#333" text-anchor="middle" font-weight="bold">物业通知</text>
+  <text x="820" y="376" font-size="10.5" fill="#444" text-anchor="middle">本楼 1998 年交付</text>
+  <text x="820" y="394" font-size="10.5" fill="#444" text-anchor="middle">老楼改造 住户配合</text>
+  <rect x="330" y="470" width="240" height="66" rx="6" fill="#20242f" opacity="0.85"/>
+  <text x="450" y="496" font-size="13.5" fill="#7f879c" text-anchor="middle">楼道里有股淡淡的檀香味</text>
+  <text x="450" y="518" font-size="13.5" fill="#7f879c" text-anchor="middle">是从 307 门缝里出来的</text>
+  </svg>`;
 }
 
-/* ---------------- 流程 ---------------- */
-function startRun(isEndless) {
-  if (window.TDNet && TDNet.role === 'guest') { TDNet._status('你是客人，等房主点「开始送契」'); return; }
-  resetRun(isEndless);
-  show(els.menu, false); show(els.end, false);
-  show(els.hud, true); show(els.skills, true);
-  updateP2HudVisibility();
-  showChapter();
+function livingSvg() {
+  const dark = !F('power') && !F('borrowPower');
+  const tv = F('tvOn') ? (F('videoSeen') ? 'video' : 'static') : 'off';
+  const agg = F('contractPlaced');
+  const cd = G && G.candle;
+  const litNow = !cd ? -1 : cd.phase === 'show' ? (cd.idx > 0 ? cd.seq[cd.idx - 1] : -1) : (cd.input.length ? cd.input[cd.input.length - 1] : -1);
+  const candleBase = i => {
+    const lit = i === litNow;
+    const ever = F('candlesDone');
+    return `<g>
+      <rect x="${352 + i * 52}" y="238" width="10" height="34" rx="2" fill="#e8e2d2"/>
+      ${(lit || ever) ? `<ellipse cx="${357 + i * 52}" cy="228" rx="5.5" ry="10" fill="#ffb347"/><ellipse cx="${357 + i * 52}" cy="230" rx="2.4" ry="5" fill="#ffe9a8"/>` : `<line x1="${357 + i * 52}" y1="238" x2="${357 + i * 52}" y2="230" stroke="#555" stroke-width="2"/>`}
+    </g>`;
+  };
+  return `<svg viewBox="0 0 900 620" preserveAspectRatio="xMidYMid slice">
+  <defs><linearGradient id="lw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3d3a35"/><stop offset="1" stop-color="#232019"/></linearGradient>
+  <linearGradient id="lfl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4c4238"/><stop offset="1" stop-color="#191512"/></linearGradient></defs>
+  <rect width="900" height="440" fill="url(#lw)"/><rect y="440" width="900" height="180" fill="url(#lfl)"/>
+  ${[0,1,2,3,4,5,6].map(i => `<line x1="${i * 150}" y1="440" x2="${i * 150 - 40}" y2="620" stroke="#0f0d0a" stroke-width="3"/>`).join('')}
+  <!-- 窗与对楼 -->
+  <rect x="36" y="70" width="190" height="250" fill="#0a1224" stroke="#191512" stroke-width="10"/>
+  <line x1="131" y1="70" x2="131" y2="320" stroke="#191512" stroke-width="7"/><line x1="36" y1="195" x2="226" y2="195" stroke="#191512" stroke-width="7"/>
+  ${[0,1,2,3,4,5,6,7,8,9,10,11].map(i => `<rect x="${52 + (i % 4) * 42}" y="${92 + Math.floor(i / 4) * 62}" width="17" height="22" fill="${i % 3 ? '#ffd98a' : '#2a3c5f'}" opacity="${i % 3 ? 0.85 : 0.7}"/>`).join('')}
+  <rect x="36" y="320" width="190" height="10" fill="#241f19"/>
+  <!-- 挂历 -->
+  <rect x="268" y="86" width="86" height="110" fill="#ddd6c4"/><rect x="268" y="86" width="86" height="26" fill="#8e2323"/>
+  <text x="311" y="105" font-size="15" fill="#fff" text-anchor="middle">7 月</text>
+  <text x="311" y="152" font-size="30" fill="#2a2a2a" text-anchor="middle" font-weight="bold">19</text>
+  <text x="311" y="180" font-size="11" fill="#666" text-anchor="middle">二〇一九 · 圈着一天</text>
+  <!-- 全家福 -->
+  <rect x="392" y="92" width="104" height="80" fill="#5a4632"/><rect x="400" y="100" width="88" height="64" fill="#c9bda6"/>
+  <circle cx="424" cy="126" r="10" fill="#6b5844"/><circle cx="448" cy="122" r="11" fill="#584a3a"/><circle cx="468" cy="130" r="7" fill="#77644e"/>
+  <text x="444" y="186" font-size="11" fill="#9a8f7a" text-anchor="middle">全家福 · 2018</text>
+  <!-- 电视柜与电视 -->
+  <rect x="560" y="300" width="300" height="96" fill="#2e2620"/><rect x="572" y="312" width="130" height="72" fill="#3a3128"/><rect x="716" y="312" width="130" height="72" fill="#3a3128"/>
+  <rect x="616" y="150" width="216" height="140" rx="8" fill="#101014" stroke="#2c2c33" stroke-width="5"/>
+  ${tv === 'off' ? `<rect x="626" y="160" width="196" height="120" fill="#15181f"/>` : tv === 'static' ? `<rect x="626" y="160" width="196" height="120" fill="#3d434e"/><text x="724" y="228" font-size="15" fill="#cfd6df" text-anchor="middle">雪 花</text>` : `<rect x="626" y="160" width="196" height="120" fill="#1d2a3a"/><rect x="640" y="176" width="60" height="88" fill="#2c4258"/><circle cx="724" cy="200" r="17" fill="#8fa5bb"/><rect x="700" y="222" width="48" height="30" fill="#5d748c"/><text x="724" y="272" font-size="12.5" fill="#ffd76e" text-anchor="middle">2019-07-19 21:47 · 录像</text>`}
+  <rect x="646" y="404" width="56" height="12" rx="3" fill="#191919"/>
+  <!-- 沙发茶几 -->
+  <rect x="60" y="392" width="250" height="86" rx="12" fill="#4b3f33"/><rect x="60" y="360" width="250" height="44" rx="12" fill="#584a3b"/>
+  <rect x="352" y="420" width="170" height="16" rx="4" fill="#33291f"/><rect x="368" y="436" width="12" height="44" fill="#241c15"/><rect x="494" y="436" width="12" height="44" fill="#241c15"/>
+  <ellipse cx="437" cy="414" rx="30" ry="6" fill="#6d5b45"/><rect x="560" y="402" width="34" height="20" rx="3" fill="#7a2d2d"/>
+  <text x="577" y="398" font-size="10.5" fill="#a99f8d" text-anchor="middle">遥控器</text>
+  <!-- 供桌 -->
+  <rect x="308" y="272" width="262" height="14" fill="#3a2b1c"/>
+  <rect x="322" y="286" width="14" height="120" fill="#2c2015"/><rect x="542" y="286" width="14" height="120" fill="#2c2015"/>
+  <rect x="404" y="182" width="72" height="90" fill="#241d16"/><rect x="412" y="190" width="56" height="74" fill="#585046"/>
+  <circle cx="440" cy="216" r="14" fill="#7d7264"/><path d="M422 264 a18 12 0 0 1 36 0 z" fill="#6d6355"/>
+  <text x="440" y="180" font-size="11" fill="#cbbf9f" text-anchor="middle">周守义</text>
+  ${agg ? `<rect x="416" y="252" width="48" height="18" fill="#e6ddc4" stroke="#b8ab84" stroke-width="1.5"/><text x="440" y="265" font-size="9.5" fill="#5a4a2a" text-anchor="middle">明日契</text>` : ''}
+  <rect x="416" y="284" width="48" height="10" rx="4" fill="#5d5348"/>
+  ${[0,1,2,3].map(candleBase).join('')}
+  <rect x="322" y="330" width="236" height="52" fill="#33271a"/><rect x="428" y="352" width="24" height="8" rx="3" fill="#191008"/>
+  <text x="440" y="346" font-size="11" fill="#8d7c63" text-anchor="middle">供桌抽屉</text>
+  <!-- 落地钟 -->
+  <rect x="786" y="120" width="76" height="290" rx="8" fill="#33241a"/>
+  <circle cx="824" cy="172" r="30" fill="#e6ddc4"/><circle cx="824" cy="172" r="3.5" fill="#222"/>
+  <line x1="824" y1="172" x2="824" y2="150" stroke="#222" stroke-width="3"/><line x1="824" y1="172" x2="838" y2="178" stroke="#222" stroke-width="3"/>
+  <rect x="802" y="216" width="44" height="150" fill="#241a12"/><line x1="824" y1="222" x2="824" y2="330" stroke="#8a743f" stroke-width="3"/><circle cx="824" cy="338" r="11" fill="#8a743f"/>
+  <!-- 卧室门与厨房开关 -->
+  <rect x="238" y="150" width="86" height="256" fill="#241c15"/><circle cx="312" cy="286" r="6" fill="#b9bdc9"/>
+  <text x="281" y="140" font-size="12" fill="#9a8f7a" text-anchor="middle">卧 室</text>
+  <rect x="540" y="420" width="30" height="42" rx="3" fill="#d8d3c3"/><circle cx="555" cy="436" r="5" fill="${F('sw_kitchen') ? '#7dd87d' : '#8a8a8a'}"/>
+  <text x="555" y="480" font-size="10.5" fill="#8d8574" text-anchor="middle">厨房闸</text>
+  <rect x="244" y="412" width="30" height="42" rx="3" fill="#d8d3c3"/><circle cx="259" cy="428" r="5" fill="${F('sw_bath') ? '#7dd87d' : '#8a8a8a'}"/>
+  <text x="259" y="472" font-size="10.5" fill="#8d8574" text-anchor="middle">卫浴闸</text>
+  ${dark ? `<rect width="900" height="620" fill="#04050c" opacity="0.86"/><text x="450" y="300" font-size="19" fill="#5f6c8a" text-anchor="middle">屋里没电。只有窗外对楼的灯，和供桌上没点的烛。</text><text x="450" y="332" font-size="14.5" fill="#49536e" text-anchor="middle">先把闸合上——或者，借命。</text>` : ''}
+  </svg>`;
 }
 
-function showChapter() {
-  state = 'chapter';
-  const s = SCENES[sceneIdx % SCENES.length];
-  els.chapterTitle.textContent = endless && sceneIdx >= SCENES.length ? ('无尽 · ' + s.name) : s.name;
-  els.chapterText.textContent = endless && sceneIdx >= SCENES.length
-    ? '契已送达，债未算清。他说：那就绕着我，一直走下去。' : s.story;
-  show(els.chapter, true);
+function bedroomSvg() {
+  const dark = !F('power') && !F('borrowPower');
+  const wardOpen = F('wardOpen');
+  return `<svg viewBox="0 0 900 620" preserveAspectRatio="xMidYMid slice">
+  <defs><linearGradient id="bw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#37342f"/><stop offset="1" stop-color="#201d19"/></linearGradient></defs>
+  <rect width="900" height="440" fill="url(#bw)"/><rect y="440" width="900" height="180" fill="#171310"/>
+  <!-- 窗 -->
+  <rect x="640" y="66" width="200" height="230" fill="#0a1224" stroke="#14110d" stroke-width="9"/>
+  <line x1="740" y1="66" x2="740" y2="296" stroke="#14110d" stroke-width="6"/>
+  ${[0,1,2,3,4,5].map(i => `<rect x="${662 + (i % 3) * 56}" y="${92 + Math.floor(i / 3) * 74}" width="16" height="21" fill="${i % 2 ? '#ffd98a' : '#223453'}" opacity="0.85"/>`).join('')}
+  <!-- 床 -->
+  <rect x="60" y="330" width="380" height="52" rx="8" fill="#4d4438"/>
+  <rect x="60" y="286" width="380" height="52" rx="10" fill="#6d6252"/>
+  <rect x="76" y="252" width="120" height="44" rx="10" fill="#ddd5c2"/>
+  <rect x="60" y="382" width="16" height="66" fill="#33291f"/><rect x="424" y="382" width="16" height="66" fill="#33291f"/>
+  <rect x="196" y="300" width="228" height="30" rx="8" fill="#5d5344"/>
+  <text x="240" y="428" font-size="12" fill="#7d7264" text-anchor="middle">床铺得整齐，像在等主人回来睡</text>
+  <!-- 床头柜 -->
+  <rect x="470" y="318" width="120" height="110" fill="#3a2f23"/>
+  <rect x="482" y="332" width="96" height="36" fill="#473827"/><circle cx="530" cy="350" r="4.5" fill="#c9ccd6"/>
+  ${F('bedDrawerOpen') ? `<rect x="482" y="376" width="96" height="40" fill="#171008"/><text x="530" y="401" font-size="11.5" fill="#cbbf9f" text-anchor="middle">病历本</text>` : `<rect x="482" y="376" width="96" height="40" fill="#473827"/><circle cx="530" cy="396" r="4.5" fill="#c9ccd6"/>`}
+  <rect x="492" y="296" width="20" height="22" rx="3" fill="#c8b98a"/><rect x="520" y="300" width="26" height="18" rx="4" fill="#d8d3c3"/>
+  <text x="530" y="290" font-size="10.5" fill="#9a8f7a" text-anchor="middle">药瓶 · 水杯</text>
+  <!-- 书桌与车票 -->
+  <rect x="96" y="470" width="220" height="14" fill="#33291f"/><rect x="110" y="484" width="12" height="56" fill="#241c15"/><rect x="290" y="484" width="12" height="56" fill="#241c15"/>
+  <rect x="150" y="446" width="86" height="26" rx="3" fill="#e6ddc4" transform="rotate(-4 193 459)"/>
+  <text x="193" y="463" font-size="11" fill="#5a4a2a" text-anchor="middle">长途车票</text>
+  <!-- 衣柜与保险箱 -->
+  <rect x="636" y="330" width="230" height="180" fill="#2e241a"/>
+  ${wardOpen ? `<rect x="646" y="340" width="100" height="160" fill="#171008"/><rect x="756" y="340" width="100" height="160" fill="#171008"/>
+  <rect x="676" y="404" width="140" height="88" rx="6" fill="#23262e" stroke="#454b59" stroke-width="2.5"/>
+  <circle cx="746" cy="436" r="15" fill="#171a21" stroke="#5a6274" stroke-width="2.5"/><circle cx="746" cy="436" r="4" fill="#9aa2b5"/>
+  <text x="746" y="482" font-size="11" fill="#96a0b5" text-anchor="middle">保 险 箱</text>` :
+  `<rect x="646" y="340" width="104" height="160" fill="#3a2c1e"/><rect x="752" y="340" width="104" height="160" fill="#3a2c1e"/><circle cx="742" cy="424" r="5" fill="#c9ccd6"/><circle cx="760" cy="424" r="5" fill="#c9ccd6"/>`}
+  <rect x="470" y="486" width="34" height="40" rx="3" fill="#d8d3c3"/><circle cx="487" cy="500" r="4.5" fill="${F('sw_bed') ? '#7dd87d' : '#8a8a8a'}"/>
+  <text x="487" y="540" font-size="10.5" fill="#8d8574" text-anchor="middle">卧室闸</text>
+  ${dark ? `<rect width="900" height="620" fill="#04050c" opacity="0.86"/><text x="450" y="306" font-size="18" fill="#5f6c8a" text-anchor="middle">卧室更暗。先把电送回来。</text>` : ''}
+  </svg>`;
 }
 
-function beginWave() {
-  show(els.chapter, false);
-  state = 'playing';
-  const s = SCENES[sceneIdx % SCENES.length];
-  const w = s.waves[waveIdx];
-  spawnQueue = [];
-  if (w.boss) { spawnBoss(); waveActive = true; return; }
-  ['chaser', 'dart', 'tank', 'lurker'].forEach(t => {
-    for (let i = 0; i < (w[t] || 0); i++) spawnQueue.push(t);
-  });
-  for (let i = spawnQueue.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [spawnQueue[i], spawnQueue[j]] = [spawnQueue[j], spawnQueue[i]]; }
-  spawnTimer = 0.5; waveActive = true;
+function blackSvg() {
+  return `<svg viewBox="0 0 900 620" preserveAspectRatio="xMidYMid slice"><rect width="900" height="620" fill="#030308"/>
+  <text x="450" y="300" font-size="21" fill="#4d5871" text-anchor="middle">时 契 行</text>
+  <text x="450" y="336" font-size="14" fill="#333d52" text-anchor="middle">柜台的铜牌上，刻着三条铁律</text></svg>`;
 }
 
-function waveCleared() {
-  waveActive = false;
-  const s = SCENES[sceneIdx % SCENES.length];
-  if (bossRef) return;
-  waveIdx++;
-  if (waveIdx >= s.waves.length) {
-    sceneIdx++; waveIdx = 0;
-    if (!endless && sceneIdx >= SCENES.length) return victory();
-    return showChapter();
-  }
-  if (!endless && !puzzleDone[sceneIdx % SCENES.length] && waveIdx === PUZZLE_AT[sceneIdx % SCENES.length]) {
-    startPuzzle(sceneIdx % SCENES.length);
-  } else {
-    openUpgrade();
-  }
+const SCENE_SVG = { black: blackSvg, corridor: corridorSvg, living: livingSvg, bedroom: bedroomSvg };
+
+/* ---------------- 选择（数据驱动，可跨端） ---------------- */
+ITEMS.roomkey = { name: '卧室钥匙', desc: '老式铜钥匙，齿口磨得发亮。' };
+let pendingChoices = null;
+function offer(list, actorId) { pendingChoices = { for: actorId === undefined ? myId() : actorId, list }; }
+function flushChoices() {
+  const pc = pendingChoices; pendingChoices = null;
+  if (!pc) { dlgChoices = null; return; }
+  if (isHostSide() && window.TDNet && TDNet.role === 'host') TDNet.broadcast({ t: 'choices', pc });
+  if (pc.for === myId()) { dlgChoices = pc; }
+}
+function handleChoice(c) {
+  dlgChoices = null;
+  if (c.local) { localChoice(c.local); pumpDialog(); return; }
+  if (c.act) doAct(c.act);
+  pumpDialog();
+}
+function localChoice(key) {
+  if (key === 'noop') return;
+  if (key === 'kp:door') openKeypad('door');
+  else if (key === 'kp:safe') openKeypad('safe');
+  else if (key === 'clock') openClock();
 }
 
-function openUpgrade() {
-  state = 'upgrade';
-  const box = $('upgrade-cards'); box.innerHTML = '';
-  const pool = [...UPGRADES].sort(() => Math.random() - 0.5).slice(0, 3);
-  pool.forEach(u => {
-    const b = document.createElement('button');
-    b.className = 'up-card';
-    b.innerHTML = '<div class="up-name">' + u.name + '</div><div class="up-desc">' + u.desc + '</div>';
-    b.onclick = () => {
-      players.forEach(pl => u.apply(pl));
-      beep(392, 0.14, 'triangle', 0.05);
-      show(els.upgrade, false); beginWave();
-    };
-    box.appendChild(b);
-  });
-  show(els.upgrade, true);
+/* ---------------- 同步 ---------------- */
+let syncQueued = false;
+function syncSoon() { if (!isHostSide()) return; if (syncQueued) return; syncQueued = true; setTimeout(() => { syncQueued = false; syncState(); }, 60); }
+function syncState() {
+  renderAll();
+  if (window.TDNet && TDNet.role === 'host' && G) TDNet.broadcast({ t: 'gs', G });
+  checkSealTrigger();
+  checkEnd();
+}
+function applyState(newG) {
+  G = newG;
+  show($('menu'), false);
+  show($('topbar'), true); show($('stage'), true); show($('invbar'), true);
+  renderAll();
+  checkSealTrigger();
+  checkEnd();
 }
 
-function gameOver() {
-  state = 'over';
-  els.endTitle.textContent = '你们留在了那边';
-  els.endStats.textContent = statsText('走廊的灯全灭了。契，从手里飘了出去。');
-  show(els.end, true); show(els.skills, false);
-  saveBest(false);
+/* ---------------- 动作引擎（房主执行） ---------------- */
+function doAct(a, actorId) {
+  if (!isHostSide()) { TDNet.send({ t: 'act', a }); return; }
+  if (!G || !G.started || G.ended) return;
+  const actor = actorId === undefined ? myId() : actorId;
+  pendingLines = []; pendingChoices = null;
+  actImpl(a, actor);
+  flushSay(actor);
+  flushChoices();
+  syncState();
 }
 
-function victory() {
-  state = 'win';
-  localStorage.setItem('td_won', '1');
-  els.endTitle.textContent = '契已送达 · 债已清';
-  els.endStats.textContent = statsText('他收下契，在末页盖了印。无尽模式已解锁。');
-  show(els.end, true); show(els.skills, false);
-  saveBest(true);
-  refreshBest();
+function borrowCommon(kind, actor) {
+  G.debt++;
+  G.borrows[kind] = (G.borrows[kind] || 0) + 1;
+  beep(98, 0.35, 'sawtooth', 0.05);
 }
 
-function statsText(tip) {
-  return tip + '\n时尘 ' + score + ' · 封印 ' + seals + ' 次 · 击破 ' + kills + ' · 用时 ' + Math.floor(runTime) + 's\n总借债 ' + debtsTotal + ' 笔 · 亲手销账 ' + debtsRepaid + ' 笔 · 未偿 ' + (debts.length + shadows.length) + ' 笔';
-}
-
-function saveBest(won) {
-  const prev = JSON.parse(localStorage.getItem('td_best') || 'null');
-  if (!prev || score > prev.score) {
-    localStorage.setItem('td_best', JSON.stringify({ score, time: Math.floor(runTime), debts: debtsTotal, seals, won }));
-  }
-}
-
-/* ---------------- 解谜 ---------------- */
-function startPuzzle(idx) {
-  puzzleDone[idx] = true;
-  state = 'playing';
-  if (idx === 0) {
-    const pts = [];
-    const spots = [[0.24, 0.3], [0.76, 0.28], [0.7, 0.74], [0.28, 0.72]];
-    spots.forEach(s => pts.push({ x: W * s[0] + rand(-24, 24), y: H * s[1] + rand(-24, 24) }));
-    puzzle = { kind: 'sigils', pts, next: 0, showUntil: runTime + 4, timeLeft: 45, label: '' };
-    alertText('踏符阵 · 记住符亮起的顺序', 2200);
-  } else if (idx === 1) {
-    puzzle = { kind: 'twins', timeLeft: 75, label: '' };
-    spawnTwin(W * 0.3, H * 0.35); spawnTwin(W * 0.7, H * 0.65);
-    alertText('双生祟 · 必须同一道印同时封住两个', 2400);
-  } else {
-    puzzle = {
-      kind: 'riddle', standT: 0, cur: -1, label: '',
-      circles: [
-        { x: W * 0.22, y: H * 0.66, label: '死去的未来的你', correct: true },
-        { x: W * 0.5, y: H * 0.74, label: '三年前的契主', correct: false },
-        { x: W * 0.78, y: H * 0.66, label: '时契行掌柜', correct: false }
-      ]
-    };
-    alertText('契文三问 · 站进圈里，停满两息作答', 2400);
-  }
-}
-
-function endPuzzle(success, msg) {
-  puzzle = null;
-  if (success) {
-    score += 150;
-    players.forEach(pl => { if (!pl.downed) pl.hp = Math.min(pl.maxHp, pl.hp + 30); });
-    alertText(msg || '谜解开了 · 全队回复 30', 2000);
-    beep(523, 0.25, 'triangle', 0.06);
-  } else if (msg) {
-    alertText(msg, 2200);
-  }
-  openUpgrade();
-}
-
-function spawnTwin(x, y) {
-  enemies.push({
-    type: 'twin', twin: true, x, y, r: 18, hp: 9999, maxHp: 9999,
-    speed: 40, dmg: 10, score: 100, wob: rand(0, 6), mode: 'stalk', modeTimer: 2, shardTick: 0
-  });
-}
-
-function updatePuzzle(dt) {
-  if (!puzzle) return;
-  if (puzzle.kind === 'sigils') {
-    puzzle.timeLeft -= dt;
-    const showing = runTime < puzzle.showUntil;
-    puzzle.label = showing ? '踏符阵 · 记顺序！' : ('踏符阵 · 已踏 ' + puzzle.next + ' / 4 · ' + Math.ceil(puzzle.timeLeft) + 's');
-    if (!showing) {
-      const target = puzzle.pts[puzzle.next];
-      let steppedWrong = false;
-      alivePlayers().forEach(pl => {
-        puzzle.pts.forEach((pt, j) => {
-          if (Math.hypot(pl.x - pt.x, pl.y - pt.y) < 32) {
-            if (j === puzzle.next) {
-              puzzle.next++; beep(660 + puzzle.next * 60, 0.12, 'sine', 0.05);
-              burst(pt.x, pt.y, 14, '#ffd76e');
-            } else if (j > puzzle.next) steppedWrong = true;
-          }
-        });
-      });
-      if (puzzle.next >= 4) { endPuzzle(true, '踏符阵 · 解开了'); return; }
-      if (steppedWrong) {
-        spawnEnemy('chaser'); spawnEnemy('chaser');
-        endPuzzle(false, '顺序错了 · 有东西被惊醒了');
-        return;
-      }
+function actImpl(a, actor) {
+  switch (a.k) {
+    case 'borrowHint': {
+      borrowCommon('hint', actor);
+      const def = STAGES.find(s => s.id === a.stage);
+      G.hintUsed[a.stage] = 2;
+      say('契纹（借命）', def.strong + '（命债 +1）');
+      break;
     }
-    if (puzzle.timeLeft <= 0) endPuzzle(false, '符光熄了 · 谜没解开');
-  } else if (puzzle.kind === 'twins') {
-    puzzle.timeLeft -= dt;
-    const twinsAlive = enemies.filter(e => e.twin).length;
-    puzzle.label = '双生祟 · 还剩 ' + twinsAlive + ' 个 · 须同印双封 · ' + Math.ceil(puzzle.timeLeft) + 's';
-    if (twinsAlive === 0) { score += 100; endPuzzle(true, '双生同封 · 解开了'); return; }
-    if (puzzle.timeLeft <= 0) {
-      enemies = enemies.filter(e => !e.twin);
-      const m = spawnPos();
-      const t = { type: 'tank', x: m.x, y: m.y, r: 27, hp: 320, maxHp: 320, speed: 46, dmg: 18, score: 30, wob: 0, mode: 'stalk', modeTimer: 2, shardTick: 0, mergeTank: true };
-      enemies.push(t);
-      puzzle = { kind: 'twinsMerged', label: '它们合成了一个 · 打碎它' };
-      alertText('双生合为一 · 打碎它', 2000);
-      return;
+    case 'borrowDoor': {
+      if (F('doorOpen')) break;
+      borrowCommon('door', actor);
+      setF('doorOpen');
+      say('契纹', '你把手按在锁眼上，契纹烧出一线红光。锁舌自己退了回去。（命债 +1）');
+      say('', '门开了。檀香味涌出来，浓得像水。');
+      break;
     }
-  } else if (puzzle.kind === 'twinsMerged') {
-    puzzle.label = '打碎合体祟';
-    if (!enemies.some(e => e.mergeTank)) { endPuzzle(false, null); return; }
-  } else if (puzzle.kind === 'riddle') {
-    puzzle.label = '三问：祭坛上等你交契的，是谁？站圈停满两息';
-    let inside = -1;
-    puzzle.circles.forEach((c, i) => {
-      if (alivePlayers().some(pl => Math.hypot(pl.x - c.x, pl.y - c.y) < 46)) inside = i;
-    });
-    if (inside >= 0) {
-      if (puzzle.cur === inside) puzzle.standT += dt; else { puzzle.cur = inside; puzzle.standT = 0; }
-      if (puzzle.standT >= 2.2) {
-        const c = puzzle.circles[inside];
-        if (c.correct) { bossBuff = -1; endPuzzle(true, '答对了 · 他收契的手抖了一下（终局弱化）'); }
-        else {
-          bossBuff = 1;
-          spawnShadow(borrowedSet.size ? [...borrowedSet][0] : 'nova');
-          endPuzzle(false, '答错了 · 祭坛的力量涨了一截（终局强化）');
+    case 'borrowPower': {
+      if (F('power') || F('borrowPower')) break;
+      borrowCommon('power', actor);
+      setF('borrowPower');
+      say('契纹', '契纹的光顺着墙爬了一圈，屋里亮起一层薄薄的、发青的光。够看清了。（命债 +1）');
+      break;
+    }
+    case 'borrowSafe': {
+      if (F('safeOpen')) break;
+      borrowCommon('safe', actor);
+      openSafe('契纹烧穿了锁芯。保险箱的门弹开一条缝。（命债 +1）');
+      break;
+    }
+    case 'code': {
+      if (a.ctx === 'door') {
+        if (a.code === '0612') {
+          setF('doorOpen');
+          say('', '锁咔哒一声开了。2019 年之前，这家的密码就没换过——搬家那天的日子，他记了一辈子。');
+        } else {
+          G.flags.doorFails = (G.flags.doorFails || 0) + 1;
+          say('', '密码不对，锁响了两声短促的警告。');
+          if (G.flags.doorFails >= 2) say('送契人', '（楼道里能翻的东西不多。信箱、电表箱、门上的对联……搬家的日子，总该留在哪儿。）');
         }
-        return;
+      } else if (a.ctx === 'safe') {
+        if (a.code === '0719') openSafe('锁开了。0719——他入院的那一天，他把密码设成了这一天，是怕自己忘掉为什么要活。');
+        else say('', '保险箱响了一声闷响，密码不对。');
       }
-    } else { puzzle.cur = -1; puzzle.standT = 0; }
-  }
-}
-
-/* ---------------- 敌人 ---------------- */
-const ENEMY_DEF = {
-  chaser: { hp: 55,  speed: 88,  r: 15, dmg: 10, score: 10 },
-  dart:   { hp: 30,  speed: 172, r: 11, dmg: 8,  score: 14 },
-  tank:   { hp: 260, speed: 44,  r: 27, dmg: 18, score: 30 },
-  lurker: { hp: 70,  speed: 76,  r: 14, dmg: 14, score: 24 }
-};
-
-function spawnPos() {
-  const side = Math.floor(rand(0, 4));
-  if (side === 0) return { x: rand(0, W), y: -30 };
-  if (side === 1) return { x: W + 30, y: rand(0, H) };
-  if (side === 2) return { x: rand(0, W), y: H + 30 };
-  return { x: -30, y: rand(0, H) };
-}
-
-function spawnEnemy(type) {
-  const d = ENEMY_DEF[type], p = spawnPos();
-  const scale = 1 + sceneIdx * 0.4 + waveIdx * 0.15;
-  enemies.push({
-    type, x: p.x, y: p.y, r: d.r, hp: d.hp * scale, maxHp: d.hp * scale,
-    speed: d.speed * rand(0.9, 1.1), dmg: d.dmg, score: d.score,
-    wob: rand(0, Math.PI * 2), mode: 'stalk', modeTimer: rand(1.5, 3), lungeVx: 0, lungeVy: 0, shardTick: 0
-  });
-}
-
-function spawnShadow(skill) {
-  const p = spawnPos();
-  const scale = 1 + debtsTotal * 0.06;
-  shadows.push({
-    skill, x: p.x, y: p.y, r: 17, hp: 110 * scale, maxHp: 110 * scale,
-    speed: skill === 'chrono' ? 208 : 116, dmg: 12, castTimer: 2.2,
-    paperAngle: 0, telegraph: 0, shardTick: 0, spinUntil: 0
-  });
-  alertText('它来讨债了', 1700);
-  beep(98, 0.4, 'sawtooth', 0.06);
-}
-
-function spawnBoss() {
-  const skills = borrowedSet.size ? [...borrowedSet] : ['nova'];
-  const mult = bossBuff > 0 ? 1.25 : bossBuff < 0 ? 0.72 : 1;
-  bossRef = {
-    boss: true, x: W / 2, y: -50, r: 42,
-    hp: (1700 + skills.length * 300) * mult, maxHp: (1700 + skills.length * 300) * mult,
-    speed: 80, dmg: 22, score: 500, skills, skillIdx: 0,
-    castTimer: 3.5, paperAngle: 0, papersUntil: 0, phase: 'enter', shardTick: 0
-  };
-  enemies.push(bossRef);
-}
-
-/* ---------------- 借命三咒 ---------------- */
-function borrow(pl, skill, btn) {
-  if (state !== 'playing' || !pl || pl.downed) return;
-  if (pl.skillCd[skill] > 0) return;
-  pl.skillCd[skill] = SKILL_CD[skill];
-  debts.push({ skill, due: DEBT_DELAY });
-  debtsTotal++;
-  borrowedSet.add(skill); borrowedHistory.push(skill);
-  if (btn) { btn.classList.remove('flash'); void btn.offsetWidth; btn.classList.add('flash'); }
-
-  if (skill === 'nova') {
-    ring(pl.x, pl.y, 195, '#ff6a5e');
-    enemies.slice().forEach(e => { if (dist2(e, pl) < 195 * 195) hurtEnemy(e, 100, pl, false); });
-    shadows.slice().forEach(s => { if (dist2(s, pl) < 195 * 195) hurtShadow(s, 100); });
-    shake = 9; beep(70, 0.4, 'sawtooth', 0.07);
-  } else if (skill === 'blades') {
-    pl.paperTimer = 8; beep(330, 0.18, 'triangle', 0.05);
-  } else if (skill === 'chrono') {
-    slowTimer = 5; beep(587, 0.3, 'sine', 0.05);
-  }
-  burst(pl.x, pl.y, 10, '#ff6a5e');
-}
-
-function hurtEnemy(e, dmg, from, viaSeal) {
-  if (e.twin && !viaSeal) { /* 双生祟免疫一切非封印伤害 */
-    if (!e._hintT || runTime - e._hintT > 2.5) { e._hintT = runTime; alertText('双生不可分 · 只能同印双封', 1300); }
-    return;
-  }
-  e.hp -= dmg;
-  if (from) { e.x += (e.x - from.x) * 0.012; e.y += (e.y - from.y) * 0.012; }
-  burst(e.x, e.y, 3, '#e6e1d5');
-  if (e.hp <= 0) killEnemy(e);
-}
-
-function killEnemy(e) {
-  const i = enemies.indexOf(e); if (i < 0) return;
-  enemies.splice(i, 1);
-  kills++; score += e.score;
-  burst(e.x, e.y, 16, SCENES[sceneIdx % SCENES.length].accent);
-  beep(147, 0.12, 'square', 0.03);
-  if (Math.random() < 0.55) drops.push({ x: e.x, y: e.y, kind: 'xp', v: 5 });
-  if (Math.random() < 0.07) drops.push({ x: e.x + 8, y: e.y, kind: 'heart', v: 18 });
-  if (e.boss) { bossRef = null; score += 400; onBossDown(); }
-}
-
-function hurtShadow(s, dmg) {
-  s.hp -= dmg;
-  burst(s.x, s.y, 3, '#ff8fa3');
-  if (s.hp <= 0) {
-    const i = shadows.indexOf(s); if (i < 0) return;
-    shadows.splice(i, 1);
-    kills++; debtsRepaid++; score += 60;
-    burst(s.x, s.y, 22, '#ff8fa3');
-    drops.push({ x: s.x, y: s.y, kind: 'heart', v: 12 });
-    beep(262, 0.16, 'triangle', 0.05);
-  }
-}
-
-function onBossDown() {
-  if (endless) { sceneIdx++; waveIdx = 0; showChapter(); }
-  else victory();
-}
-
-/* ---------------- 朱砂封印 ---------------- */
-function trySeal(pl, poly) {
-  const twinsIn = enemies.filter(e => e.twin && pointInPoly(e.x, e.y, poly));
-  const crit = Math.random() < pl.crit;
-  let dmg = pl.sealDmg * (crit ? 2 : 1);
-  if (pl.chainSeal && pl.sealBuffTimer > 0) dmg *= 1.6;
-  let hit = 0;
-  enemies.slice().forEach(e => {
-    if (!pointInPoly(e.x, e.y, poly)) return;
-    if (e.twin && twinsIn.length < 2) return; /* 只圈住一个双生：封不住 */
-    hurtEnemy(e, e.boss ? dmg * 0.6 : (e.twin ? 99999 : dmg), null, true);
-    hit++;
-  });
-  shadows.slice().forEach(s => { if (pointInPoly(s.x, s.y, poly)) { hurtShadow(s, dmg); hit++; } });
-  /* 救援：圈住倒地的队友，把他从那边拉回来 */
-  players.forEach(o => {
-    if (o.downed && pointInPoly(o.x, o.y, poly)) {
-      o.downed = false; o.hp = Math.floor(o.maxHp * 0.5); o.invuln = 1;
-      score += 100; burst(o.x, o.y, 26, '#37e0c8');
-      alertText('把他从那边拉回来了', 1600);
-      beep(523, 0.2, 'triangle', 0.06);
+      break;
     }
-  });
-  seals++;
-  if (pl.chainSeal) pl.sealBuffTimer = 3;
-  score += hit * 15 + Math.floor(polyArea(poly) / 600);
-  sealFx.push({ poly, t: 0, crit });
-  shake = Math.max(shake, hit ? 5 : 2);
-  beep(crit ? 196 : 262, 0.2, 'triangle', 0.06);
-  const c = centroid(poly);
-  burst(c.x, c.y, hit ? 22 : 8, crit ? '#ffd76e' : '#ff4b3e');
+    case 'clock': {
+      if (a.h === 3 && a.m === 15) {
+        if (!F('clockSolved')) {
+          setF('clockSolved');
+          give('page1'); give('roomkey');
+          say('', '钟摆重新走起来——走了三秒，又停了。钟座底部弹出一道暗格。');
+          say('送契人', '暗格里躺着半页契文，和一把卧室钥匙。契文的上半页，原来一直睡在这只钟里。');
+        } else say('', '钟又停在 3:15，不再动了。');
+      } else {
+        say('', '你把指针拨到 ' + a.h + ':' + (a.m < 10 ? '0' : '') + a.m + '，上弦。钟摆动了两下，停了——不是这一刻。');
+      }
+      break;
+    }
+    case 'switch': {
+      toggleSwitch(a.id, actor);
+      break;
+    }
+    case 'combine': {
+      if (has('page1') && has('page2') && !has('contract')) {
+        G.inv = G.inv.filter(i => i !== 'page1' && i !== 'page2');
+        give('contract');
+        setF('contractWhole');
+        say('契', '两半页契文合上了。断口严丝合缝，像从来没被撕开过。');
+      }
+      break;
+    }
+    case 'placeContract': {
+      if (!has('contract') || F('contractPlaced')) break;
+      setF('contractPlaced');
+      G.inv = G.inv.filter(i => i !== 'contract');
+      say('', '你把完整的《明日契》放在遗像前，退后一步。');
+      say('送契人', '行里的规矩：契到遗像前，还要点烛。烛点完，契才算送到。');
+      break;
+    }
+    case 'startCandles': {
+      if (!F('contractPlaced') || F('candlesDone')) break;
+      const seq = [];
+      for (let i = 0; i < G.candleSeqLen; i++) seq.push(Math.floor(Math.random() * 4));
+      G.candle = { seq, phase: 'show', idx: 0, input: [], nextAt: G.time + 0.9 };
+      say('送契人', '看好烛火亮起的顺序——' + G.candleSeqLen + ' 盏，' + (G.players > 1 ? '人越多，规矩越长。分工记。' : '记牢。'));
+      break;
+    }
+    case 'candle': {
+      const cd = G.candle;
+      if (!cd || cd.phase !== 'input') break;
+      const expect = cd.seq[cd.input.length];
+      if (a.i === expect) {
+        cd.input.push(a.i);
+        chime(a.i);
+        if (cd.input.length === cd.seq.length) {
+          G.candle = null;
+          setF('candlesDone');
+          say('', '最后一盏烛点亮时，屋里所有的光一起矮了下去。');
+          say('？？', '（供桌后面，有人轻轻地，像是等得太久，叹了口气。）');
+          offer([{ label: '上前一步，封门', act: { k: 'openSeal' } }], actor);
+        }
+      } else {
+        cd.input = [];
+        say('', '顺序错了。烛火齐齐晃了一下，灭了一半——再点一次遗像，可以重看顺序。');
+      }
+      break;
+    }
+    case 'borrowSeal': {
+      if (!F('candlesDone') || G.ended) break;
+      borrowCommon('seal', actor);
+      G.sealAid = true;
+      G.sealSeq = (G.sealSeq || 0) + 1;
+      say('契纹', '你咬破指尖，血按在门框上。印稳住了——画得粗些，它也认。（命债 +1）');
+      break;
+    }
+    case 'openSeal': {
+      G.sealFor = actor;
+      G.sealSeq = (G.sealSeq || 0) + 1;
+      say('送契人', '把手给我。接下来这一笔，你自己画。');
+      break;
+    }
+    case 'ritual': {
+      if (F('candlesDone') && !G.ended) {
+        G.sealFor = null;
+        finishChapter();
+      }
+      break;
+    }
+    case 'hs': {
+      const hs = HOTSPOTS.find(h => h.id === a.id);
+      if (hs && hs.onAct) hs.onAct(actor);
+      break;
+    }
+  }
 }
 
-function updateTrail(pl, dt) {
-  pl.trail.forEach(p => { p.age += dt; });
-  pl.trail = pl.trail.filter(p => p.age < pl.trailLife);
-  if (pl.downed) { pl.trail = []; return; }
-  const last = pl.trail[pl.trail.length - 1];
-  if (!last || Math.hypot(pl.x - last.x, pl.y - last.y) >= 13) {
-    pl.trail.push({ x: pl.x, y: pl.y, age: 0 });
-    if (pl.trail.length > 300) pl.trail.shift();
-    for (let i = 0; i < pl.trail.length - 22; i++) {
-      const p = pl.trail[i];
-      if (Math.hypot(pl.x - p.x, pl.y - p.y) < 26) {
-        const poly = pl.trail.slice(i);
-        if (polyArea(poly) > 3200) { trySeal(pl, poly); pl.trail = []; }
+function openSafe(pre) {
+  setF('safeOpen');
+  give('page2'); give('letter');
+  say('', pre);
+  say('送契人', '保险箱里是契文的下半页，和一封没寄出的信。信封上写着：送契的小师傅亲启。');
+}
+
+const SWITCHES = ['meter', 'kitchen', 'bath'];
+const SWITCH_VIEW = { meter: 'corridor', kitchen: 'living', bath: 'living' };
+function requiredSwitches() { return SWITCHES.slice(0, clamp(G.players, 1, 3)); }
+function toggleSwitch(id, actor) {
+  if (F('power')) { say('', '电已经通了。'); return; }
+  if (!requiredSwitches().includes(id)) { say('', '这把闸是邻居家的，别乱动。'); return; }
+  if (G.players <= 1) G.switches[id] = Infinity;
+  else G.switches[id] = G.time + 4.5;
+  setF('sw_' + id);
+  beep(740, 0.05, 'square', 0.03);
+  const on = requiredSwitches().filter(s => (G.switches[s] === Infinity || (G.switches[s] || 0) > G.time)).length;
+  say('', '你把分闸推了上去（' + on + ' / ' + requiredSwitches().length + '）。' + (G.players > 1 ? '多人时闸过几秒会自己跳掉，得让同伴在别处同时推。' : ''));
+  checkPower();
+}
+function checkPower() {
+  const req = requiredSwitches();
+  if (req.every(id => G.switches[id] === Infinity || (G.switches[id] || 0) > G.time)) {
+    setF('power');
+    say('', '咔。整层楼的灯管闪了两下——307 的屋里，亮了。');
+    say('送契人', '电视柜上的指示灯亮起一点红。这屋子，像是刚睡醒。');
+  }
+}
+
+/* 房主节拍：分闸过期、点烛演示推进 */
+setInterval(() => {
+  if (!isHostSide() || !G || !G.started || G.ended) return;
+  G.time += 0.5;
+  let changed = false;
+  if (!F('power')) {
+    requiredSwitches().forEach(id => {
+      const v = G.switches[id];
+      if (v !== undefined && v !== Infinity && v <= G.time) {
+        delete G.switches[id]; G.flags['sw_' + id] = false; changed = true;
+        pendingLines = []; say('', '远处咔的一声——有一把分闸跳掉了。');
+        flushSay(myId());
+      }
+    });
+  }
+  const cd = G.candle;
+  if (cd && cd.phase === 'show' && G.time >= cd.nextAt) {
+    cd.idx++; cd.nextAt = G.time + 0.85; changed = true;
+    chime(cd.seq[Math.min(cd.idx, cd.seq.length - 1)]);
+    if (cd.idx >= cd.seq.length) {
+      cd.phase = 'input';
+      pendingLines = []; say('送契人', '看完了。按刚才的顺序，把烛点回去。');
+      flushSay(myId());
+    }
+  }
+  if (changed) syncState();
+}, 500);
+
+/* ---------------- 热点与导航 ---------------- */
+function hsAct(id, onAct) { return { id, kind: 'act', onAct }; }
+const HOTSPOTS = [
+  /* 楼道 */
+  { view: 'corridor', id: 'mailbox', x: 30, y: 452, w: 212, h: 118, label: '信箱', kind: 'act', onAct(actor) {
+    if (!F('mailLoot')) {
+      setF('mailLoot'); give('postcard'); give('bill');
+      say('', '307 的信箱塞满了广告，底下压着两张薄薄的纸：一张老明信片，一张电费催缴单。你都抽了出来。');
+    } else say('', '信箱空了，只剩灰。');
+  } },
+  { view: 'corridor', id: 'meterbox', x: 768, y: 150, w: 104, h: 88, label: '电表箱', kind: 'act', onAct(actor) {
+    say('', '电表箱里一排表。307 那块的玻璃蒙着灰，数字停在三年前——不对，还在极慢地走。没人用电，它走的是什么？');
+    say('送契人', '（箱子下半截是分闸。要进屋，先把电送回去。）');
+  } },
+  { view: 'corridor', id: 'sw_meter', x: 772, y: 242, w: 96, h: 56, label: '分闸 · 楼道', kind: 'act', onAct(actor) { toggleSwitch('meter', actor); } },
+  { view: 'corridor', id: 'door307', x: 520, y: 96, w: 212, h: 352, label: '307 的门', kind: 'nav', target: 'living',
+    guard: () => F('doorOpen'),
+    guardFail() {
+      showLines([{ who: '', text: '防盗门，密码锁。门上的对联褪成粉红色，是三年前那一副。锁还活着——先输密码，或者，烧穿它。' }]);
+      dlgChoices = { for: myId(), list: [
+        { label: '输入密码', local: 'kp:door' },
+        { label: '借命 · 烧开这把锁（+1 命债）', borrow: true, act: { k: 'borrowDoor' } }
+      ] };
+      renderChoices();
+    } },
+  { view: 'corridor', id: 'doorlock', x: 664, y: 246, w: 46, h: 58, label: '密码锁', kind: 'modal', local: 'kp:door', when: () => !F('doorOpen') },
+  { view: 'corridor', id: 'stairs', x: 18, y: 120, w: 150, h: 310, label: '楼梯', kind: 'act', onAct(actor) {
+    say('', '声控灯坏了，楼梯间黑着。往上是没人住的四层，往下是雨——今晚的雨，和三年前那晚一样大。');
+  } },
+  /* 客厅 */
+  { view: 'living', id: 'tv', x: 610, y: 144, w: 228, h: 152, label: '电视', kind: 'act', onAct(actor) {
+    if (!F('power') && !F('borrowPower')) { say('', '黑着。先把电送回来——光靠契纹的光，可带不动电视。'); return; }
+    if (!F('power')) { say('', '契纹的光够看清屋子，可电视要的是电。分闸还没全合上。'); return; }
+    if (!F('tvBattery')) {
+      if (has('battery')) {
+        setF('tvBattery'); G.inv = G.inv.filter(i => i !== 'battery');
+        say('', '你把电池装进遥控器。红灯亮了——三年了，遥控器先等到了电。');
+      } else { say('', '电视有电，可遥控器是死的——电池仓空着。老式遥控器，两节五号电池。'); return; }
+    }
+    if (!F('videoSeen')) {
+      setF('tvOn'); setF('videoSeen');
+      say('电视', '录像带自动转起来。画面里是医院的走廊，一个老人对着镜头，身后病房门牌写着 3 床。');
+      say('周守义（录像）', '「小师傅，我不知道你哪天来。我把话留在这盘带子里。」');
+      say('周守义（录像）', '「钟，停在三点一刻。那是我出院那天夜里，到家的时辰。从那天起，这个家的时间就停在那儿了——柜子，也认这个时辰。」');
+      say('电视', '录像到此为止。最后三秒，画面角落里，站着一个背对镜头的人——穿着送契人的褂子，是师父。');
+    } else say('电视', '录像又放了一遍。角落里师父的背影，一动不动。');
+  } },
+  { view: 'living', id: 'remote', x: 556, y: 396, w: 42, h: 28, label: '遥控器', kind: 'act', onAct(actor) {
+    say('', F('tvBattery') ? '遥控器的红灯亮着。' : '遥控器躺在茶几上，电池仓盖开着，空的。');
+  } },
+  { view: 'living', id: 'altar', x: 400, y: 108, w: 84, h: 168, label: '遗像与供桌', kind: 'act', onAct(actor) {
+    if (G.candle) { say('', '烛还亮着，先把顺序走完。'); return; }
+    if (F('candlesDone')) { say('', '烛齐了。供桌后面那声叹息，还没散。'); offer([{ label: '上前一步，封门', act: { k: 'openSeal' } }], actor); return; }
+    if (F('contractPlaced')) { say('送契人', '契在遗像前了。还差点烛——看着顺序点，别抢。'); offer([{ label: '点烛（看顺序）', act: { k: 'startCandles' } }], actor); return; }
+    if (has('contract')) { say('', '遗像里的老人看着你，眼睛是照片的眼睛，可你觉得他在等你手里那封契。'); offer([{ label: '把契放到遗像前', act: { k: 'placeContract' } }], actor); return; }
+    say('', '遗像、香炉、三根没点的烛。相框玻璃上有一层灰，唯独眼睛的位置，被谁擦得干干净净。');
+  } },
+  { view: 'living', id: 'altar_drawer', x: 322, y: 330, w: 236, h: 52, label: '供桌抽屉', kind: 'act', onAct(actor) {
+    if (!F('drawerOpen')) {
+      setF('drawerOpen'); give('battery'); give('smallkey');
+      say('', '抽屉里整整齐齐：两节电池，一把黄铜小钥匙，一叠黄纸。都是给今晚准备的——像是知道有人要来翻。');
+    } else say('', '抽屉空了。黄纸还在，压得平平整整。');
+  } },
+  { view: 'living', id: 'calendar', x: 268, y: 86, w: 86, h: 110, label: '挂历', kind: 'act', onAct(actor) {
+    say('', '撕历停在 2019 年 7 月 19 日，那一天被红笔圈了三圈。之后的日子，一页都没撕过。');
+  } },
+  { view: 'living', id: 'photo', x: 392, y: 88, w: 104, h: 88, label: '全家福', kind: 'act', onAct(actor) {
+    setF('photoSeen');
+    say('', '全家福背面写着：「出院那天，儿子背我下楼。病历本放床头柜，莫乱翻。」——字是写给今晚的人看的。');
+  } },
+  { view: 'living', id: 'clock', x: 782, y: 116, w: 84, h: 298, label: '落地挂钟', kind: 'modal', local: 'clock' },
+  { view: 'living', id: 'bedroom_door', x: 234, y: 146, w: 94, h: 264, label: '卧室门', kind: 'nav', target: 'bedroom',
+    guard: () => has('roomkey'),
+    guardFail() { showLines([{ who: '', text: '卧室门锁着。锁眼是老式的——得找到这把门的钥匙。（钟，认一个时刻。）' }]); } },
+  { view: 'living', id: 'sw_kitchen', x: 534, y: 414, w: 42, h: 54, label: '分闸 · 厨房', kind: 'act', onAct(actor) { toggleSwitch('kitchen', actor); } },
+  { view: 'living', id: 'sofa', x: 56, y: 356, w: 258, h: 126, label: '沙发', kind: 'act', onAct(actor) {
+    say('', '沙发扶手上搭着一件中山装，口袋是空的。坐垫中间凹下去一块——有人在这儿坐着等过很久。');
+  } },
+  /* 卧室 */
+  { view: 'bedroom', id: 'bed', x: 56, y: 248, w: 388, h: 140, label: '床', kind: 'act', onAct(actor) {
+    say('', '被子叠成豆腐块。枕边放着一本相册，第一页是孙女满月的照片，背面写着：「看见了。够本了。」');
+  } },
+  { view: 'bedroom', id: 'bedDrawer', x: 466, y: 314, w: 128, h: 118, label: '床头柜', kind: 'act', onAct(actor) {
+    if (F('bedDrawerOpen')) { say('', '抽屉开着。病历本你已经拿走了，只剩一板吃了一半的药。'); return; }
+    if (has('smallkey')) {
+      setF('bedDrawerOpen'); give('medical');
+      say('', '小钥匙对上了。抽屉里是一本病历，和一封压在病历下面的车票底联的复印件。你收好病历。');
+    } else say('', '床头柜的抽屉锁着。小锁眼，黄铜的——得有把小钥匙。');
+  } },
+  { view: 'bedroom', id: 'desk', x: 92, y: 442, w: 228, h: 48, label: '书桌', kind: 'act', onAct(actor) {
+    if (!F('ticketTaken')) { setF('ticketTaken'); give('ticket'); say('', '桌上压着一张长途车票：明早 06:40，城郊汽车站发车，座位 12。日期是明天——这张票还没过期，因为它等的明天，还没来。'); }
+    else say('', '桌上还有半杯水。水面平的，像三年来没人碰过。');
+  } },
+  { view: 'bedroom', id: 'wardrobe', x: 632, y: 326, w: 238, h: 188, label: '衣柜', kind: 'act', onAct(actor) {
+    if (!F('wardOpen')) { setF('wardOpen'); say('', '衣柜门滑开。衣服按季节挂得整齐，最底层——嵌着一只保险箱。'); }
+    else say('', '衣柜里是他的四季。最底层的保险箱，等着一个日子。');
+  } },
+  { view: 'bedroom', id: 'safe', x: 672, y: 400, w: 148, h: 96, label: '保险箱', kind: 'act', when: () => F('wardOpen'), onAct(actor) {
+    if (F('safeOpen')) { say('', '保险箱开着，空了。契和信，你都拿走了。'); return; }
+    say('', '四位密码。箱体冰凉，凉得不像在屋里放了三年，像在别处放了很久。');
+    offer([
+      { label: '输入密码', local: 'kp:safe' },
+      { label: '借命 · 烧穿它（+1 命债）', borrow: true, act: { k: 'borrowSafe' } }
+    ], actor);
+  } },
+  { view: 'bedroom', id: 'sw_bed', x: 462, y: 480, w: 50, h: 52, label: '配电箱', kind: 'act', onAct(actor) { say('', '卧室墙上的配电箱是备用闸，推上去没有反应——要合的闸不在这间屋。'); } },
+  { view: 'living', id: 'sw_bath', x: 242, y: 410, w: 38, h: 52, label: '分闸 · 卫浴', kind: 'act', onAct(actor) { toggleSwitch('bath', actor); } },
+  { view: 'bedroom', id: 'bwindow', x: 636, y: 62, w: 208, h: 238, label: '窗', kind: 'act', onAct(actor) {
+    say('', '对楼还亮着几盏灯。有一盏，在你看它的时候，灭了。');
+  } }
+];
+/* 点烛热点（演示与输入阶段） */
+for (let i = 0; i < 4; i++) {
+  HOTSPOTS.push({ view: 'living', id: 'candle' + i, x: 344 + i * 52, y: 206, w: 26, h: 72, label: '烛 ' + (i + 1), kind: 'act',
+    when: () => !!(G && G.candle && G.candle.phase === 'input'),
+    onAct(actor) { actImpl({ k: 'candle', i }, actor); } });
+}
+
+function renderScene() {
+  const svgFn = SCENE_SVG[myView] || blackSvg;
+  $('scene').innerHTML = svgFn();
+  const layer = $('hotspots'); layer.innerHTML = '';
+  if (!G) return;
+  HOTSPOTS.filter(h => h.view === myView && (!h.when || h.when())).forEach(h => {
+    const b = document.createElement('button');
+    b.className = 'hs';
+    b.style.left = (h.x / 9) + '%'; b.style.top = (h.y / 6.2) + '%';
+    b.style.width = (h.w / 9) + '%'; b.style.height = (h.h / 6.2) + '%';
+    b.innerHTML = '<span class="hs-tag">' + h.label + '</span>';
+    b.onclick = ev => {
+      ev.stopPropagation();
+      if (h.kind === 'nav') {
+        if (!h.guard || h.guard()) { myView = h.target; beep(500, 0.04, 'sine', 0.02); renderScene(); updateNavBack(); }
+        else if (h.guardFail) h.guardFail();
+      } else if (h.kind === 'modal') {
+        localChoice(h.local);
+      } else {
+        doAct({ k: 'hs', id: h.id });
+      }
+    };
+    layer.appendChild(b);
+  });
+  updateNavBack();
+}
+function updateNavBack() {
+  const nb = $('navback');
+  if (!nb) return;
+  if (myView === 'living') { nb.textContent = '← 回楼道'; nb.dataset.to = 'corridor'; show(nb, true); }
+  else if (myView === 'bedroom') { nb.textContent = '← 回客厅'; nb.dataset.to = 'living'; show(nb, true); }
+  else show(nb, false);
+}
+function renderAll() {
+  if (!G) return;
+  renderTop(); renderInv(); renderScene();
+}
+
+/* ---------------- 密码与挂钟（本地 UI，提交走 doAct） ---------------- */
+let kpBuf = '';
+function openKeypad(ctx) {
+  kpCtx = ctx; kpBuf = '';
+  $('kp-title').textContent = ctx === 'door' ? '307 · 密码锁' : '保险箱';
+  updKp();
+  const grid = $('kp-grid'); grid.innerHTML = '';
+  ['1','2','3','4','5','6','7','8','9','⌫','0','✓'].forEach(d => {
+    const b = document.createElement('button');
+    b.className = 'kp-key'; b.textContent = d;
+    b.onclick = () => {
+      if (d === '⌫') kpBuf = kpBuf.slice(0, -1);
+      else if (d === '✓') {
+        if (kpBuf.length === 4) { show($('keypad'), false); doAct({ k: 'code', ctx: kpCtx, code: kpBuf }); }
+        else buzz();
+        return;
+      } else if (kpBuf.length < 4) { kpBuf += d; beep(600 + Number(d) * 20, 0.04, 'sine', 0.025); }
+      updKp();
+    };
+    grid.appendChild(b);
+  });
+  show($('keypad'), true);
+}
+function updKp() { $('kp-display').textContent = (kpBuf + '____').slice(0, 4); }
+$('btn-kp-cancel').addEventListener('click', () => show($('keypad'), false));
+
+function openClock() {
+  clockVal = { h: 3, m: 0 };
+  updClock();
+  show($('clockui'), true);
+}
+function updClock() { $('clock-face').textContent = (clockVal.h < 10 ? '0' : '') + clockVal.h + ':' + (clockVal.m < 10 ? '0' : '') + clockVal.m; }
+document.querySelectorAll('[data-ck]').forEach(b => b.addEventListener('click', () => {
+  const k = b.dataset.ck;
+  if (k === 'h+') clockVal.h = (clockVal.h + 1) % 24;
+  if (k === 'h-') clockVal.h = (clockVal.h + 23) % 24;
+  if (k === 'm+') clockVal.m = (clockVal.m + 5) % 60;
+  if (k === 'm-') clockVal.m = (clockVal.m + 55) % 60;
+  beep(480, 0.03, 'sine', 0.02); updClock();
+}));
+$('btn-clock-set').addEventListener('click', () => { show($('clockui'), false); doAct({ k: 'clock', h: clockVal.h, m: clockVal.m }); });
+$('btn-clock-cancel').addEventListener('click', () => show($('clockui'), false));
+
+/* ---------------- 封门仪式（画符，保留自旧版的绕圈封印手感） ---------------- */
+let sealDraw = null;
+function checkSealTrigger() {
+  if (G && G.sealFor === myId() && (G.sealSeq || 0) !== (window._sq || 0)) {
+    window._sq = G.sealSeq;
+    startSeal();
+  }
+}
+function checkEnd() {
+  if (G && G.ended && !window._endShown) {
+    window._endShown = true;
+    $('end-title').textContent = G.endTitle || '契，送到了';
+    $('end-stats').textContent = G.endStats || '';
+    show($('end'), true);
+  }
+}
+function startSeal() {
+  const cv = $('seal-canvas');
+  const cx = cv.getContext('2d');
+  const aid = !!(G && G.sealAid);
+  $('seal-note').textContent = aid
+    ? '借命稳住了印：时间放宽，圈画得粗些也认。用手指或鼠标画一个闭合的圈，圈住中央的契纹。'
+    : '用手指或鼠标，在门上画一个闭合的圈，圈住中央的契纹。影子在靠近。';
+  show($('sealui'), true);
+  const W2 = cv.width, H2 = cv.height;
+  const mark = { x: W2 / 2, y: H2 / 2 };
+  const limit = aid ? 60 : 30;
+  const t0 = Date.now();
+  sealDraw = { pts: [], drawing: false, done: false };
+  function draw() {
+    const el = (Date.now() - t0) / 1000;
+    const left = Math.max(0, limit - el);
+    $('seal-timer').textContent = '它离门还有 ' + left.toFixed(0) + ' 秒';
+    cx.fillStyle = '#160a12'; cx.fillRect(0, 0, W2, H2);
+    cx.strokeStyle = 'rgba(230,220,200,0.25)'; cx.lineWidth = 3;
+    cx.strokeRect(70, 26, W2 - 140, H2 - 52);
+    /* 逼近的影子：从右边缘向门心靠 */
+    const sx = W2 - 40 - (el / limit) * (W2 / 2 - 30);
+    cx.fillStyle = 'rgba(8,6,10,0.88)';
+    cx.beginPath(); cx.arc(sx, H2 / 2, 44, 0, 7); cx.fill();
+    cx.fillStyle = 'rgba(255,120,140,0.85)';
+    cx.beginPath(); cx.arc(sx - 13, H2 / 2 - 8, 4, 0, 7); cx.arc(sx + 13, H2 / 2 - 8, 4, 0, 7); cx.fill();
+    /* 契纹 */
+    cx.strokeStyle = '#ffd76e'; cx.lineWidth = 2.4;
+    cx.beginPath(); cx.arc(mark.x, mark.y, 40, 0, 7); cx.stroke();
+    cx.fillStyle = '#ffd76e'; cx.font = 'bold 30px sans-serif'; cx.textAlign = 'center';
+    cx.fillText('契', mark.x, mark.y + 11);
+    /* 玩家轨迹 */
+    if (sealDraw.pts.length > 1) {
+      cx.strokeStyle = '#ff5442'; cx.lineWidth = 3.4; cx.lineJoin = 'round';
+      cx.beginPath();
+      sealDraw.pts.forEach((p, i) => { if (i === 0) cx.moveTo(p.x, p.y); else cx.lineTo(p.x, p.y); });
+      cx.stroke();
+    }
+    if (left <= 0 && !sealDraw.done) {
+      sealDraw.done = true;
+      stopSeal();
+      show($('sealui'), false);
+      toast('影子穿过了门——它退了半步，还会再来。点遗像可以再封一次。', 2800);
+      beep(82, 0.4, 'sawtooth', 0.06);
+    }
+  }
+  const timer = setInterval(() => { if (!sealDraw) { clearInterval(timer); return; } draw(); }, 100);
+  sealDraw.stop = () => { clearInterval(timer); };
+  draw();
+  function pos(ev) {
+    const r = cv.getBoundingClientRect();
+    const src = ev.touches ? ev.touches[0] : ev;
+    return { x: (src.clientX - r.left) * (W2 / r.width), y: (src.clientY - r.top) * (H2 / r.height) };
+  }
+  function ptIn(px, py, poly) {
+    let inside = false;
+    for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+      const xi = poly[i].x, yi = poly[i].y, xj = poly[j].x, yj = poly[j].y;
+      if (((yi > py) !== (yj > py)) && (px < (xj - xi) * (py - yi) / (yj - yi) + xi)) inside = !inside;
+    }
+    return inside;
+  }
+  function area(poly) {
+    let a = 0;
+    for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) a += (poly[j].x + poly[i].x) * (poly[j].y - poly[i].y);
+    return Math.abs(a / 2);
+  }
+  function move(ev) {
+    if (!sealDraw || !sealDraw.drawing || sealDraw.done) return;
+    ev.preventDefault();
+    const p = pos(ev);
+    const pts = sealDraw.pts;
+    const last = pts[pts.length - 1];
+    if (last && Math.hypot(p.x - last.x, p.y - last.y) < 7) return;
+    pts.push(p);
+    const tol = aid ? 44 : 28, minArea = aid ? 2400 : 4800;
+    for (let i = 0; i < pts.length - 20; i++) {
+      if (Math.hypot(p.x - pts[i].x, p.y - pts[i].y) < tol) {
+        const poly = pts.slice(i);
+        if (area(poly) > minArea && ptIn(mark.x, mark.y, poly)) {
+          sealDraw.done = true;
+          stopSeal();
+          show($('sealui'), false);
+          beep(392, 0.3, 'triangle', 0.06);
+          doAct({ k: 'ritual' });
+        }
         break;
       }
     }
   }
+  function stopSeal() { if (sealDraw && sealDraw.stop) sealDraw.stop(); sealDraw = null; }
+  cv.onpointerdown = ev => { if (sealDraw) { sealDraw.drawing = true; sealDraw.pts = [pos(ev)]; } };
+  cv.onpointermove = move;
+  window.onpointerup = () => { if (sealDraw) sealDraw.drawing = false; };
+  $('btn-seal-giveup').onclick = () => { stopSeal(); show($('sealui'), false); };
+  $('btn-seal-borrow').onclick = () => { stopSeal(); show($('sealui'), false); doAct({ k: 'borrowSeal' }); };
 }
 
-/* ---------------- 伤害与倒地 ---------------- */
-function damagePlayer(pl, dmg) {
-  if (!pl || pl.downed || pl.invuln > 0 || state !== 'playing') return;
-  pl.hp -= dmg; pl.invuln = 0.55; shake = Math.max(shake, 5);
-  burst(pl.x, pl.y, 8, '#ff5d7a');
-  beep(82, 0.16, 'sawtooth', 0.06);
-  if (pl.hp <= 0) {
-    pl.hp = 0;
-    const partnerAlive = players.some(o => o !== pl && !o.downed);
-    if (partnerAlive) {
-      pl.downed = true; pl.reviveTimer = 35; pl.trail = [];
-      alertText('同行者倒下了 · 绕着他合印，把他拉回来', 2400);
-    } else {
-      gameOver();
-    }
-  }
+/* ---------------- 开局与结算 ---------------- */
+const PROLOGUE = [
+  { who: '送契人', text: '时契行没有招牌。柜台的铜牌上刻着三条铁律，我背了三年：' },
+  { who: '铁律', text: '一、契向未来借——你借的命，是未来的你在替你过。债主，永远是未来的你自己。' },
+  { who: '铁律', text: '二、契须亲手送达，隔手无效。逾期未达的契，会自己找路。' },
+  { who: '铁律', text: '三、见契纹者，皆欠债人。' },
+  { who: '送契人', text: '师父姓陆。三年前一个雨夜，他出门送一封契，再没回来。行里的规矩：送契人死在路上，未送达的契，徒弟接着送。' },
+  { who: '送契人', text: '那封契在柜上压了三年。今晚，我把它送到——老居民楼，307，周守义。' },
+  { who: '', text: '雨还在下。楼道灯亮着，像是专门为你亮的。' }
+];
+function startGame() {
+  if (window.TDNet && TDNet.role === 'guest') { TDNet._status('你是客人，等房主点「开始送契」'); return; }
+  const count = window.TDNet && TDNet.role === 'host' ? TDNet.playerCount() : 1;
+  G = newGame(count);
+  const ids = []; for (let i = 0; i < count; i++) ids.push(i);
+  G.pages = { page1: ids[0], page2: ids[count > 1 ? 1 : 0] };
+  window._endShown = false; window._sq = 0;
+  mySel = null; myView = 'black';
+  show($('menu'), false); show($('end'), false);
+  show($('topbar'), true); show($('stage'), true); show($('invbar'), true);
+  pendingLines = PROLOGUE.slice(); pendingChoices = null;
+  flushSay(0); flushChoices();
+  dlgOnDone = () => { if (myView === 'black') { myView = 'corridor'; renderScene(); } };
+  syncState();
 }
-
-/* ---------------- 粒子 ---------------- */
-function burst(x, y, n, color) {
-  for (let i = 0; i < n; i++) {
-    const a = rand(0, Math.PI * 2), sp = rand(40, 220);
-    parts.push({ x, y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, life: rand(0.25, 0.6), t: 0, color, r: rand(1.5, 3.5) });
-  }
+function finishChapter() {
+  G.ended = true;
+  const mins = Math.max(1, Math.round((Date.now() - G.t0) / 60000));
+  G.endTitle = '契，送到了';
+  G.endStats = '第一章《老居民楼》完。\n影子在印合上的那一刻退回了门后——它没有消失，它只是对完了这一笔账。\n\n用时约 ' + mins + ' 分钟 · 命债 ' + G.debt + ' 笔' + (G.debt === 0 ? '（一笔没借。行里老人说，这样的人，一辈子没几个。）' : G.debt <= 2 ? '（账还算轻。）' : '（账不轻。终局那天，一起算。）') + '\n同行 ' + G.players + ' 人\n\n下一章：县医院旧住院部 · 3 床——他借命三年住过的地方。病历里，还夹着「息」是怎么算的。（制作中）';
+  pendingLines.push({ who: '周守义', text: '（印合上之前，你听见门后的人说：小师傅，替我谢谢你师父。雨大，他没走到——我不怪他。）' });
 }
-function ring(x, y, r, color) { rings.push({ x, y, r, color, t: 0 }); }
+$('btn-start').addEventListener('click', startGame);
+$('btn-again').addEventListener('click', () => { show($('end'), false); startGame(); });
+$('btn-tomenu').addEventListener('click', () => location.reload());
+$('btn-mute2').addEventListener('click', e => { muted = !muted; e.target.textContent = muted ? '×' : '♪'; });
+$('navback').addEventListener('click', () => { myView = $('navback').dataset.to; renderScene(); });
 
-/* ---------------- 输入 ---------------- */
-function isGuest() { return window.TDNet && TDNet.role === 'guest'; }
-function isHost() { return window.TDNet && TDNet.role === 'host'; }
-
-window.addEventListener('keydown', e => {
-  keys[e.code] = true;
-  if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space'].includes(e.code)) e.preventDefault();
-  if (isGuest()) {
-    if (e.code === 'KeyJ') TDNet.send({ t: 'act', a: 'nova' });
-    if (e.code === 'KeyK') TDNet.send({ t: 'act', a: 'blades' });
-    if (e.code === 'KeyL') TDNet.send({ t: 'act', a: 'chrono' });
-    if (e.code === 'Space') TDNet.send({ t: 'act', a: 'dash' });
-    return;
-  }
-  if (e.code === 'KeyJ') borrow(player, 'nova', document.querySelector('[data-skill="nova"]'));
-  if (e.code === 'KeyK') borrow(player, 'blades', document.querySelector('[data-skill="blades"]'));
-  if (e.code === 'KeyL') borrow(player, 'chrono', document.querySelector('[data-skill="chrono"]'));
-  if (e.code === 'Enter' && state === 'playing' && !isHost() && players.length < 2) {
-    addPlayer('local2');
-    alertText('同行者加入 · P2：方向键移动，小键盘 1/2/3 借咒，右 Shift 冲刺', 2600);
-  }
-  const p2 = players.find(p => p.kind === 'local2');
-  if (p2) {
-    if (e.code === 'Numpad1' || e.code === 'Comma') borrow(p2, 'nova', null);
-    if (e.code === 'Numpad2' || e.code === 'Period') borrow(p2, 'blades', null);
-    if (e.code === 'Numpad3' || e.code === 'Slash') borrow(p2, 'chrono', null);
-    if (e.code === 'ShiftRight') tryDash(p2);
-  }
-  if (e.code === 'Escape' && state === 'playing') pauseGame();
-});
-window.addEventListener('keyup', e => { keys[e.code] = false; });
-
-document.querySelectorAll('.skill-btn[data-skill]').forEach(b => {
-  b.addEventListener('pointerdown', e => {
-    e.preventDefault();
-    if (isGuest()) { TDNet.send({ t: 'act', a: b.dataset.skill }); return; }
-    borrow(player, b.dataset.skill, b);
-  });
-});
-$('btn-dash').addEventListener('pointerdown', e => {
-  e.preventDefault();
-  if (isGuest()) { TDNet.send({ t: 'act', a: 'dash' }); return; }
-  tryDash(player);
-});
-
-canvas.addEventListener('touchstart', handleTouch, { passive: false });
-canvas.addEventListener('touchmove', handleTouch, { passive: false });
-canvas.addEventListener('touchend', endTouch, { passive: false });
-function handleTouch(e) {
-  e.preventDefault();
-  for (const t of e.changedTouches) {
-    if (t.clientX < W * 0.55) {
-      if (!joy.active) { joy.active = true; joy.id = t.identifier; joy.ox = t.clientX; joy.oy = t.clientY; joy.dx = 0; joy.dy = 0; }
-      else if (t.identifier === joy.id) {
-        const dx = t.clientX - joy.ox, dy = t.clientY - joy.oy, m = Math.hypot(dx, dy) || 1, cap = Math.min(m, 60);
-        joy.dx = dx / m * (cap / 60); joy.dy = dy / m * (cap / 60);
-      }
-    }
-  }
-}
-function endTouch(e) {
-  for (const t of e.changedTouches) if (t.identifier === joy.id) { joy.active = false; joy.dx = 0; joy.dy = 0; }
-}
-
-function tryDash(pl) {
-  if (state !== 'playing' || !pl || pl.downed || pl.dashCd > 0) return;
-  pl.dashTimer = 0.16; pl.dashCd = pl.dashCdMax; pl.invuln = Math.max(pl.invuln, 0.2);
-  /* v0.3.1：冲刺不再清掉已有轨迹（玩家反馈原「冲刺断印」设计，改） */
-  beep(349, 0.09, 'sine', 0.04);
-}
-
-/* ---------------- 按钮与联机菜单 ---------------- */
-$('btn-start').onclick = () => startRun(false);
-els.endlessBtn.onclick = () => startRun(true);
-$('btn-chapter').onclick = () => { if (!isGuest()) beginWave(); };
-$('btn-retry').onclick = () => startRun(endless);
-$('btn-tomenu').onclick = () => location.reload();
-$('btn-pause').onclick = () => pauseGame();
-$('btn-resume').onclick = () => { show(els.pause, false); state = 'playing'; };
-$('btn-quit').onclick = () => location.reload();
-$('btn-mute').onclick = e => { muted = !muted; e.target.textContent = muted ? '×' : '♪'; };
-function pauseGame() { if (state !== 'playing' || isGuest()) return; state = 'paused'; show(els.pause, true); }
-
+/* ---------------- 联机接线 ---------------- */
 if (window.TDNet) {
-  TDNet.onStatus = s => { els.netStatus.textContent = s; };
-  $('btn-host').onclick = () => TDNet.host();
-  $('btn-join').onclick = () => TDNet.join($('room-input').value);
-  TDNet.onPeerJoin = () => {
-    if (state === 'menu') { /* 等房主开局，resetRun 会自动给客人留席 */ }
-    else if (players.length < 2 && (state === 'playing' || state === 'chapter')) addPlayer('remote');
-  };
-  TDNet.onPeerLeave = () => {
-    if (isHost()) {
-      const rp = players.find(p => p.kind === 'remote');
-      if (rp) { players = players.filter(p => p !== rp); updateP2HudVisibility(); alertText('同行者离开了', 1800); }
-    }
-  };
-}
-
-/* ---------------- 主循环 ---------------- */
-let lastTs = 0, snapTimer = 0, guestInputTimer = 0;
-function loop(ts) {
-  requestAnimationFrame(loop);
-  const dt = Math.min((ts - lastTs) / 1000 || 0, 0.05);
-  lastTs = ts;
-  if (isGuest()) {
-    cosmetic(dt);
-    guestInputTimer -= dt;
-    if (guestInputTimer <= 0) { guestInputTimer = 0.07; sendGuestInput(); }
-    render();
-    return;
-  }
-  if (state === 'playing') update(dt);
-  if (isHost() && TDNet.conn && TDNet.conn.open) {
-    snapTimer -= dt;
-    if (snapTimer <= 0) { snapTimer = 0.085; TDNet.send({ t: 'state', s: snapshot() }); }
-  }
-  render();
-}
-requestAnimationFrame(loop);
-
-function cosmetic(dt) {
-  parts = parts.filter(p => { p.t += dt; p.x += p.vx * dt; p.y += p.vy * dt; return p.t < p.life; });
-  rings = rings.filter(r => { r.t += dt * 2.4; return r.t < 1; });
-  sealFx = sealFx.filter(f => { f.t += dt * 2; return f.t < 1; });
-}
-
-function enemyTimeScale() { return slowTimer > 0 ? 0.38 : 1; }
-
-function readLocalInput(pl) {
-  let mx = 0, my = 0;
-  const hasLocal2 = players.some(p => p.kind === 'local2');
-  if (pl.kind === 'local1') {
-    if (keys.KeyW) my -= 1;
-    if (keys.KeyS) my += 1;
-    if (keys.KeyA) mx -= 1;
-    if (keys.KeyD) mx += 1;
-    if (!hasLocal2) {
-      if (keys.ArrowUp) my -= 1;
-      if (keys.ArrowDown) my += 1;
-      if (keys.ArrowLeft) mx -= 1;
-      if (keys.ArrowRight) mx += 1;
-    }
-    if (joy.active) { mx += joy.dx; my += joy.dy; }
-  } else if (pl.kind === 'local2') {
-    if (keys.ArrowUp) my -= 1;
-    if (keys.ArrowDown) my += 1;
-    if (keys.ArrowLeft) mx -= 1;
-    if (keys.ArrowRight) mx += 1;
-  }
-  return { mx, my };
-}
-
-function updatePlayer(pl, dt) {
-  if (pl.downed) {
-    pl.reviveTimer -= dt;
-    if (pl.reviveTimer <= 0) { gameOver(); }
-    return;
-  }
-  let inp;
-  if (pl.kind === 'remote') {
-    inp = TDNet.guestInput;
-    while (TDNet.guestBorrow.length) borrow(pl, TDNet.guestBorrow.shift(), null);
-    if (TDNet.guestDash) { TDNet.guestDash = false; tryDash(pl); }
-  } else {
-    inp = readLocalInput(pl);
-  }
-  let mx = inp.mx || 0, my = inp.my || 0;
-  const mm = Math.hypot(mx, my);
-  if (mm > 1) { mx /= mm; my /= mm; }
-  if (pl.kind === 'local1' && keys.Space) tryDash(pl);
-  let spd = pl.speed * (slowTimer > 0 ? 1.18 : 1);
-  if (pl.boostTimer > 0) { pl.boostTimer -= dt; spd *= 1.45; }
-  if (pl.dashTimer > 0) { pl.dashTimer -= dt; spd *= 3.1; if (pl.dashBoost && pl.dashTimer <= 0) pl.boostTimer = 0.5; }
-  pl.x = clamp(pl.x + mx * spd * dt, pl.r, W - pl.r);
-  pl.y = clamp(pl.y + my * spd * dt, pl.r, H - pl.r);
-  if (mx !== 0) pl.face = mx > 0 ? 1 : -1;
-  if (pl.dashCd > 0) pl.dashCd -= dt;
-  if (pl.invuln > 0) pl.invuln -= dt;
-  if (pl.sealBuffTimer > 0) pl.sealBuffTimer -= dt;
-  for (const k in pl.skillCd) if (pl.skillCd[k] > 0) pl.skillCd[k] -= dt;
-  if (pl.paperTimer > 0) { pl.paperTimer -= dt; pl.paperAngle += dt * 4.4; }
-  updateTrail(pl, dt);
-
-  if (pl.paperTimer > 0) {
-    for (let i = 0; i < 3; i++) {
-      const a = pl.paperAngle + i * (Math.PI * 2 / 3);
-      const bx = pl.x + Math.cos(a) * 52, by = pl.y + Math.sin(a) * 52;
-      enemies.slice().forEach(e => { if (dist2(e, { x: bx, y: by }) < (e.r + 13) * (e.r + 13) && (e.shardTick || 0) <= 0) { e.shardTick = 0.22; hurtEnemy(e, 26, pl, false); } });
-      shadows.slice().forEach(s => { if (dist2(s, { x: bx, y: by }) < (s.r + 13) * (s.r + 13) && (s.shardTick || 0) <= 0) { s.shardTick = 0.22; hurtShadow(s, 26); } });
-    }
-  }
-}
-
-function update(dt) {
-  runTime += dt;
-  const ts = enemyTimeScale();
-  if (slowTimer > 0) slowTimer -= dt;
-  if (shake > 0) shake = Math.max(0, shake - dt * 26);
-
-  for (let i = debts.length - 1; i >= 0; i--) {
-    debts[i].due -= dt;
-    if (debts[i].due <= 0) { const d = debts.splice(i, 1)[0]; spawnShadow(d.skill); }
-  }
-
-  players.slice().forEach(pl => updatePlayer(pl, dt));
-  enemies.forEach(e => { if (e.shardTick > 0) e.shardTick -= dt; });
-  shadows.forEach(s => { if (s.shardTick > 0) s.shardTick -= dt; });
-
-  if (spawnQueue.length) {
-    spawnTimer -= dt;
-    if (spawnTimer <= 0) { spawnTimer = 0.55; spawnEnemy(spawnQueue.shift()); }
-  }
-
-  const edt = dt * ts;
-  enemies.slice().forEach(e => updateEnemy(e, edt, dt));
-  shadows.slice().forEach(s => updateShadow(s, edt, dt));
-  updatePuzzle(dt);
-
-  ebullets = ebullets.filter(b => {
-    b.x += b.vx * edt; b.y += b.vy * edt; b.life -= dt;
-    if (b.life <= 0) return false;
-    const tp = nearestPlayer(b.x, b.y);
-    if (tp && tp.invuln <= 0 && dist2(b, tp) < (tp.r + 5) * (tp.r + 5)) { damagePlayer(tp, b.dmg); return false; }
-    return true;
-  });
-
-  drops = drops.filter(d => {
-    let consumed = false;
-    alivePlayers().forEach(pl => {
-      if (consumed) return;
-      const dd = Math.sqrt(dist2(d, pl));
-      if (dd < pl.magnet) { d.x += (pl.x - d.x) * dt * 7; d.y += (pl.y - d.y) * dt * 7; }
-      if (dd < pl.r + 10) {
-        if (d.kind === 'xp') { score += d.v; beep(784, 0.05, 'sine', 0.02); }
-        else { pl.hp = Math.min(pl.maxHp, pl.hp + d.v); beep(440, 0.09, 'sine', 0.04); }
-        consumed = true;
-      }
-    });
-    return !consumed;
-  });
-
-  cosmetic(dt);
-  if (waveActive && !spawnQueue.length && !enemies.length && !shadows.length) waveCleared();
-  updateHud();
-}
-
-function updateEnemy(e, edt, rawDt) {
-  if (e.boss) return updateBoss(e, edt, rawDt);
-  const tp = nearestPlayer(e.x, e.y);
-  if (!tp) return;
-  const a = Math.atan2(tp.y - e.y, tp.x - e.x);
-  e.wob += rawDt * 3;
-  if (e.twin) { /* 双生祟：彼此排斥、远远绕着人飘 */
-    const other = enemies.find(o => o.twin && o !== e);
-    let ax = Math.cos(a + Math.PI / 2) * 0.6, ay = Math.sin(a + Math.PI / 2) * 0.6;
-    if (other) {
-      const d = Math.hypot(e.x - other.x, e.y - other.y) || 1;
-      if (d < 260) { ax += (e.x - other.x) / d; ay += (e.y - other.y) / d; }
-    }
-    e.x += ax * e.speed * edt; e.y += ay * e.speed * edt;
-    e.x = clamp(e.x, 30, W - 30); e.y = clamp(e.y, 30, H - 30);
-  } else if (e.type === 'lurker') {
-    e.modeTimer -= rawDt;
-    if (e.mode === 'stalk') {
-      e.x += Math.cos(a) * e.speed * edt; e.y += Math.sin(a) * e.speed * edt;
-      if (e.modeTimer <= 0 && Math.sqrt(dist2(e, tp)) < 300) { e.mode = 'aim'; e.modeTimer = 0.6; }
-    } else if (e.mode === 'aim') {
-      if (e.modeTimer <= 0) {
-        e.mode = 'lunge'; e.modeTimer = 0.34;
-        e.lungeVx = Math.cos(a) * 540; e.lungeVy = Math.sin(a) * 540;
-        beep(587, 0.1, 'sawtooth', 0.04);
-      }
-    } else if (e.mode === 'lunge') {
-      e.x += e.lungeVx * edt; e.y += e.lungeVy * edt;
-      if (e.modeTimer <= 0) { e.mode = 'stalk'; e.modeTimer = rand(2, 3.4); }
-    }
-  } else if (e.type === 'dart') {
-    e.x += Math.cos(a + Math.sin(e.wob) * 0.5) * e.speed * edt;
-    e.y += Math.sin(a + Math.sin(e.wob) * 0.5) * e.speed * edt;
-  } else {
-    e.x += Math.cos(a) * e.speed * edt; e.y += Math.sin(a) * e.speed * edt;
-  }
-  if (tp.invuln <= 0 && dist2(e, tp) < (e.r + tp.r) * (e.r + tp.r)) {
-    damagePlayer(tp, e.dmg);
-    e.x -= Math.cos(a) * 26; e.y -= Math.sin(a) * 26;
-  }
-}
-
-function updateShadow(s, edt, rawDt) {
-  const tp = nearestPlayer(s.x, s.y);
-  if (!tp) return;
-  const a = Math.atan2(tp.y - s.y, tp.x - s.x);
-  const effDt = s.skill === 'chrono' ? rawDt : edt;
-  s.x += Math.cos(a) * s.speed * effDt; s.y += Math.sin(a) * s.speed * effDt;
-  s.castTimer -= effDt;
-  if (s.skill === 'blades') {
-    s.paperAngle += effDt * 4.4;
-    const rad = runTime < s.spinUntil ? 62 : 46;
-    for (let i = 0; i < 3; i++) {
-      const ba = s.paperAngle + i * (Math.PI * 2 / 3);
-      const bx = s.x + Math.cos(ba) * rad, by = s.y + Math.sin(ba) * rad;
-      alivePlayers().forEach(pl => {
-        if (pl.invuln <= 0 && dist2(pl, { x: bx, y: by }) < (pl.r + 12) * (pl.r + 12)) damagePlayer(pl, 14);
-      });
-    }
-  }
-  if (s.castTimer <= 0) {
-    if (s.skill === 'nova') {
-      s.castTimer = 3.4; s.telegraph = 0.7;
-      setTimeout(() => {
-        if (state !== 'playing' || !shadows.includes(s)) return;
-        ring(s.x, s.y, 130, '#ff5d7a');
-        alivePlayers().forEach(pl => { if (pl.invuln <= 0 && dist2(pl, s) < 130 * 130) damagePlayer(pl, 20); });
-      }, 700);
-    } else if (s.skill === 'chrono') {
-      s.castTimer = 4;
-      s.x += Math.cos(a) * 130; s.y += Math.sin(a) * 130;
-      burst(s.x, s.y, 8, '#8cdcff');
-    } else {
-      s.castTimer = 3.2; s.spinUntil = runTime + 1.6;
-    }
-  }
-  if (tp.invuln <= 0 && dist2(s, tp) < (s.r + tp.r) * (s.r + tp.r)) {
-    damagePlayer(tp, s.dmg);
-    s.x -= Math.cos(a) * 30; s.y -= Math.sin(a) * 30;
-  }
-}
-
-function updateBoss(e, edt, rawDt) {
-  if (e.phase === 'enter') { e.y += 86 * rawDt; if (e.y >= 112) e.phase = 'fight'; return; }
-  const tp = nearestPlayer(e.x, e.y);
-  if (!tp) return;
-  const a = Math.atan2(tp.y - e.y, tp.x - e.x);
-  e.x += Math.cos(a) * e.speed * edt; e.y += Math.sin(a) * e.speed * edt;
-  e.castTimer -= rawDt;
-  if (e.castTimer <= 0) {
-    const skill = e.skills[e.skillIdx % e.skills.length];
-    e.skillIdx++; e.castTimer = 4.2;
-    if (skill === 'nova') {
-      ring(e.x, e.y, 170, '#ff5d7a');
-      for (let i = 0; i < 14; i++) {
-        const ba = (i / 14) * Math.PI * 2;
-        ebullets.push({ x: e.x, y: e.y, vx: Math.cos(ba) * 185, vy: Math.sin(ba) * 185, dmg: 12, life: 3 });
-      }
-    } else if (skill === 'blades') {
-      e.papersUntil = runTime + 6;
-    } else if (skill === 'chrono') {
-      e.x += Math.cos(a) * 175; e.y += Math.sin(a) * 175;
-      burst(e.x, e.y, 16, '#8cdcff');
-    }
-    beep(110, 0.3, 'sawtooth', 0.05);
-  }
-  if (e.papersUntil && runTime < e.papersUntil) {
-    e.paperAngle += rawDt * 4.6;
-    for (let i = 0; i < 4; i++) {
-      const ba = e.paperAngle + i * (Math.PI / 2);
-      const bx = e.x + Math.cos(ba) * 76, by = e.y + Math.sin(ba) * 76;
-      alivePlayers().forEach(pl => { if (pl.invuln <= 0 && dist2(pl, { x: bx, y: by }) < (pl.r + 14) * (pl.r + 14)) damagePlayer(pl, 16); });
-    }
-  }
-  if (tp.invuln <= 0 && dist2(e, tp) < (e.r + tp.r) * (e.r + tp.r)) {
-    damagePlayer(tp, e.dmg);
-    tp.x -= Math.cos(a) * 34; tp.y -= Math.sin(a) * 34;
-  }
-}
-
-/* ---------------- 联机：快照与客人端 ---------------- */
-function snapshot() {
-  return {
-    st: state, sc: sceneIdx, wv: waveIdx, endless,
-    score, kills, seals, runTime: Math.floor(runTime),
-    debtN: debts.length + shadows.length,
-    chapter: { title: els.chapterTitle.textContent, text: els.chapterText.textContent },
-    end: { title: els.endTitle.textContent, stats: els.endStats.textContent },
-    pz: puzzle ? {
-      kind: puzzle.kind, label: puzzle.label || '',
-      pts: puzzle.pts || null, next: puzzle.next || 0, showNums: puzzle.kind === 'sigils' && runTime < puzzle.showUntil,
-      circles: puzzle.circles || null, standT: puzzle.standT || 0, cur: puzzle.cur === undefined ? -1 : puzzle.cur
-    } : null,
-    players: players.map(pl => ({
-      x: Math.round(pl.x), y: Math.round(pl.y), hp: Math.ceil(pl.hp), maxHp: pl.maxHp,
-      downed: pl.downed, face: pl.face, paperTimer: pl.paperTimer > 0 ? 1 : 0, paperAngle: pl.paperAngle,
-      reviveTimer: Math.ceil(pl.reviveTimer || 0),
-      trail: pl.trail.filter((_, i) => i % 2 === 0).map(p => [Math.round(p.x), Math.round(p.y)]),
-      skillCd: { nova: Math.max(0, pl.skillCd.nova), blades: Math.max(0, pl.skillCd.blades), chrono: Math.max(0, pl.skillCd.chrono) },
-      dashCd: Math.max(0, pl.dashCd), dashCdMax: pl.dashCdMax
-    })),
-    enemies: enemies.map(e => ({ x: Math.round(e.x), y: Math.round(e.y), r: e.r, hp: e.hp, maxHp: e.maxHp, type: e.type, boss: !!e.boss, twin: !!e.twin, mode: e.mode })),
-    shadows: shadows.map(s => ({ x: Math.round(s.x), y: Math.round(s.y), r: s.r, hp: s.hp, maxHp: s.maxHp, skill: s.skill, paperAngle: s.paperAngle, spinUntil: s.spinUntil, telegraph: s.telegraph })),
-    drops: drops.map(d => ({ x: Math.round(d.x), y: Math.round(d.y), kind: d.kind })),
-    ebullets: ebullets.map(b => ({ x: Math.round(b.x), y: Math.round(b.y) })),
-    sealFx: sealFx.map(f => ({ poly: f.poly, crit: f.crit, t: f.t }))
-  };
-}
-
-function ensureGuestPlayers(n) {
-  while (players.length < n) { const p = newPlayer(players.length === 0 ? 'local1' : 'remote', players.length); players.push(p); }
-  if (players.length > n) players = players.slice(0, n);
-  player = players[0];
-  updateP2HudVisibility();
-}
-
-function applySnapshot(s) {
-  const prevState = state;
-  state = s.st; sceneIdx = s.sc; waveIdx = s.wv; endless = s.endless;
-  score = s.score; kills = s.kills; seals = s.seals; runTime = s.runTime;
-  ensureGuestPlayers(s.players.length);
-  s.players.forEach((sp, i) => {
-    const pl = players[i];
-    Object.assign(pl, {
-      x: sp.x, y: sp.y, hp: sp.hp, maxHp: sp.maxHp, downed: sp.downed, face: sp.face,
-      paperTimer: sp.paperTimer, paperAngle: sp.paperAngle, reviveTimer: sp.reviveTimer,
-      skillCd: sp.skillCd, dashCd: sp.dashCd, dashCdMax: sp.dashCdMax
-    });
-    pl.trail = sp.trail.map(p => ({ x: p[0], y: p[1], age: 0 }));
-  });
-  updateHud._debtN = s.debtN;
-  enemies = s.enemies; shadows = s.shadows; drops = s.drops;
-  ebullets = s.ebullets.map(b => ({ x: b.x, y: b.y }));
-  sealFx = s.sealFx;
-  puzzle = s.pz;
-  bossRef = enemies.find(e => e.boss) || null;
-  show(els.menu, state === 'menu');
-  show(els.hud, state !== 'menu'); show(els.skills, state === 'playing');
-  if (state === 'chapter') {
-    els.chapterTitle.textContent = s.chapter.title;
-    els.chapterText.textContent = s.chapter.text + '\n（等房主进入）';
-    show(els.chapter, true);
-  } else show(els.chapter, false);
-  show(els.upgrade, state === 'upgrade');
-  if (state === 'upgrade') $('upgrade-cards').innerHTML = '<p style="opacity:.85;line-height:1.9">房主正在凝形……<br>升级对全队生效</p>';
-  if (state === 'over' || state === 'win') {
-    els.endTitle.textContent = s.end.title; els.endStats.textContent = s.end.stats;
-    show(els.end, true);
-  } else show(els.end, false);
-  if (state !== prevState && state === 'playing') show(els.chapter, false);
-  updateHud();
-}
-
-function sendGuestInput() {
-  const me = viewPl();
-  let mx = 0, my = 0;
-  if (keys.KeyW || keys.ArrowUp) my -= 1;
-  if (keys.KeyS || keys.ArrowDown) my += 1;
-  if (keys.KeyA || keys.ArrowLeft) mx -= 1;
-  if (keys.KeyD || keys.ArrowRight) mx += 1;
-  if (joy.active) { mx += joy.dx; my += joy.dy; }
-  TDNet.send({ t: 'input', mx, my });
-  void me;
-}
-
-if (window.TDNet) {
+  TDNet.onStatus = s => { $('net-status').textContent = s; };
+  $('btn-host').addEventListener('click', () => TDNet.host());
+  $('btn-join').addEventListener('click', () => TDNet.join($('room-input').value));
+  TDNet.onGuestMsg = (d, gid) => { if (d.t === 'act') doAct(d.a, gid); };
   TDNet.onMsg = d => {
-    if (isHost()) {
-      if (d.t === 'input') TDNet.guestInput = { mx: clamp(d.mx || 0, -1, 1), my: clamp(d.my || 0, -1, 1) };
-      else if (d.t === 'act') {
-        if (d.a === 'dash') TDNet.guestDash = true;
-        else TDNet.guestBorrow.push(d.a);
-      }
-    } else if (isGuest()) {
-      if (d.t === 'state') applySnapshot(d.s);
-    }
+    if (d.t === 'gs') applyState(d.G);
+    else if (d.t === 'lines') showLines(d.lines);
+    else if (d.t === 'choices') { if (d.pc.for === myId()) { dlgChoices = d.pc; renderChoices(); show($('dialog'), true); } }
   };
+  TDNet.onRoster = () => { if (isHostSide() && G && G.started && !G.ended) syncState(); };
 }
-
-/* ---------------- HUD ---------------- */
-const skillBtns = {};
-document.querySelectorAll('.skill-btn[data-skill]').forEach(b => { skillBtns[b.dataset.skill] = b; });
-function updateHud() {
-  if (!players.length) return;
-  const me = viewPl(); if (!me) return;
-  const scene = SCENES[sceneIdx % SCENES.length];
-  els.hpFill.style.width = (me.hp / me.maxHp * 100) + '%';
-  els.hpText.textContent = (me.downed ? '倒地 ' + Math.ceil(me.reviveTimer) + 's · ' : '') + Math.ceil(me.hp) + ' / ' + me.maxHp;
-  if (players.length > 1) {
-    const other = players.find(p => p !== me);
-    els.p2fill.style.width = (other.hp / other.maxHp * 100) + '%';
-    els.p2text.textContent = '同行 ' + (other.downed ? '倒地 ' + Math.ceil(other.reviveTimer) + 's' : Math.ceil(other.hp) + ' / ' + other.maxHp);
-  }
-  els.scene.textContent = (endless && sceneIdx >= SCENES.length ? '无尽 · ' : '') + scene.name;
-  if (puzzle && puzzle.label) els.wave.textContent = puzzle.label;
-  else {
-    const w = scene.waves[waveIdx];
-    els.wave.textContent = w && w.boss ? '最终讨债' : ('第 ' + (waveIdx + 1) + ' / ' + scene.waves.length + ' 波 · 余祟 ' + (enemies.length + shadows.length + spawnQueue.length));
-  }
-  els.debtCount.textContent = isGuest() ? (updateHud._debtN || 0) : (debts.length + shadows.length);
-  els.scoreCount.textContent = score;
-  for (const k in skillBtns) {
-    const cd = skillBtns[k].querySelector('.sk-cd');
-    const remain = Math.max(0, me.skillCd[k]);
-    cd.style.width = (remain / SKILL_CD[k] * 100) + '%';
-    skillBtns[k].style.opacity = remain > 0 ? 0.55 : 1;
-  }
-  const dashBtn = $('btn-dash');
-  dashBtn.querySelector('.sk-cd').style.width = (Math.max(0, me.dashCd) / (me.dashCdMax || 2.6) * 100) + '%';
-  dashBtn.style.opacity = me.dashCd > 0 ? 0.55 : 1;
-}
-
-/* ---------------- 渲染 ---------------- */
-let decor = [];
-for (let i = 0; i < 80; i++) decor.push({ x: Math.random(), y: Math.random(), r: rand(0.6, 2.2), p: rand(0, 9) });
-
-function render() {
-  const scene = SCENES[sceneIdx % SCENES.length];
-  const t = performance.now() / 1000;
-  ctx.save();
-  if (shake > 0) ctx.translate(rand(-shake, shake), rand(-shake, shake));
-  const g = ctx.createLinearGradient(0, 0, 0, H);
-  g.addColorStop(0, scene.top); g.addColorStop(1, scene.bottom);
-  ctx.fillStyle = g; ctx.fillRect(-12, -12, W + 24, H + 24);
-
-  if (scene.theme === 'house') {
-    ctx.strokeStyle = 'rgba(159,183,255,0.25)'; ctx.lineWidth = 1;
-    decor.forEach(d => {
-      const y = ((d.y + t * 0.55 * (0.5 + d.r * 0.3)) % 1) * H, x = d.x * W + y * 0.06;
-      ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x - 3, y + 13); ctx.stroke();
-    });
-  } else if (scene.theme === 'ward') {
-    decor.forEach(d => {
-      ctx.fillStyle = 'rgba(180,230,190,0.14)';
-      ctx.beginPath(); ctx.arc(d.x * W + Math.sin(t * 0.4 + d.p) * 12, d.y * H, d.r * 1.8, 0, 7); ctx.fill();
-    });
-    if (Math.sin(t * 1.7) > 0.995 || Math.sin(t * 4.3) > 0.998) { ctx.fillStyle = 'rgba(200,255,210,0.05)'; ctx.fillRect(0, 0, W, H); }
-  } else {
-    const mg = ctx.createRadialGradient(W * 0.8, H * 0.16, 8, W * 0.8, H * 0.16, 90);
-    mg.addColorStop(0, 'rgba(255,90,70,0.85)'); mg.addColorStop(1, 'rgba(255,90,70,0)');
-    ctx.fillStyle = mg; ctx.beginPath(); ctx.arc(W * 0.8, H * 0.16, 90, 0, 7); ctx.fill();
-    decor.forEach(d => {
-      const y = ((d.y - t * 0.02 * d.r) % 1 + 1) % 1 * H;
-      ctx.fillStyle = 'rgba(255,120,70,0.32)';
-      ctx.beginPath(); ctx.arc(d.x * W + Math.sin(t + d.p) * 8, y, d.r * 1.5, 0, 7); ctx.fill();
-    });
-  }
-  if (slowTimer > 0) { ctx.fillStyle = 'rgba(90,140,255,0.10)'; ctx.fillRect(-12, -12, W + 24, H + 24); }
-
-  drawPuzzle(t);
-  if (!players.length) { ctx.restore(); return; }
-
-  /* 双人轨迹：P1 朱砂，P2 青砂 */
-  players.forEach(pl => {
-    if (pl.trail.length < 2 || pl.downed) return;
-    const main = pl.idx === 0 ? '255,84,66' : '55,224,200';
-    ctx.lineJoin = 'round'; ctx.lineCap = 'round';
-    for (let pass = 0; pass < 2; pass++) {
-      ctx.beginPath();
-      pl.trail.forEach((p, i) => { if (i === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y); });
-      ctx.strokeStyle = 'rgba(' + main + (pass === 0 ? ',0.18)' : ',0.85)');
-      ctx.lineWidth = pass === 0 ? 7 : 2.6;
-      ctx.stroke();
-    }
-  });
-
-  sealFx.forEach(f => {
-    ctx.globalAlpha = (1 - f.t) * 0.5;
-    ctx.fillStyle = f.crit ? '#ffd76e' : '#ff4b3e';
-    ctx.beginPath();
-    f.poly.forEach((p, i) => { if (i === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y); });
-    ctx.closePath(); ctx.fill(); ctx.globalAlpha = 1;
-  });
-
-  drops.forEach(d => {
-    ctx.fillStyle = d.kind === 'xp' ? '#ffd76e' : '#ff7d9c';
-    ctx.save(); ctx.translate(d.x, d.y); ctx.rotate(Math.PI / 4);
-    const s = d.kind === 'xp' ? 5 : 7;
-    ctx.fillRect(-s / 2, -s / 2, s, s); ctx.restore();
-  });
-
-  enemies.forEach(e => drawEnemy(e, scene));
-  shadows.forEach(s => drawShadow(s));
-  ebullets.forEach(b => {
-    ctx.fillStyle = '#b46bff';
-    ctx.beginPath(); ctx.arc(b.x, b.y, 5.5, 0, 7); ctx.fill();
-    ctx.fillStyle = 'rgba(255,255,255,0.75)';
-    ctx.beginPath(); ctx.arc(b.x, b.y, 2, 0, 7); ctx.fill();
-  });
-
-  players.forEach(pl => drawPlayer(pl, t));
-
-  parts.forEach(p => {
-    ctx.globalAlpha = 1 - p.t / p.life; ctx.fillStyle = p.color;
-    ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 7); ctx.fill(); ctx.globalAlpha = 1;
-  });
-  rings.forEach(r => {
-    ctx.globalAlpha = 1 - r.t; ctx.strokeStyle = r.color; ctx.lineWidth = 3;
-    ctx.beginPath(); ctx.arc(r.x, r.y, r.r * r.t, 0, 7); ctx.stroke(); ctx.globalAlpha = 1;
-  });
-
-  /* 提灯视野（以本地视角玩家为心） */
-  const vp = viewPl();
-  if (vp) {
-    const flick = Math.sin(t * 11) * 5 + Math.sin(t * 23.7) * 3;
-    const lg = ctx.createRadialGradient(vp.x, vp.y, 60, vp.x, vp.y, 265 + flick);
-    lg.addColorStop(0, 'rgba(0,0,0,0)');
-    lg.addColorStop(0.72, 'rgba(0,0,0,0.18)');
-    lg.addColorStop(1, 'rgba(0,0,0,0.66)');
-    ctx.fillStyle = lg; ctx.fillRect(-12, -12, W + 24, H + 24);
-  }
-
-  if (joy.active) {
-    ctx.strokeStyle = 'rgba(255,255,255,0.4)'; ctx.lineWidth = 2;
-    ctx.beginPath(); ctx.arc(joy.ox, joy.oy, 46, 0, 7); ctx.stroke();
-    ctx.fillStyle = 'rgba(255,255,255,0.35)';
-    ctx.beginPath(); ctx.arc(joy.ox + joy.dx * 34, joy.oy + joy.dy * 34, 18, 0, 7); ctx.fill();
-  }
-  ctx.restore();
-}
-
-function drawPlayer(pl, t) {
-  if (pl.paperTimer > 0 && !pl.downed) {
-    for (let i = 0; i < 3; i++) {
-      const a = pl.paperAngle + i * (Math.PI * 2 / 3);
-      drawShard(pl.x + Math.cos(a) * 52, pl.y + Math.sin(a) * 52, '#f2ecd9');
-    }
-  }
-  if (pl.downed) {
-    ctx.save(); ctx.translate(pl.x, pl.y);
-    ctx.globalAlpha = 0.45 + Math.sin(t * 5) * 0.15;
-    ctx.fillStyle = '#9fb7ff';
-    ctx.beginPath(); ctx.arc(0, 0, pl.r, 0, 7); ctx.fill();
-    ctx.globalAlpha = 1;
-    ctx.fillStyle = '#dfe8ff'; ctx.font = 'bold 11px sans-serif'; ctx.textAlign = 'center';
-    ctx.fillText('倒地 · ' + Math.ceil(pl.reviveTimer) + 's', 0, -pl.r - 8);
-    ctx.restore();
-    return;
-  }
-  const blink = pl.invuln > 0 && Math.floor(t * 16) % 2 === 0;
-  if (blink) return;
-  ctx.fillStyle = pl.idx === 0 ? '#e9e4d8' : '#c9f4ec';
-  ctx.beginPath(); ctx.arc(pl.x, pl.y, pl.r, 0, 7); ctx.fill();
-  ctx.fillStyle = '#1a1a22';
-  ctx.beginPath(); ctx.arc(pl.x + pl.face * 5, pl.y - 2, 5.5, 0, 7); ctx.fill();
-  ctx.strokeStyle = pl.idx === 0 ? 'rgba(255,84,66,0.65)' : 'rgba(55,224,200,0.7)';
-  ctx.lineWidth = 1.6;
-  ctx.beginPath(); ctx.arc(pl.x, pl.y, pl.r + 5 + Math.sin(t * 4) * 1.5, 0, 7); ctx.stroke();
-  if (pl.idx === 1) {
-    ctx.fillStyle = '#37e0c8'; ctx.font = 'bold 10px sans-serif'; ctx.textAlign = 'center';
-    ctx.fillText('同行', pl.x, pl.y - pl.r - 8);
-  }
-}
-
-function drawPuzzle(t) {
-  if (!puzzle) return;
-  if (puzzle.kind === 'sigils' && puzzle.pts) {
-    puzzle.pts.forEach((pt, i) => {
-      const done = i < puzzle.next, isNext = i === puzzle.next;
-      ctx.save(); ctx.translate(pt.x, pt.y);
-      ctx.strokeStyle = done ? 'rgba(255,215,110,0.95)' : isNext ? 'rgba(255,120,100,0.95)' : 'rgba(200,200,220,0.5)';
-      ctx.lineWidth = 2.4;
-      ctx.beginPath(); ctx.arc(0, 0, 26 + (isNext ? Math.sin(t * 6) * 3 : 0), 0, 7); ctx.stroke();
-      ctx.rotate(Math.PI / 4);
-      ctx.strokeRect(-11, -11, 22, 22);
-      ctx.restore();
-      if (puzzle.showNums || isGuest()) {
-        ctx.fillStyle = '#ffe9a8'; ctx.font = 'bold 17px sans-serif'; ctx.textAlign = 'center';
-        ctx.fillText(puzzle.showNums ? String(i + 1) : (isNext ? '?' : ''), pt.x, pt.y + 6);
-      }
-    });
-  } else if (puzzle.kind === 'riddle' && puzzle.circles) {
-    puzzle.circles.forEach((c, i) => {
-      ctx.save();
-      ctx.strokeStyle = puzzle.cur === i ? 'rgba(255,215,110,0.95)' : 'rgba(190,200,255,0.55)';
-      ctx.lineWidth = 2.4;
-      ctx.beginPath(); ctx.arc(c.x, c.y, 46, 0, 7); ctx.stroke();
-      if (puzzle.cur === i && puzzle.standT) {
-        ctx.strokeStyle = '#ffd76e'; ctx.lineWidth = 4;
-        ctx.beginPath(); ctx.arc(c.x, c.y, 46, -Math.PI / 2, -Math.PI / 2 + (puzzle.standT / 2.2) * Math.PI * 2); ctx.stroke();
-      }
-      ctx.fillStyle = '#eef1ff'; ctx.font = 'bold 14.5px sans-serif'; ctx.textAlign = 'center';
-      const label = c.label || '';
-      for (let k = 0; k < label.length; k += 5) ctx.fillText(label.slice(k, k + 5), c.x, c.y - 4 + k / 5 * 17);
-      ctx.restore();
-    });
-  }
-}
-
-function hpBar(x, y, w, frac, color) {
-  ctx.fillStyle = 'rgba(0,0,0,0.5)'; ctx.fillRect(x - w / 2, y, w, 5);
-  ctx.fillStyle = color; ctx.fillRect(x - w / 2, y, w * clamp(frac, 0, 1), 5);
-}
-
-function drawEnemy(e, scene) {
-  if (e.boss) {
-    ctx.save(); ctx.translate(e.x, e.y);
-    ctx.fillStyle = '#12060a';
-    ctx.beginPath(); ctx.arc(0, 0, e.r, 0, 7); ctx.fill();
-    ctx.strokeStyle = '#ff5d7a'; ctx.lineWidth = 3; ctx.stroke();
-    ctx.fillStyle = '#ff8fa3';
-    ctx.beginPath(); ctx.arc(-13, -6, 6, 0, 7); ctx.arc(13, -6, 6, 0, 7); ctx.fill();
-    ctx.fillStyle = '#e9e4d8';
-    ctx.fillRect(-14, 10, 28, 3);
-    ctx.restore();
-    if (e.papersUntil && runTime < e.papersUntil) {
-      for (let i = 0; i < 4; i++) {
-        const a = e.paperAngle + i * (Math.PI / 2);
-        drawShard(e.x + Math.cos(a) * 76, e.y + Math.sin(a) * 76, '#f2ecd9');
-      }
-    }
-    hpBar(e.x, e.y - e.r - 14, 118, e.hp / e.maxHp, '#ff5d7a');
-    ctx.fillStyle = '#ffb3c1'; ctx.font = 'bold 13px sans-serif'; ctx.textAlign = 'center';
-    ctx.fillText('大讨债影 · 死去的你', e.x, e.y - e.r - 21);
-    return;
-  }
-  if (e.twin) {
-    ctx.save(); ctx.translate(e.x, e.y);
-    ctx.fillStyle = 'rgba(230,225,213,0.9)';
-    ctx.beginPath(); ctx.arc(0, 0, e.r, 0, 7); ctx.fill();
-    ctx.strokeStyle = '#37e0c8'; ctx.lineWidth = 2; ctx.setLineDash([4, 4]); ctx.stroke(); ctx.setLineDash([]);
-    ctx.fillStyle = '#14141c';
-    ctx.beginPath(); ctx.arc(-5, -3, 2.6, 0, 7); ctx.arc(5, -3, 2.6, 0, 7); ctx.fill();
-    ctx.fillStyle = '#b8fff2'; ctx.font = 'bold 10.5px sans-serif'; ctx.textAlign = 'center';
-    ctx.fillText('双生', 0, e.r + 14);
-    ctx.restore();
-    return;
-  }
-  const tp = nearestPlayer(e.x, e.y) || player || { x: e.x + 1, y: e.y };
-  ctx.save(); ctx.translate(e.x, e.y);
-  ctx.fillStyle = scene.enemy;
-  if (e.type === 'tank') {
-    ctx.fillRect(-e.r, -e.r, e.r * 2, e.r * 2);
-    ctx.strokeStyle = 'rgba(120,20,20,0.8)'; ctx.lineWidth = 2;
-    ctx.beginPath(); ctx.moveTo(-e.r, -6); ctx.lineTo(e.r, 2); ctx.moveTo(-e.r, 12); ctx.lineTo(e.r, 6); ctx.stroke();
-  } else if (e.type === 'dart') {
-    ctx.rotate(Math.atan2(tp.y - e.y, tp.x - e.x));
-    ctx.beginPath(); ctx.moveTo(e.r + 4, 0); ctx.lineTo(-e.r, -e.r * 0.7); ctx.lineTo(-e.r, e.r * 0.7); ctx.closePath(); ctx.fill();
-  } else if (e.type === 'lurker') {
-    if (e.mode === 'aim') { ctx.strokeStyle = '#ff4b3e'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(0, 0, e.r + 6, 0, 7); ctx.stroke(); }
-    ctx.beginPath(); ctx.ellipse(0, 0, e.r + 3, e.r * 0.72, 0, 0, 7); ctx.fill();
-    ctx.fillStyle = '#7a0f14';
-    ctx.beginPath(); ctx.ellipse(e.r * 0.4, 0, 5, e.r * 0.42, 0, 0, 7); ctx.fill();
-  } else {
-    ctx.beginPath(); ctx.arc(0, 0, e.r, 0, 7); ctx.fill();
-    ctx.fillStyle = 'rgba(10,10,14,0.85)';
-    ctx.beginPath(); ctx.arc(-4.5, -3, 2.6, 0, 7); ctx.arc(4.5, -3, 2.6, 0, 7); ctx.fill();
-  }
-  ctx.restore();
-  if (e.hp < e.maxHp) hpBar(e.x, e.y - e.r - 9, 30, e.hp / e.maxHp, '#ff8fa3');
-}
-
-function drawShadow(s) {
-  ctx.save(); ctx.translate(s.x, s.y);
-  ctx.fillStyle = 'rgba(14,6,12,0.94)';
-  ctx.beginPath(); ctx.arc(0, 0, s.r, 0, 7); ctx.fill();
-  ctx.strokeStyle = '#ff5d7a'; ctx.lineWidth = 2; ctx.setLineDash([5, 4]); ctx.stroke(); ctx.setLineDash([]);
-  ctx.fillStyle = '#ffd166'; ctx.font = 'bold 11px sans-serif'; ctx.textAlign = 'center';
-  ctx.fillText(SKILL_NAME[s.skill], 0, 4);
-  ctx.restore();
-  if (s.skill === 'blades') {
-    const rad = runTime < s.spinUntil ? 62 : 46;
-    for (let i = 0; i < 3; i++) {
-      const a = s.paperAngle + i * (Math.PI * 2 / 3);
-      drawShard(s.x + Math.cos(a) * rad, s.y + Math.sin(a) * rad, '#f2ecd9');
-    }
-  }
-  if (s.telegraph > 0) {
-    s.telegraph -= 0.016;
-    ctx.strokeStyle = 'rgba(255,93,122,0.8)';
-    ctx.beginPath(); ctx.arc(s.x, s.y, 130, 0, 7); ctx.stroke();
-  }
-  hpBar(s.x, s.y - s.r - 10, 36, s.hp / s.maxHp, '#ff5d7a');
-}
-
-function drawShard(x, y, color) {
-  ctx.save(); ctx.translate(x, y); ctx.rotate(performance.now() / 110);
-  ctx.fillStyle = color;
-  ctx.fillRect(-4.5, -9, 9, 18);
-  ctx.fillStyle = '#c0271f';
-  ctx.fillRect(-4.5, -9, 9, 4);
-  ctx.restore();
-}
+show($('menu'), true);
 
 </script>
 <script>
 if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
-  navigator.serviceWorker.register('sw.js').catch(function () {});
+  void 0 // offline file: no sw.catch(function () {});
 }
 </script>
 </body>

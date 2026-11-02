@@ -10,78 +10,108 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div id="app">
-  <canvas id="game"></canvas>
-
-  <!-- HUD -->
-  <div id="hud" class="hidden">
-    <div class="hud-left">
-      <div id="hpwrap"><div id="hpfill"></div><span id="hptext"></span></div>
-      <div id="p2wrap" class="hidden"><div id="p2fill"></div><span id="p2text"></span></div>
-      <div id="scene-label"></div>
-      <div id="wave-label"></div>
+<div id="app2">
+  <!-- 顶栏 -->
+  <div id="topbar" class="hidden">
+    <div id="chap-label">第一章 · 老居民楼</div>
+    <div class="top-right">
+      <span id="debt-chip" title="命债">命债 <b id="debt-n">0</b></span>
+      <span id="crew-chip" title="同行人数">1 人</span>
+      <button id="btn-note" class="mini-btn wide">笔记本</button>
+      <button id="btn-hint" class="mini-btn wide">提示</button>
+      <button id="btn-mute2" class="mini-btn">♪</button>
     </div>
-    <div class="hud-right">
-      <div id="debt-label" title="未偿命债">命债 <b id="debt-count">0</b></div>
-      <div id="score-label">时尘 <b id="score-count">0</b></div>
-      <button id="btn-mute" class="mini-btn" aria-label="静音">♪</button>
-      <button id="btn-pause" class="mini-btn" aria-label="暂停">Ⅱ</button>
-    </div>
-    <div id="debt-alert" class="hidden">它来讨债了</div>
   </div>
 
-  <!-- 技能按钮（大点击区） -->
-  <div id="skills" class="hidden">
-    <button class="skill-btn" data-skill="nova"><span class="sk-name">阴爆</span><span class="sk-key">J · 借命</span><span class="sk-cd"></span></button>
-    <button class="skill-btn" data-skill="blades"><span class="sk-name">纸人</span><span class="sk-key">K · 借命</span><span class="sk-cd"></span></button>
-    <button class="skill-btn" data-skill="chrono"><span class="sk-name">凝时</span><span class="sk-key">L · 借命</span><span class="sk-cd"></span></button>
-    <button id="btn-dash" class="skill-btn dash"><span class="sk-name">冲刺</span><span class="sk-key">空格</span><span class="sk-cd"></span></button>
+  <!-- 场景舞台 -->
+  <div id="stage" class="hidden">
+    <div id="scene"></div>
+    <div id="hotspots"></div>
+    <button id="navback" class="hidden">← 回楼道</button>
+    <div id="toast" class="hidden"></div>
+  </div>
+
+  <!-- 对话框 -->
+  <div id="dialog" class="hidden">
+    <div id="dlg-name"></div>
+    <div id="dlg-text"></div>
+    <div id="dlg-choices"></div>
+    <div id="dlg-next">▼</div>
+  </div>
+
+  <!-- 道具栏 -->
+  <div id="invbar" class="hidden"><div id="inv-items"></div><div id="inv-hint">点道具选中，再点场景使用；点已选道具看详情</div></div>
+
+  <!-- 笔记本 -->
+  <div id="notebook" class="overlay2 hidden">
+    <div class="sheet">
+      <h3>送契人的笔记本</h3>
+      <div id="note-body"></div>
+      <button class="big-btn" id="btn-note-close">合上</button>
+    </div>
+  </div>
+
+  <!-- 密码键盘 -->
+  <div id="keypad" class="overlay2 hidden">
+    <div class="sheet narrow">
+      <h3 id="kp-title">密码锁</h3>
+      <div id="kp-display">____</div>
+      <div id="kp-grid"></div>
+      <button class="big-btn ghost" id="btn-kp-cancel">放下</button>
+    </div>
+  </div>
+
+  <!-- 挂钟 -->
+  <div id="clockui" class="overlay2 hidden">
+    <div class="sheet narrow">
+      <h3>落地挂钟</h3>
+      <div id="clock-face">03:00</div>
+      <div class="clock-btns">
+        <button data-ck="h+">时 +</button><button data-ck="h-">时 −</button>
+        <button data-ck="m+">分 +5</button><button data-ck="m-">分 −5</button>
+      </div>
+      <p class="sheet-note">调好后点「上弦」——钟只认一个时刻。</p>
+      <button class="big-btn" id="btn-clock-set">上弦</button>
+      <button class="big-btn ghost" id="btn-clock-cancel">先放下</button>
+    </div>
+  </div>
+
+  <!-- 封门仪式 -->
+  <div id="sealui" class="overlay2 hidden">
+    <div class="sheet">
+      <h3>封门 · 画符</h3>
+      <p class="sheet-note" id="seal-note">用手指或鼠标，在门上画一个闭合的圈，圈住中央的契纹。影子在靠近。</p>
+      <canvas id="seal-canvas" width="520" height="360"></canvas>
+      <div id="seal-timer"></div>
+      <button class="big-btn ghost" id="btn-seal-borrow">借命稳印（+1 命债，时间与判定放宽）</button>
+      <button class="big-btn ghost" id="btn-seal-giveup">退后一步</button>
+    </div>
   </div>
 
   <!-- 主菜单 -->
   <div id="menu" class="overlay">
     <h1>明日债</h1>
-    <p class="subtitle">Tomorrow's Debt</p>
-    <p class="intro">你要把一封契，送给死去的未来的自己。<br>你没有武器，只有一支朱砂笔——绕着邪祟走满一圈，印合上，才封得住。<br>借命的咒随借随用，但借过的每一咒，讨债影都会拿来对付你。</p>
-    <button id="btn-start" class="big-btn">开始送契</button>
-    <button id="btn-endless" class="big-btn ghost hidden">无尽模式</button>
+    <p class="subtitle">Tomorrow's Debt · 恐怖悬疑解谜</p>
+    <p class="intro">一封迟到三年的契，要送进一栋老居民楼。<br>契主已经死了。债主，是未来的你。<br>调查、拼凑、解开每一道锁——卡住时可以借命，但账要还。</p>
+    <button id="btn-start" class="big-btn">开始送契 · 第一章</button>
     <div id="online-box">
       <div class="online-row">
         <button id="btn-host" class="mini-wide">建房联机</button>
         <input id="room-input" maxlength="4" placeholder="4 位房码" autocomplete="off">
         <button id="btn-join" class="mini-wide">加入房间</button>
       </div>
-      <p id="net-status">双人合作：建房把房码给同伴，或输入同伴的房码加入</p>
+      <p id="net-status">多人合作（最多 4 人）：人数越多，谜题越难——契文分着拿、闸要一起拉</p>
     </div>
-    <p class="howto">电脑：WASD 移动绕圈 · 空格冲刺 · J/K/L 借咒<br>同屏双人：开始后按 Enter 加入，P2 用方向键移动、小键盘 1/2/3 借咒、右 Shift 冲刺<br>手机：左半屏摇杆绕圈 · 右侧大按钮</p>
+    <p class="howto">点场景里的发光处调查 · 道具在底部栏 · 笔记本记着所有线索<br>同屏共玩：一台设备轮流点按即可（按 1 人难度）</p>
     <p id="best-line" class="best"></p>
   </div>
 
-  <!-- 章节卡 -->
-  <div id="chapter" class="overlay hidden">
-    <h2 id="chapter-title"></h2>
-    <p id="chapter-text"></p>
-    <button id="btn-chapter" class="big-btn">进入</button>
-  </div>
-
-  <!-- 升级三选一 -->
-  <div id="upgrade" class="overlay hidden">
-    <h2>时尘凝形 · 三选一</h2>
-    <div id="upgrade-cards"></div>
-  </div>
-
-  <!-- 结算 -->
+  <!-- 章节结算 -->
   <div id="end" class="overlay hidden">
     <h2 id="end-title"></h2>
     <p id="end-stats"></p>
-    <button id="btn-retry" class="big-btn">再来一局</button>
+    <button id="btn-again" class="big-btn">再送一程</button>
     <button id="btn-tomenu" class="big-btn ghost">回主菜单</button>
-  </div>
-
-  <div id="pause" class="overlay hidden">
-    <h2>已暂停</h2>
-    <button id="btn-resume" class="big-btn">继续</button>
-    <button id="btn-quit" class="big-btn ghost">放弃本局</button>
   </div>
 </div>
 <script src="peerjs.min.js"></script>
