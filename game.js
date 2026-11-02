@@ -748,25 +748,25 @@ const HOTSPOTS = [
     guardFail() { showLines([{ who: '', text: '卧室门锁着。锁眼是老式的——得找到这把门的钥匙。（钟，认一个时刻。）' }]); } },
   { view: 'living', id: 'sw_kitchen', x: 171, y: 290, w: 26, h: 32, label: '分闸 · 厨房', kind: 'act', onAct(actor) { toggleSwitch('kitchen', actor); } },
   /* 卧室 */
-  { view: 'bedroom', id: 'bed', x: 5, y: 265, w: 480, h: 340, label: '床', kind: 'act', onAct(actor) {
+  { view: 'bedroom', id: 'bed', x: 495, y: 322, w: 370, h: 292, label: '床', kind: 'act', onAct(actor) {
     say('', '被子叠成豆腐块。枕边放着一本相册，第一页是孙女满月的照片，背面写着：「看见了。够本了。」');
   } },
-  { view: 'bedroom', id: 'bedDrawer', x: 342, y: 300, w: 108, h: 128, label: '床头柜', kind: 'act', onAct(actor) {
+  { view: 'bedroom', id: 'bedDrawer', x: 740, y: 312, w: 105, h: 128, label: '床头柜', kind: 'act', onAct(actor) {
     if (F('bedDrawerOpen')) { say('', '抽屉开着。病历本你已经拿走了，只剩一板吃了一半的药。'); return; }
     if (has('smallkey')) {
       setF('bedDrawerOpen'); give('medical');
       say('', '小钥匙对上了。抽屉里是一本病历，和一封压在病历下面的车票底联的复印件。你收好病历。');
     } else say('', '床头柜的抽屉锁着。小锁眼，黄铜的——得有把小钥匙。');
   } },
-  { view: 'bedroom', id: 'desk', x: 570, y: 410, w: 325, h: 200, label: '书桌', kind: 'act', onAct(actor) {
+  { view: 'bedroom', id: 'desk', x: 460, y: 268, w: 205, h: 140, label: '书桌', kind: 'act', onAct(actor) {
     if (!F('ticketTaken')) { setF('ticketTaken'); give('ticket'); say('', '桌上压着一张长途车票：明早 06:40，城郊汽车站发车，座位 12。日期是明天——这张票还没过期，因为它等的明天，还没来。'); }
     else say('', '桌上还有半杯水。水面平的，像三年来没人碰过。');
   } },
-  { view: 'bedroom', id: 'wardrobe', x: 445, y: 30, w: 295, h: 520, label: '衣柜', kind: 'act', onAct(actor) {
+  { view: 'bedroom', id: 'wardrobe', x: 280, y: 40, w: 160, h: 455, label: '衣柜', kind: 'act', onAct(actor) {
     if (!F('wardOpen')) { setF('wardOpen'); say('', '衣柜门滑开。衣服按季节挂得整齐，最底层——嵌着一只保险箱。'); }
     else say('', '衣柜里是他的四季。最底层的保险箱，等着一个日子。');
   } },
-  { view: 'bedroom', id: 'safe', x: 495, y: 384, w: 153, h: 143, label: '保险箱', kind: 'act', when: () => F('wardOpen'), onAct(actor) {
+  { view: 'bedroom', id: 'safe', x: 308, y: 374, w: 122, h: 114, label: '保险箱', kind: 'act', when: () => F('wardOpen'), onAct(actor) {
     if (F('safeOpen')) { say('', '保险箱开着，空了。契和信，你都拿走了。'); return; }
     say('', '四位密码。箱体冰凉，凉得不像在屋里放了三年，像在别处放了很久。');
     offer([
@@ -774,9 +774,9 @@ const HOTSPOTS = [
       { label: '借命 · 烧穿它（+1 命债）', borrow: true, act: { k: 'borrowSafe' } }
     ], actor);
   } },
-  { view: 'bedroom', id: 'sw_bed', x: 345, y: 105, w: 75, h: 55, label: '墙上的铁盒', kind: 'act', onAct(actor) { say('', '卧室墙上的配电箱是备用闸，推上去没有反应——要合的闸不在这间屋。'); } },
+  { view: 'bedroom', id: 'sw_bed', x: 758, y: 238, w: 80, h: 60, label: '墙上的铁盒', kind: 'act', onAct(actor) { say('', '卧室墙上的配电箱是备用闸，推上去没有反应——要合的闸不在这间屋。'); } },
   { view: 'living', id: 'sw_bath', x: 171, y: 330, w: 26, h: 32, label: '分闸 · 卫浴', kind: 'act', onAct(actor) { toggleSwitch('bath', actor); } },
-  { view: 'bedroom', id: 'bwindow', x: 745, y: 15, w: 150, h: 340, label: '窗', kind: 'act', onAct(actor) {
+  { view: 'bedroom', id: 'bwindow', x: 487, y: 45, w: 165, h: 220, label: '窗', kind: 'act', onAct(actor) {
     say('', '对楼还亮着几盏灯。有一盏，在你看它的时候，灭了。');
   } }
 ];
@@ -855,8 +855,8 @@ function renderFx() {
     if (G.tvShow && G.tvShow !== closedTvShow && F('videoSeen')) { tvFull = true; html += '<div class="tv-full" id="tv-full"><img src="assets/tv.jpg" alt=""></div>'; }
   }
   if (myView === 'bedroom' && F('wardOpen')) {
-    html += '<div class="ward-open" style="' + pct(498, 380, 160, 152) + '"></div>';
-    html += '<div class="safe-box' + (F('safeOpen') ? ' open' : '') + '" style="' + pct(508, 392, 144, 126) + '"><div class="dial"></div></div>';
+    html += '<div class="ward-open" style="' + pct(300, 362, 138, 138) + '"></div>';
+    html += '<div class="safe-box' + (F('safeOpen') ? ' open' : '') + '" style="' + pct(308, 374, 122, 114) + '"><div class="dial"></div></div>';
   }
   fx.style.zIndex = tvFull ? 6 : 3;
   fx.innerHTML = html;
