@@ -1,0 +1,58 @@
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; background: #0b0e1a; overflow: hidden; }
+body { font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif; color: #eef1ff; }
+#app { position: fixed; inset: 0; }
+#game { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; }
+.hidden { display: none !important; }
+
+/* ---------- HUD ---------- */
+#hud { position: absolute; top: 0; left: 0; right: 0; display: flex; justify-content: space-between; align-items: flex-start; padding: calc(10px + env(safe-area-inset-top)) 14px 0; pointer-events: none; z-index: 5; }
+.hud-left { min-width: 180px; }
+#hpwrap { position: relative; width: 190px; max-width: 42vw; height: 20px; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.35); border-radius: 10px; overflow: hidden; }
+#hpfill { height: 100%; width: 100%; background: linear-gradient(90deg, #ff5d7a, #ffb35d); transition: width .15s; }
+#hptext { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; text-shadow: 0 1px 2px rgba(0,0,0,.6); }
+#scene-label { margin-top: 6px; font-size: 14px; font-weight: 700; letter-spacing: .08em; }
+#wave-label { font-size: 12px; opacity: .85; }
+.hud-right { display: flex; gap: 8px; align-items: center; pointer-events: auto; }
+#debt-label, #score-label { background: rgba(10,12,26,.65); border: 1px solid rgba(255,255,255,.25); border-radius: 999px; padding: 6px 12px; font-size: 13px; }
+#debt-label b { color: #ff8fa3; font-size: 16px; }
+#score-label b { color: #ffd76e; }
+.mini-btn { width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(255,255,255,.35); background: rgba(10,12,26,.65); color: #fff; font-size: 16px; cursor: pointer; }
+.mini-btn:active { transform: scale(.92); }
+#debt-alert { position: absolute; top: 64px; left: 50%; transform: translateX(-50%); background: rgba(140,10,30,.8); border: 1px solid #ff8fa3; padding: 6px 18px; border-radius: 999px; font-size: 14px; font-weight: 700; letter-spacing: .2em; animation: pulse 0.7s infinite alternate; }
+@keyframes pulse { from { opacity: .65; } to { opacity: 1; } }
+
+/* ---------- 技能按钮 ---------- */
+#skills { position: absolute; right: 12px; bottom: calc(14px + env(safe-area-inset-bottom)); display: grid; grid-template-columns: 76px 76px; gap: 10px; z-index: 5; }
+.skill-btn { position: relative; height: 64px; border-radius: 16px; border: 2px solid rgba(255,209,102,.75); background: rgba(24,18,6,.72); color: #ffe9b0; cursor: pointer; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; }
+.skill-btn .sk-name { font-size: 18px; font-weight: 800; }
+.skill-btn .sk-key { font-size: 10px; opacity: .8; }
+.skill-btn .sk-cd { position: absolute; left: 0; bottom: 0; height: 4px; width: 0%; background: #ffd166; }
+.skill-btn:active { transform: scale(.93); background: rgba(80,58,10,.85); }
+.skill-btn.dash { border-color: rgba(140,220,255,.8); background: rgba(8,26,40,.72); color: #c9efff; }
+.skill-btn.dash .sk-cd { background: #8cdcff; }
+.skill-btn.flash { animation: borrowed .35s; }
+@keyframes borrowed { 0% { box-shadow: 0 0 0 0 rgba(255,209,102,.9); } 100% { box-shadow: 0 0 0 18px rgba(255,209,102,0); } }
+
+/* ---------- 覆盖层 ---------- */
+.overlay { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 24px; background: radial-gradient(ellipse at center, rgba(16,20,44,.82), rgba(5,6,16,.94)); z-index: 10; }
+.overlay h1 { font-size: clamp(44px, 11vw, 76px); letter-spacing: .18em; font-weight: 900; background: linear-gradient(180deg, #fff2c9, #ffb35d 60%, #ff5d7a); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.overlay h2 { font-size: clamp(24px, 6vw, 36px); letter-spacing: .1em; margin-bottom: 14px; }
+.subtitle { letter-spacing: .42em; opacity: .75; margin: 6px 0 20px; font-size: 13px; }
+.intro { line-height: 1.9; font-size: 15px; opacity: .92; margin-bottom: 26px; }
+.big-btn { min-width: 220px; padding: 15px 34px; margin: 6px 0; font-size: 18px; font-weight: 800; letter-spacing: .14em; color: #1a1206; background: linear-gradient(180deg, #ffd166, #ff9f43); border: none; border-radius: 999px; cursor: pointer; box-shadow: 0 6px 22px rgba(255,159,67,.35); }
+.big-btn:active { transform: scale(.96); }
+.big-btn.ghost { background: rgba(255,255,255,.08); color: #eef1ff; border: 1px solid rgba(255,255,255,.4); box-shadow: none; }
+.howto { margin-top: 22px; font-size: 12.5px; line-height: 1.8; opacity: .65; }
+.best { margin-top: 10px; font-size: 13px; color: #ffd76e; min-height: 18px; }
+#chapter-text, #end-stats { line-height: 2; font-size: 15.5px; max-width: 520px; white-space: pre-line; }
+#upgrade-cards { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; max-width: 720px; }
+.up-card { width: 200px; min-height: 138px; padding: 18px 14px; border-radius: 18px; border: 2px solid rgba(255,255,255,.3); background: rgba(24,28,58,.9); color: #eef1ff; cursor: pointer; text-align: center; }
+.up-card:active { transform: scale(.96); border-color: #ffd166; }
+.up-card .up-name { font-size: 19px; font-weight: 800; color: #ffd76e; margin-bottom: 8px; }
+.up-card .up-desc { font-size: 13px; line-height: 1.7; opacity: .9; }
+@media (max-width: 560px) {
+  .up-card { width: 44vw; min-height: 120px; }
+  #skills { grid-template-columns: 68px 68px; }
+  .skill-btn { height: 58px; }
+}

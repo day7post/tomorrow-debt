@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0b0e1a">
+<title>明日债 · Tomorrow's Debt</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <canvas id="game"></canvas>
+
+  <!-- HUD -->
+  <div id="hud" class="hidden">
+    <div class="hud-left">
+      <div id="hpwrap"><div id="hpfill"></div><span id="hptext"></span></div>
+      <div id="scene-label"></div>
+      <div id="wave-label"></div>
+    </div>
+    <div class="hud-right">
+      <div id="debt-label" title="未偿债务">债 <b id="debt-count">0</b></div>
+      <div id="score-label">时尘 <b id="score-count">0</b></div>
+      <button id="btn-mute" class="mini-btn" aria-label="静音">♪</button>
+      <button id="btn-pause" class="mini-btn" aria-label="暂停">Ⅱ</button>
+    </div>
+    <div id="debt-alert" class="hidden">讨债影将至</div>
+  </div>
+
+  <!-- 技能按钮（大点击区） -->
+  <div id="skills" class="hidden">
+    <button class="skill-btn" data-skill="nova"><span class="sk-name">星爆</span><span class="sk-key">J · 借债</span><span class="sk-cd"></span></button>
+    <button class="skill-btn" data-skill="blades"><span class="sk-name">环刃</span><span class="sk-key">K · 借债</span><span class="sk-cd"></span></button>
+    <button class="skill-btn" data-skill="chrono"><span class="sk-name">时缓</span><span class="sk-key">L · 借债</span><span class="sk-cd"></span></button>
+    <button id="btn-dash" class="skill-btn dash"><span class="sk-name">冲刺</span><span class="sk-key">空格</span><span class="sk-cd"></span></button>
+  </div>
+
+  <!-- 主菜单 -->
+  <div id="menu" class="overlay">
+    <h1>明日债</h1>
+    <p class="subtitle">Tomorrow's Debt</p>
+    <p class="intro">你向未来的自己借力量打怪。<br>借过的每一招，稍后都会由「讨债影」拿来打你。<br>全程借得越少，最终的债主就越弱。</p>
+    <button id="btn-start" class="big-btn">开始送契</button>
+    <button id="btn-endless" class="big-btn ghost hidden">无尽模式</button>
+    <p class="howto">电脑：WASD 移动 · 空格冲刺 · J/K/L 借技能<br>手机：左半屏摇杆 · 右侧大按钮</p>
+    <p id="best-line" class="best"></p>
+  </div>
+
+  <!-- 章节卡 -->
+  <div id="chapter" class="overlay hidden">
+    <h2 id="chapter-title"></h2>
+    <p id="chapter-text"></p>
+    <button id="btn-chapter" class="big-btn">进入</button>
+  </div>
+
+  <!-- 升级三选一 -->
+  <div id="upgrade" class="overlay hidden">
+    <h2>时尘凝形 · 三选一</h2>
+    <div id="upgrade-cards"></div>
+  </div>
+
+  <!-- 结算 -->
+  <div id="end" class="overlay hidden">
+    <h2 id="end-title"></h2>
+    <p id="end-stats"></p>
+    <button id="btn-retry" class="big-btn">再来一局</button>
+    <button id="btn-tomenu" class="big-btn ghost">回主菜单</button>
+  </div>
+
+  <div id="pause" class="overlay hidden">
+    <h2>已暂停</h2>
+    <button id="btn-resume" class="big-btn">继续</button>
+    <button id="btn-quit" class="big-btn ghost">放弃本局</button>
+  </div>
+</div>
+<script src="game.js"></script>
+<script>
+if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+  navigator.serviceWorker.register('sw.js').catch(function () {});
+}
+</script>
+</body>
+</html>
