@@ -17,6 +17,7 @@
   <div id="hud" class="hidden">
     <div class="hud-left">
       <div id="hpwrap"><div id="hpfill"></div><span id="hptext"></span></div>
+      <div id="p2wrap" class="hidden"><div id="p2fill"></div><span id="p2text"></span></div>
       <div id="scene-label"></div>
       <div id="wave-label"></div>
     </div>
@@ -44,7 +45,15 @@
     <p class="intro">你要把一封契，送给死去的未来的自己。<br>你没有武器，只有一支朱砂笔——绕着邪祟走满一圈，印合上，才封得住。<br>借命的咒随借随用，但借过的每一咒，讨债影都会拿来对付你。</p>
     <button id="btn-start" class="big-btn">开始送契</button>
     <button id="btn-endless" class="big-btn ghost hidden">无尽模式</button>
-    <p class="howto">电脑：WASD 移动绕圈 · 空格冲刺（会断印）· J/K/L 借咒<br>手机：左半屏摇杆绕圈 · 右侧大按钮</p>
+    <div id="online-box">
+      <div class="online-row">
+        <button id="btn-host" class="mini-wide">建房联机</button>
+        <input id="room-input" maxlength="4" placeholder="4 位房码" autocomplete="off">
+        <button id="btn-join" class="mini-wide">加入房间</button>
+      </div>
+      <p id="net-status">双人合作：建房把房码给同伴，或输入同伴的房码加入</p>
+    </div>
+    <p class="howto">电脑：WASD 移动绕圈 · 空格冲刺（会断印）· J/K/L 借咒<br>同屏双人：开始后按 Enter 加入，P2 用方向键移动、小键盘 1/2/3 借咒、右 Shift 冲刺<br>手机：左半屏摇杆绕圈 · 右侧大按钮</p>
     <p id="best-line" class="best"></p>
   </div>
 
@@ -75,6 +84,8 @@
     <button id="btn-quit" class="big-btn ghost">放弃本局</button>
   </div>
 </div>
+<script src="peerjs.min.js"></script>
+<script src="net.js"></script>
 <script src="game.js"></script>
 <script>
 if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {

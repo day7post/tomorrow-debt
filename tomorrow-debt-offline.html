@@ -21,6 +21,15 @@ body { font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif
 #hpwrap { position: relative; width: 190px; max-width: 42vw; height: 20px; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.35); border-radius: 10px; overflow: hidden; }
 #hpfill { height: 100%; width: 100%; background: linear-gradient(90deg, #ff5d7a, #ffb35d); transition: width .15s; }
 #hptext { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; text-shadow: 0 1px 2px rgba(0,0,0,.6); }
+#p2wrap { position: relative; width: 150px; max-width: 34vw; height: 15px; margin-top: 5px; background: rgba(255,255,255,.10); border: 1px solid rgba(80,230,205,.5); border-radius: 8px; overflow: hidden; }
+#p2fill { height: 100%; width: 100%; background: linear-gradient(90deg, #2bd9b8, #37a0e0); transition: width .15s; }
+#p2text { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; text-shadow: 0 1px 2px rgba(0,0,0,.6); }
+#online-box { margin-top: 14px; }
+.online-row { display: flex; gap: 8px; justify-content: center; align-items: center; flex-wrap: wrap; }
+.mini-wide { padding: 11px 18px; font-size: 14.5px; font-weight: 700; border-radius: 999px; border: 1px solid rgba(80,230,205,.7); background: rgba(10,40,38,.75); color: #b8fff2; cursor: pointer; }
+.mini-wide:active { transform: scale(.95); }
+#room-input { width: 104px; padding: 11px 8px; font-size: 15px; text-align: center; letter-spacing: .2em; text-transform: uppercase; border-radius: 999px; border: 1px solid rgba(255,255,255,.4); background: rgba(255,255,255,.08); color: #fff; outline: none; }
+#net-status { margin-top: 9px; font-size: 12.5px; color: #8fe3d0; min-height: 17px; }
 #scene-label { margin-top: 6px; font-size: 14px; font-weight: 700; letter-spacing: .08em; }
 #wave-label { font-size: 12px; opacity: .85; }
 .hud-right { display: flex; gap: 8px; align-items: center; pointer-events: auto; }
@@ -77,6 +86,7 @@ body { font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif
   <div id="hud" class="hidden">
     <div class="hud-left">
       <div id="hpwrap"><div id="hpfill"></div><span id="hptext"></span></div>
+      <div id="p2wrap" class="hidden"><div id="p2fill"></div><span id="p2text"></span></div>
       <div id="scene-label"></div>
       <div id="wave-label"></div>
     </div>
@@ -104,7 +114,15 @@ body { font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif
     <p class="intro">你要把一封契，送给死去的未来的自己。<br>你没有武器，只有一支朱砂笔——绕着邪祟走满一圈，印合上，才封得住。<br>借命的咒随借随用，但借过的每一咒，讨债影都会拿来对付你。</p>
     <button id="btn-start" class="big-btn">开始送契</button>
     <button id="btn-endless" class="big-btn ghost hidden">无尽模式</button>
-    <p class="howto">电脑：WASD 移动绕圈 · 空格冲刺（会断印）· J/K/L 借咒<br>手机：左半屏摇杆绕圈 · 右侧大按钮</p>
+    <div id="online-box">
+      <div class="online-row">
+        <button id="btn-host" class="mini-wide">建房联机</button>
+        <input id="room-input" maxlength="4" placeholder="4 位房码" autocomplete="off">
+        <button id="btn-join" class="mini-wide">加入房间</button>
+      </div>
+      <p id="net-status">双人合作：建房把房码给同伴，或输入同伴的房码加入</p>
+    </div>
+    <p class="howto">电脑：WASD 移动绕圈 · 空格冲刺（会断印）· J/K/L 借咒<br>同屏双人：开始后按 Enter 加入，P2 用方向键移动、小键盘 1/2/3 借咒、右 Shift 冲刺<br>手机：左半屏摇杆绕圈 · 右侧大按钮</p>
     <p id="best-line" class="best"></p>
   </div>
 
@@ -136,14 +154,119 @@ body { font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif
   </div>
 </div>
 <script>
+(()=>{function e(e,t,n,r){Object.defineProperty(e,t,{get:n,set:r,enumerable:!0,configurable:!0})}function t(e){return e&&e.__esModule?e.default:e}class n{constructor(){this.chunkedMTU=16300,this._dataCount=1,this.chunk=e=>{let t=[],n=e.byteLength,r=Math.ceil(n/this.chunkedMTU),i=0,o=0;for(;o<n;){let s=Math.min(n,o+this.chunkedMTU),a=e.slice(o,s),c={__peerData:this._dataCount,n:i,data:a,total:r};t.push(c),o=s,i++}return this._dataCount++,t}}}class r{append_buffer(e){this.flush(),this._parts.push(e)}append(e){this._pieces.push(e)}flush(){if(this._pieces.length>0){let e=new Uint8Array(this._pieces);this._parts.push(e),this._pieces=[]}}toArrayBuffer(){let e=[];for(let t of this._parts)e.push(t);return function(e){let t=0;for(let n of e)t+=n.byteLength;let n=new Uint8Array(t),r=0;for(let t of e){let e=new Uint8Array(t.buffer,t.byteOffset,t.byteLength);n.set(e,r),r+=t.byteLength}return n}(e).buffer}constructor(){this.encoder=new TextEncoder,this._pieces=[],this._parts=[]}}function i(e){return new s(e).unpack()}function o(e){let t=new a,n=t.pack(e);return n instanceof Promise?n.then(()=>t.getBuffer()):t.getBuffer()}class s{unpack(){let e;let t=this.unpack_uint8();if(t<128)return t;if((224^t)<32)return(224^t)-32;if((e=160^t)<=15)return this.unpack_raw(e);if((e=176^t)<=15)return this.unpack_string(e);if((e=144^t)<=15)return this.unpack_array(e);if((e=128^t)<=15)return this.unpack_map(e);switch(t){case 192:return null;case 193:case 212:case 213:case 214:case 215:return;case 194:return!1;case 195:return!0;case 202:return this.unpack_float();case 203:return this.unpack_double();case 204:return this.unpack_uint8();case 205:return this.unpack_uint16();case 206:return this.unpack_uint32();case 207:return this.unpack_uint64();case 208:return this.unpack_int8();case 209:return this.unpack_int16();case 210:return this.unpack_int32();case 211:return this.unpack_int64();case 216:return e=this.unpack_uint16(),this.unpack_string(e);case 217:return e=this.unpack_uint32(),this.unpack_string(e);case 218:return e=this.unpack_uint16(),this.unpack_raw(e);case 219:return e=this.unpack_uint32(),this.unpack_raw(e);case 220:return e=this.unpack_uint16(),this.unpack_array(e);case 221:return e=this.unpack_uint32(),this.unpack_array(e);case 222:return e=this.unpack_uint16(),this.unpack_map(e);case 223:return e=this.unpack_uint32(),this.unpack_map(e)}}unpack_uint8(){let e=255&this.dataView[this.index];return this.index++,e}unpack_uint16(){let e=this.read(2),t=(255&e[0])*256+(255&e[1]);return this.index+=2,t}unpack_uint32(){let e=this.read(4),t=((256*e[0]+e[1])*256+e[2])*256+e[3];return this.index+=4,t}unpack_uint64(){let e=this.read(8),t=((((((256*e[0]+e[1])*256+e[2])*256+e[3])*256+e[4])*256+e[5])*256+e[6])*256+e[7];return this.index+=8,t}unpack_int8(){let e=this.unpack_uint8();return e<128?e:e-256}unpack_int16(){let e=this.unpack_uint16();return e<32768?e:e-65536}unpack_int32(){let e=this.unpack_uint32();return e<2147483648?e:e-4294967296}unpack_int64(){let e=this.unpack_uint64();return e<0x7fffffffffffffff?e:e-18446744073709552e3}unpack_raw(e){if(this.length<this.index+e)throw Error(`BinaryPackFailure: index is out of range ${this.index} ${e} ${this.length}`);let t=this.dataBuffer.slice(this.index,this.index+e);return this.index+=e,t}unpack_string(e){let t,n;let r=this.read(e),i=0,o="";for(;i<e;)(t=r[i])<160?(n=t,i++):(192^t)<32?(n=(31&t)<<6|63&r[i+1],i+=2):(224^t)<16?(n=(15&t)<<12|(63&r[i+1])<<6|63&r[i+2],i+=3):(n=(7&t)<<18|(63&r[i+1])<<12|(63&r[i+2])<<6|63&r[i+3],i+=4),o+=String.fromCodePoint(n);return this.index+=e,o}unpack_array(e){let t=Array(e);for(let n=0;n<e;n++)t[n]=this.unpack();return t}unpack_map(e){let t={};for(let n=0;n<e;n++)t[this.unpack()]=this.unpack();return t}unpack_float(){let e=this.unpack_uint32();return(0==e>>31?1:-1)*(8388607&e|8388608)*2**((e>>23&255)-127-23)}unpack_double(){let e=this.unpack_uint32(),t=this.unpack_uint32(),n=(e>>20&2047)-1023;return(0==e>>31?1:-1)*((1048575&e|1048576)*2**(n-20)+t*2**(n-52))}read(e){let t=this.index;if(t+e<=this.length)return this.dataView.subarray(t,t+e);throw Error("BinaryPackFailure: read index out of range")}constructor(e){this.index=0,this.dataBuffer=e,this.dataView=new Uint8Array(this.dataBuffer),this.length=this.dataBuffer.byteLength}}class a{getBuffer(){return this._bufferBuilder.toArrayBuffer()}pack(e){if("string"==typeof e)this.pack_string(e);else if("number"==typeof e)Math.floor(e)===e?this.pack_integer(e):this.pack_double(e);else if("boolean"==typeof e)!0===e?this._bufferBuilder.append(195):!1===e&&this._bufferBuilder.append(194);else if(void 0===e)this._bufferBuilder.append(192);else if("object"==typeof e){if(null===e)this._bufferBuilder.append(192);else{let t=e.constructor;if(e instanceof Array){let t=this.pack_array(e);if(t instanceof Promise)return t.then(()=>this._bufferBuilder.flush())}else if(e instanceof ArrayBuffer)this.pack_bin(new Uint8Array(e));else if("BYTES_PER_ELEMENT"in e)this.pack_bin(new Uint8Array(e.buffer,e.byteOffset,e.byteLength));else if(e instanceof Date)this.pack_string(e.toString());else if(e instanceof Blob)return e.arrayBuffer().then(e=>{this.pack_bin(new Uint8Array(e)),this._bufferBuilder.flush()});else if(t==Object||t.toString().startsWith("class")){let t=this.pack_object(e);if(t instanceof Promise)return t.then(()=>this._bufferBuilder.flush())}else throw Error(`Type "${t.toString()}" not yet supported`)}}else throw Error(`Type "${typeof e}" not yet supported`);this._bufferBuilder.flush()}pack_bin(e){let t=e.length;if(t<=15)this.pack_uint8(160+t);else if(t<=65535)this._bufferBuilder.append(218),this.pack_uint16(t);else if(t<=4294967295)this._bufferBuilder.append(219),this.pack_uint32(t);else throw Error("Invalid length");this._bufferBuilder.append_buffer(e)}pack_string(e){let t=this._textEncoder.encode(e),n=t.length;if(n<=15)this.pack_uint8(176+n);else if(n<=65535)this._bufferBuilder.append(216),this.pack_uint16(n);else if(n<=4294967295)this._bufferBuilder.append(217),this.pack_uint32(n);else throw Error("Invalid length");this._bufferBuilder.append_buffer(t)}pack_array(e){let t=e.length;if(t<=15)this.pack_uint8(144+t);else if(t<=65535)this._bufferBuilder.append(220),this.pack_uint16(t);else if(t<=4294967295)this._bufferBuilder.append(221),this.pack_uint32(t);else throw Error("Invalid length");let n=r=>{if(r<t){let t=this.pack(e[r]);return t instanceof Promise?t.then(()=>n(r+1)):n(r+1)}};return n(0)}pack_integer(e){if(e>=-32&&e<=127)this._bufferBuilder.append(255&e);else if(e>=0&&e<=255)this._bufferBuilder.append(204),this.pack_uint8(e);else if(e>=-128&&e<=127)this._bufferBuilder.append(208),this.pack_int8(e);else if(e>=0&&e<=65535)this._bufferBuilder.append(205),this.pack_uint16(e);else if(e>=-32768&&e<=32767)this._bufferBuilder.append(209),this.pack_int16(e);else if(e>=0&&e<=4294967295)this._bufferBuilder.append(206),this.pack_uint32(e);else if(e>=-2147483648&&e<=2147483647)this._bufferBuilder.append(210),this.pack_int32(e);else if(e>=-0x8000000000000000&&e<=0x7fffffffffffffff)this._bufferBuilder.append(211),this.pack_int64(e);else if(e>=0&&e<=18446744073709552e3)this._bufferBuilder.append(207),this.pack_uint64(e);else throw Error("Invalid integer")}pack_double(e){let t=0;e<0&&(t=1,e=-e);let n=Math.floor(Math.log(e)/Math.LN2),r=Math.floor((e/2**n-1)*4503599627370496),i=t<<31|n+1023<<20|r/4294967296&1048575;this._bufferBuilder.append(203),this.pack_int32(i),this.pack_int32(r%4294967296)}pack_object(e){let t=Object.keys(e),n=t.length;if(n<=15)this.pack_uint8(128+n);else if(n<=65535)this._bufferBuilder.append(222),this.pack_uint16(n);else if(n<=4294967295)this._bufferBuilder.append(223),this.pack_uint32(n);else throw Error("Invalid length");let r=n=>{if(n<t.length){let i=t[n];if(e.hasOwnProperty(i)){this.pack(i);let t=this.pack(e[i]);if(t instanceof Promise)return t.then(()=>r(n+1))}return r(n+1)}};return r(0)}pack_uint8(e){this._bufferBuilder.append(e)}pack_uint16(e){this._bufferBuilder.append(e>>8),this._bufferBuilder.append(255&e)}pack_uint32(e){let t=4294967295&e;this._bufferBuilder.append((4278190080&t)>>>24),this._bufferBuilder.append((16711680&t)>>>16),this._bufferBuilder.append((65280&t)>>>8),this._bufferBuilder.append(255&t)}pack_uint64(e){let t=e/4294967296,n=e%4294967296;this._bufferBuilder.append((4278190080&t)>>>24),this._bufferBuilder.append((16711680&t)>>>16),this._bufferBuilder.append((65280&t)>>>8),this._bufferBuilder.append(255&t),this._bufferBuilder.append((4278190080&n)>>>24),this._bufferBuilder.append((16711680&n)>>>16),this._bufferBuilder.append((65280&n)>>>8),this._bufferBuilder.append(255&n)}pack_int8(e){this._bufferBuilder.append(255&e)}pack_int16(e){this._bufferBuilder.append((65280&e)>>8),this._bufferBuilder.append(255&e)}pack_int32(e){this._bufferBuilder.append(e>>>24&255),this._bufferBuilder.append((16711680&e)>>>16),this._bufferBuilder.append((65280&e)>>>8),this._bufferBuilder.append(255&e)}pack_int64(e){let t=Math.floor(e/4294967296),n=e%4294967296;this._bufferBuilder.append((4278190080&t)>>>24),this._bufferBuilder.append((16711680&t)>>>16),this._bufferBuilder.append((65280&t)>>>8),this._bufferBuilder.append(255&t),this._bufferBuilder.append((4278190080&n)>>>24),this._bufferBuilder.append((16711680&n)>>>16),this._bufferBuilder.append((65280&n)>>>8),this._bufferBuilder.append(255&n)}constructor(){this._bufferBuilder=new r,this._textEncoder=new TextEncoder}}let c=!0,l=!0;function p(e,t,n){let r=e.match(t);return r&&r.length>=n&&parseInt(r[n],10)}function d(e,t,n){if(!e.RTCPeerConnection)return;let r=e.RTCPeerConnection.prototype,i=r.addEventListener;r.addEventListener=function(e,r){if(e!==t)return i.apply(this,arguments);let o=e=>{let t=n(e);t&&(r.handleEvent?r.handleEvent(t):r(t))};return this._eventMap=this._eventMap||{},this._eventMap[t]||(this._eventMap[t]=new Map),this._eventMap[t].set(r,o),i.apply(this,[e,o])};let o=r.removeEventListener;r.removeEventListener=function(e,n){if(e!==t||!this._eventMap||!this._eventMap[t]||!this._eventMap[t].has(n))return o.apply(this,arguments);let r=this._eventMap[t].get(n);return this._eventMap[t].delete(n),0===this._eventMap[t].size&&delete this._eventMap[t],0===Object.keys(this._eventMap).length&&delete this._eventMap,o.apply(this,[e,r])},Object.defineProperty(r,"on"+t,{get(){return this["_on"+t]},set(e){this["_on"+t]&&(this.removeEventListener(t,this["_on"+t]),delete this["_on"+t]),e&&this.addEventListener(t,this["_on"+t]=e)},enumerable:!0,configurable:!0})}function h(e){return"boolean"!=typeof e?Error("Argument type: "+typeof e+". Please use a boolean."):(c=e,e?"adapter.js logging disabled":"adapter.js logging enabled")}function u(e){return"boolean"!=typeof e?Error("Argument type: "+typeof e+". Please use a boolean."):(l=!e,"adapter.js deprecation warnings "+(e?"disabled":"enabled"))}function f(){"object"!=typeof window||c||"undefined"==typeof console||"function"!=typeof console.log||console.log.apply(console,arguments)}function m(e,t){l&&console.warn(e+" is deprecated, please use "+t+" instead.")}function g(e){return"[object Object]"===Object.prototype.toString.call(e)}function y(e,t,n){let r=n?"outbound-rtp":"inbound-rtp",i=new Map;if(null===t)return i;let o=[];return e.forEach(e=>{"track"===e.type&&e.trackIdentifier===t.id&&o.push(e)}),o.forEach(t=>{e.forEach(n=>{n.type===r&&n.trackId===t.id&&function e(t,n,r){!n||r.has(n.id)||(r.set(n.id,n),Object.keys(n).forEach(i=>{i.endsWith("Id")?e(t,t.get(n[i]),r):i.endsWith("Ids")&&n[i].forEach(n=>{e(t,t.get(n),r)})}))}(e,n,i)})}),i}var _,C,b,v,k,T,S,R,P,w,E,D,x,I,M,O,j={};function L(e,t){let n=e&&e.navigator;if(!n.mediaDevices)return;let r=function(e){if("object"!=typeof e||e.mandatory||e.optional)return e;let t={};return Object.keys(e).forEach(n=>{if("require"===n||"advanced"===n||"mediaSource"===n)return;let r="object"==typeof e[n]?e[n]:{ideal:e[n]};void 0!==r.exact&&"number"==typeof r.exact&&(r.min=r.max=r.exact);let i=function(e,t){return e?e+t.charAt(0).toUpperCase()+t.slice(1):"deviceId"===t?"sourceId":t};if(void 0!==r.ideal){t.optional=t.optional||[];let e={};"number"==typeof r.ideal?(e[i("min",n)]=r.ideal,t.optional.push(e),(e={})[i("max",n)]=r.ideal):e[i("",n)]=r.ideal,t.optional.push(e)}void 0!==r.exact&&"number"!=typeof r.exact?(t.mandatory=t.mandatory||{},t.mandatory[i("",n)]=r.exact):["min","max"].forEach(e=>{void 0!==r[e]&&(t.mandatory=t.mandatory||{},t.mandatory[i(e,n)]=r[e])})}),e.advanced&&(t.optional=(t.optional||[]).concat(e.advanced)),t},i=function(e,i){if(t.version>=61)return i(e);if((e=JSON.parse(JSON.stringify(e)))&&"object"==typeof e.audio){let t=function(e,t,n){t in e&&!(n in e)&&(e[n]=e[t],delete e[t])};t((e=JSON.parse(JSON.stringify(e))).audio,"autoGainControl","googAutoGainControl"),t(e.audio,"noiseSuppression","googNoiseSuppression"),e.audio=r(e.audio)}if(e&&"object"==typeof e.video){let o=e.video.facingMode;o=o&&("object"==typeof o?o:{ideal:o});let s=t.version<66;if(o&&("user"===o.exact||"environment"===o.exact||"user"===o.ideal||"environment"===o.ideal)&&!(n.mediaDevices.getSupportedConstraints&&n.mediaDevices.getSupportedConstraints().facingMode&&!s)){let t;if(delete e.video.facingMode,"environment"===o.exact||"environment"===o.ideal?t=["back","rear"]:("user"===o.exact||"user"===o.ideal)&&(t=["front"]),t)return n.mediaDevices.enumerateDevices().then(n=>{let s=(n=n.filter(e=>"videoinput"===e.kind)).find(e=>t.some(t=>e.label.toLowerCase().includes(t)));return!s&&n.length&&t.includes("back")&&(s=n[n.length-1]),s&&(e.video.deviceId=o.exact?{exact:s.deviceId}:{ideal:s.deviceId}),e.video=r(e.video),f("chrome: "+JSON.stringify(e)),i(e)})}e.video=r(e.video)}return f("chrome: "+JSON.stringify(e)),i(e)},o=function(e){return t.version>=64?e:{name:({PermissionDeniedError:"NotAllowedError",PermissionDismissedError:"NotAllowedError",InvalidStateError:"NotAllowedError",DevicesNotFoundError:"NotFoundError",ConstraintNotSatisfiedError:"OverconstrainedError",TrackStartError:"NotReadableError",MediaDeviceFailedDueToShutdown:"NotAllowedError",MediaDeviceKillSwitchOn:"NotAllowedError",TabCaptureError:"AbortError",ScreenCaptureError:"AbortError",DeviceCaptureError:"AbortError"})[e.name]||e.name,message:e.message,constraint:e.constraint||e.constraintName,toString(){return this.name+(this.message&&": ")+this.message}}};if(n.getUserMedia=(function(e,t,r){i(e,e=>{n.webkitGetUserMedia(e,t,e=>{r&&r(o(e))})})}).bind(n),n.mediaDevices.getUserMedia){let e=n.mediaDevices.getUserMedia.bind(n.mediaDevices);n.mediaDevices.getUserMedia=function(t){return i(t,t=>e(t).then(e=>{if(t.audio&&!e.getAudioTracks().length||t.video&&!e.getVideoTracks().length)throw e.getTracks().forEach(e=>{e.stop()}),new DOMException("","NotFoundError");return e},e=>Promise.reject(o(e))))}}}function A(e){e.MediaStream=e.MediaStream||e.webkitMediaStream}function B(e){if("object"!=typeof e||!e.RTCPeerConnection||"ontrack"in e.RTCPeerConnection.prototype)d(e,"track",e=>(e.transceiver||Object.defineProperty(e,"transceiver",{value:{receiver:e.receiver}}),e));else{Object.defineProperty(e.RTCPeerConnection.prototype,"ontrack",{get(){return this._ontrack},set(e){this._ontrack&&this.removeEventListener("track",this._ontrack),this.addEventListener("track",this._ontrack=e)},enumerable:!0,configurable:!0});let t=e.RTCPeerConnection.prototype.setRemoteDescription;e.RTCPeerConnection.prototype.setRemoteDescription=function(){return this._ontrackpoly||(this._ontrackpoly=t=>{t.stream.addEventListener("addtrack",n=>{let r;r=e.RTCPeerConnection.prototype.getReceivers?this.getReceivers().find(e=>e.track&&e.track.id===n.track.id):{track:n.track};let i=new Event("track");i.track=n.track,i.receiver=r,i.transceiver={receiver:r},i.streams=[t.stream],this.dispatchEvent(i)}),t.stream.getTracks().forEach(n=>{let r;r=e.RTCPeerConnection.prototype.getReceivers?this.getReceivers().find(e=>e.track&&e.track.id===n.id):{track:n};let i=new Event("track");i.track=n,i.receiver=r,i.transceiver={receiver:r},i.streams=[t.stream],this.dispatchEvent(i)})},this.addEventListener("addstream",this._ontrackpoly)),t.apply(this,arguments)}}}function F(e){if("object"==typeof e&&e.RTCPeerConnection&&!("getSenders"in e.RTCPeerConnection.prototype)&&"createDTMFSender"in e.RTCPeerConnection.prototype){let t=function(e,t){return{track:t,get dtmf(){return void 0===this._dtmf&&("audio"===t.kind?this._dtmf=e.createDTMFSender(t):this._dtmf=null),this._dtmf},_pc:e}};if(!e.RTCPeerConnection.prototype.getSenders){e.RTCPeerConnection.prototype.getSenders=function(){return this._senders=this._senders||[],this._senders.slice()};let n=e.RTCPeerConnection.prototype.addTrack;e.RTCPeerConnection.prototype.addTrack=function(e,r){let i=n.apply(this,arguments);return i||(i=t(this,e),this._senders.push(i)),i};let r=e.RTCPeerConnection.prototype.removeTrack;e.RTCPeerConnection.prototype.removeTrack=function(e){r.apply(this,arguments);let t=this._senders.indexOf(e);-1!==t&&this._senders.splice(t,1)}}let n=e.RTCPeerConnection.prototype.addStream;e.RTCPeerConnection.prototype.addStream=function(e){this._senders=this._senders||[],n.apply(this,[e]),e.getTracks().forEach(e=>{this._senders.push(t(this,e))})};let r=e.RTCPeerConnection.prototype.removeStream;e.RTCPeerConnection.prototype.removeStream=function(e){this._senders=this._senders||[],r.apply(this,[e]),e.getTracks().forEach(e=>{let t=this._senders.find(t=>t.track===e);t&&this._senders.splice(this._senders.indexOf(t),1)})}}else if("object"==typeof e&&e.RTCPeerConnection&&"getSenders"in e.RTCPeerConnection.prototype&&"createDTMFSender"in e.RTCPeerConnection.prototype&&e.RTCRtpSender&&!("dtmf"in e.RTCRtpSender.prototype)){let t=e.RTCPeerConnection.prototype.getSenders;e.RTCPeerConnection.prototype.getSenders=function(){let e=t.apply(this,[]);return e.forEach(e=>e._pc=this),e},Object.defineProperty(e.RTCRtpSender.prototype,"dtmf",{get(){return void 0===this._dtmf&&("audio"===this.track.kind?this._dtmf=this._pc.createDTMFSender(this.track):this._dtmf=null),this._dtmf}})}}function U(e){if(!("object"==typeof e&&e.RTCPeerConnection&&e.RTCRtpSender&&e.RTCRtpReceiver))return;if(!("getStats"in e.RTCRtpSender.prototype)){let t=e.RTCPeerConnection.prototype.getSenders;t&&(e.RTCPeerConnection.prototype.getSenders=function(){let e=t.apply(this,[]);return e.forEach(e=>e._pc=this),e});let n=e.RTCPeerConnection.prototype.addTrack;n&&(e.RTCPeerConnection.prototype.addTrack=function(){let e=n.apply(this,arguments);return e._pc=this,e}),e.RTCRtpSender.prototype.getStats=function(){let e=this;return this._pc.getStats().then(t=>y(t,e.track,!0))}}if(!("getStats"in e.RTCRtpReceiver.prototype)){let t=e.RTCPeerConnection.prototype.getReceivers;t&&(e.RTCPeerConnection.prototype.getReceivers=function(){let e=t.apply(this,[]);return e.forEach(e=>e._pc=this),e}),d(e,"track",e=>(e.receiver._pc=e.srcElement,e)),e.RTCRtpReceiver.prototype.getStats=function(){let e=this;return this._pc.getStats().then(t=>y(t,e.track,!1))}}if(!("getStats"in e.RTCRtpSender.prototype&&"getStats"in e.RTCRtpReceiver.prototype))return;let t=e.RTCPeerConnection.prototype.getStats;e.RTCPeerConnection.prototype.getStats=function(){if(arguments.length>0&&arguments[0]instanceof e.MediaStreamTrack){let e,t,n;let r=arguments[0];return(this.getSenders().forEach(t=>{t.track===r&&(e?n=!0:e=t)}),this.getReceivers().forEach(e=>(e.track===r&&(t?n=!0:t=e),e.track===r)),n||e&&t)?Promise.reject(new DOMException("There are more than one sender or receiver for the track.","InvalidAccessError")):e?e.getStats():t?t.getStats():Promise.reject(new DOMException("There is no sender or receiver for the track.","InvalidAccessError"))}return t.apply(this,arguments)}}function z(e){e.RTCPeerConnection.prototype.getLocalStreams=function(){return this._shimmedLocalStreams=this._shimmedLocalStreams||{},Object.keys(this._shimmedLocalStreams).map(e=>this._shimmedLocalStreams[e][0])};let t=e.RTCPeerConnection.prototype.addTrack;e.RTCPeerConnection.prototype.addTrack=function(e,n){if(!n)return t.apply(this,arguments);this._shimmedLocalStreams=this._shimmedLocalStreams||{};let r=t.apply(this,arguments);return this._shimmedLocalStreams[n.id]?-1===this._shimmedLocalStreams[n.id].indexOf(r)&&this._shimmedLocalStreams[n.id].push(r):this._shimmedLocalStreams[n.id]=[n,r],r};let n=e.RTCPeerConnection.prototype.addStream;e.RTCPeerConnection.prototype.addStream=function(e){this._shimmedLocalStreams=this._shimmedLocalStreams||{},e.getTracks().forEach(e=>{if(this.getSenders().find(t=>t.track===e))throw new DOMException("Track already exists.","InvalidAccessError")});let t=this.getSenders();n.apply(this,arguments);let r=this.getSenders().filter(e=>-1===t.indexOf(e));this._shimmedLocalStreams[e.id]=[e].concat(r)};let r=e.RTCPeerConnection.prototype.removeStream;e.RTCPeerConnection.prototype.removeStream=function(e){return this._shimmedLocalStreams=this._shimmedLocalStreams||{},delete this._shimmedLocalStreams[e.id],r.apply(this,arguments)};let i=e.RTCPeerConnection.prototype.removeTrack;e.RTCPeerConnection.prototype.removeTrack=function(e){return this._shimmedLocalStreams=this._shimmedLocalStreams||{},e&&Object.keys(this._shimmedLocalStreams).forEach(t=>{let n=this._shimmedLocalStreams[t].indexOf(e);-1!==n&&this._shimmedLocalStreams[t].splice(n,1),1===this._shimmedLocalStreams[t].length&&delete this._shimmedLocalStreams[t]}),i.apply(this,arguments)}}function N(e,t){if(!e.RTCPeerConnection)return;if(e.RTCPeerConnection.prototype.addTrack&&t.version>=65)return z(e);let n=e.RTCPeerConnection.prototype.getLocalStreams;e.RTCPeerConnection.prototype.getLocalStreams=function(){let e=n.apply(this);return this._reverseStreams=this._reverseStreams||{},e.map(e=>this._reverseStreams[e.id])};let r=e.RTCPeerConnection.prototype.addStream;e.RTCPeerConnection.prototype.addStream=function(t){if(this._streams=this._streams||{},this._reverseStreams=this._reverseStreams||{},t.getTracks().forEach(e=>{if(this.getSenders().find(t=>t.track===e))throw new DOMException("Track already exists.","InvalidAccessError")}),!this._reverseStreams[t.id]){let n=new e.MediaStream(t.getTracks());this._streams[t.id]=n,this._reverseStreams[n.id]=t,t=n}r.apply(this,[t])};let i=e.RTCPeerConnection.prototype.removeStream;function o(e,t){let n=t.sdp;return Object.keys(e._reverseStreams||[]).forEach(t=>{let r=e._reverseStreams[t],i=e._streams[r.id];n=n.replace(RegExp(i.id,"g"),r.id)}),new RTCSessionDescription({type:t.type,sdp:n})}e.RTCPeerConnection.prototype.removeStream=function(e){this._streams=this._streams||{},this._reverseStreams=this._reverseStreams||{},i.apply(this,[this._streams[e.id]||e]),delete this._reverseStreams[this._streams[e.id]?this._streams[e.id].id:e.id],delete this._streams[e.id]},e.RTCPeerConnection.prototype.addTrack=function(t,n){if("closed"===this.signalingState)throw new DOMException("The RTCPeerConnection's signalingState is 'closed'.","InvalidStateError");let r=[].slice.call(arguments,1);if(1!==r.length||!r[0].getTracks().find(e=>e===t))throw new DOMException("The adapter.js addTrack polyfill only supports a single  stream which is associated with the specified track.","NotSupportedError");if(this.getSenders().find(e=>e.track===t))throw new DOMException("Track already exists.","InvalidAccessError");this._streams=this._streams||{},this._reverseStreams=this._reverseStreams||{};let i=this._streams[n.id];if(i)i.addTrack(t),Promise.resolve().then(()=>{this.dispatchEvent(new Event("negotiationneeded"))});else{let r=new e.MediaStream([t]);this._streams[n.id]=r,this._reverseStreams[r.id]=n,this.addStream(r)}return this.getSenders().find(e=>e.track===t)},["createOffer","createAnswer"].forEach(function(t){let n=e.RTCPeerConnection.prototype[t];e.RTCPeerConnection.prototype[t]=({[t](){let e=arguments,t=arguments.length&&"function"==typeof arguments[0];return t?n.apply(this,[t=>{let n=o(this,t);e[0].apply(null,[n])},t=>{e[1]&&e[1].apply(null,t)},arguments[2]]):n.apply(this,arguments).then(e=>o(this,e))}})[t]});let s=e.RTCPeerConnection.prototype.setLocalDescription;e.RTCPeerConnection.prototype.setLocalDescription=function(){var e,t;let n;return arguments.length&&arguments[0].type&&(arguments[0]=(e=this,t=arguments[0],n=t.sdp,Object.keys(e._reverseStreams||[]).forEach(t=>{let r=e._reverseStreams[t],i=e._streams[r.id];n=n.replace(RegExp(r.id,"g"),i.id)}),new RTCSessionDescription({type:t.type,sdp:n}))),s.apply(this,arguments)};let a=Object.getOwnPropertyDescriptor(e.RTCPeerConnection.prototype,"localDescription");Object.defineProperty(e.RTCPeerConnection.prototype,"localDescription",{get(){let e=a.get.apply(this);return""===e.type?e:o(this,e)}}),e.RTCPeerConnection.prototype.removeTrack=function(e){let t;if("closed"===this.signalingState)throw new DOMException("The RTCPeerConnection's signalingState is 'closed'.","InvalidStateError");if(!e._pc)throw new DOMException("Argument 1 of RTCPeerConnection.removeTrack does not implement interface RTCRtpSender.","TypeError");if(e._pc!==this)throw new DOMException("Sender was not created by this connection.","InvalidAccessError");this._streams=this._streams||{},Object.keys(this._streams).forEach(n=>{this._streams[n].getTracks().find(t=>e.track===t)&&(t=this._streams[n])}),t&&(1===t.getTracks().length?this.removeStream(this._reverseStreams[t.id]):t.removeTrack(e.track),this.dispatchEvent(new Event("negotiationneeded")))}}function $(e,t){!e.RTCPeerConnection&&e.webkitRTCPeerConnection&&(e.RTCPeerConnection=e.webkitRTCPeerConnection),e.RTCPeerConnection&&t.version<53&&["setLocalDescription","setRemoteDescription","addIceCandidate"].forEach(function(t){let n=e.RTCPeerConnection.prototype[t];e.RTCPeerConnection.prototype[t]=({[t](){return arguments[0]=new("addIceCandidate"===t?e.RTCIceCandidate:e.RTCSessionDescription)(arguments[0]),n.apply(this,arguments)}})[t]})}function J(e,t){d(e,"negotiationneeded",e=>{let n=e.target;if(!(t.version<72)&&(!n.getConfiguration||"plan-b"!==n.getConfiguration().sdpSemantics)||"stable"===n.signalingState)return e})}e(j,"shimMediaStream",()=>A),e(j,"shimOnTrack",()=>B),e(j,"shimGetSendersWithDtmf",()=>F),e(j,"shimSenderReceiverGetStats",()=>U),e(j,"shimAddTrackRemoveTrackWithNative",()=>z),e(j,"shimAddTrackRemoveTrack",()=>N),e(j,"shimPeerConnection",()=>$),e(j,"fixNegotiationNeeded",()=>J),e(j,"shimGetUserMedia",()=>L);var V={};function G(e,t){let n=e&&e.navigator,r=e&&e.MediaStreamTrack;if(n.getUserMedia=function(e,t,r){m("navigator.getUserMedia","navigator.mediaDevices.getUserMedia"),n.mediaDevices.getUserMedia(e).then(t,r)},!(t.version>55&&"autoGainControl"in n.mediaDevices.getSupportedConstraints())){let e=function(e,t,n){t in e&&!(n in e)&&(e[n]=e[t],delete e[t])},t=n.mediaDevices.getUserMedia.bind(n.mediaDevices);if(n.mediaDevices.getUserMedia=function(n){return"object"==typeof n&&"object"==typeof n.audio&&(e((n=JSON.parse(JSON.stringify(n))).audio,"autoGainControl","mozAutoGainControl"),e(n.audio,"noiseSuppression","mozNoiseSuppression")),t(n)},r&&r.prototype.getSettings){let t=r.prototype.getSettings;r.prototype.getSettings=function(){let n=t.apply(this,arguments);return e(n,"mozAutoGainControl","autoGainControl"),e(n,"mozNoiseSuppression","noiseSuppression"),n}}if(r&&r.prototype.applyConstraints){let t=r.prototype.applyConstraints;r.prototype.applyConstraints=function(n){return"audio"===this.kind&&"object"==typeof n&&(e(n=JSON.parse(JSON.stringify(n)),"autoGainControl","mozAutoGainControl"),e(n,"noiseSuppression","mozNoiseSuppression")),t.apply(this,[n])}}}}function W(e,t){e.navigator.mediaDevices&&"getDisplayMedia"in e.navigator.mediaDevices||!e.navigator.mediaDevices||(e.navigator.mediaDevices.getDisplayMedia=function(n){if(!(n&&n.video)){let e=new DOMException("getDisplayMedia without video constraints is undefined");return e.name="NotFoundError",e.code=8,Promise.reject(e)}return!0===n.video?n.video={mediaSource:t}:n.video.mediaSource=t,e.navigator.mediaDevices.getUserMedia(n)})}function H(e){"object"==typeof e&&e.RTCTrackEvent&&"receiver"in e.RTCTrackEvent.prototype&&!("transceiver"in e.RTCTrackEvent.prototype)&&Object.defineProperty(e.RTCTrackEvent.prototype,"transceiver",{get(){return{receiver:this.receiver}}})}function Y(e,t){if("object"!=typeof e||!(e.RTCPeerConnection||e.mozRTCPeerConnection))return;!e.RTCPeerConnection&&e.mozRTCPeerConnection&&(e.RTCPeerConnection=e.mozRTCPeerConnection),t.version<53&&["setLocalDescription","setRemoteDescription","addIceCandidate"].forEach(function(t){let n=e.RTCPeerConnection.prototype[t];e.RTCPeerConnection.prototype[t]=({[t](){return arguments[0]=new("addIceCandidate"===t?e.RTCIceCandidate:e.RTCSessionDescription)(arguments[0]),n.apply(this,arguments)}})[t]});let n={inboundrtp:"inbound-rtp",outboundrtp:"outbound-rtp",candidatepair:"candidate-pair",localcandidate:"local-candidate",remotecandidate:"remote-candidate"},r=e.RTCPeerConnection.prototype.getStats;e.RTCPeerConnection.prototype.getStats=function(){let[e,i,o]=arguments;return r.apply(this,[e||null]).then(e=>{if(t.version<53&&!i)try{e.forEach(e=>{e.type=n[e.type]||e.type})}catch(t){if("TypeError"!==t.name)throw t;e.forEach((t,r)=>{e.set(r,Object.assign({},t,{type:n[t.type]||t.type}))})}return e}).then(i,o)}}function K(e){if(!("object"==typeof e&&e.RTCPeerConnection&&e.RTCRtpSender)||e.RTCRtpSender&&"getStats"in e.RTCRtpSender.prototype)return;let t=e.RTCPeerConnection.prototype.getSenders;t&&(e.RTCPeerConnection.prototype.getSenders=function(){let e=t.apply(this,[]);return e.forEach(e=>e._pc=this),e});let n=e.RTCPeerConnection.prototype.addTrack;n&&(e.RTCPeerConnection.prototype.addTrack=function(){let e=n.apply(this,arguments);return e._pc=this,e}),e.RTCRtpSender.prototype.getStats=function(){return this.track?this._pc.getStats(this.track):Promise.resolve(new Map)}}function X(e){if(!("object"==typeof e&&e.RTCPeerConnection&&e.RTCRtpSender)||e.RTCRtpSender&&"getStats"in e.RTCRtpReceiver.prototype)return;let t=e.RTCPeerConnection.prototype.getReceivers;t&&(e.RTCPeerConnection.prototype.getReceivers=function(){let e=t.apply(this,[]);return e.forEach(e=>e._pc=this),e}),d(e,"track",e=>(e.receiver._pc=e.srcElement,e)),e.RTCRtpReceiver.prototype.getStats=function(){return this._pc.getStats(this.track)}}function q(e){!e.RTCPeerConnection||"removeStream"in e.RTCPeerConnection.prototype||(e.RTCPeerConnection.prototype.removeStream=function(e){m("removeStream","removeTrack"),this.getSenders().forEach(t=>{t.track&&e.getTracks().includes(t.track)&&this.removeTrack(t)})})}function Q(e){e.DataChannel&&!e.RTCDataChannel&&(e.RTCDataChannel=e.DataChannel)}function Z(e){if(!("object"==typeof e&&e.RTCPeerConnection))return;let t=e.RTCPeerConnection.prototype.addTransceiver;t&&(e.RTCPeerConnection.prototype.addTransceiver=function(){this.setParametersPromises=[];let e=arguments[1]&&arguments[1].sendEncodings;void 0===e&&(e=[]);let n=(e=[...e]).length>0;n&&e.forEach(e=>{if("rid"in e&&!/^[a-z0-9]{0,16}$/i.test(e.rid))throw TypeError("Invalid RID value provided.");if("scaleResolutionDownBy"in e&&!(parseFloat(e.scaleResolutionDownBy)>=1))throw RangeError("scale_resolution_down_by must be >= 1.0");if("maxFramerate"in e&&!(parseFloat(e.maxFramerate)>=0))throw RangeError("max_framerate must be >= 0.0")});let r=t.apply(this,arguments);if(n){let{sender:t}=r,n=t.getParameters();"encodings"in n&&(1!==n.encodings.length||0!==Object.keys(n.encodings[0]).length)||(n.encodings=e,t.sendEncodings=e,this.setParametersPromises.push(t.setParameters(n).then(()=>{delete t.sendEncodings}).catch(()=>{delete t.sendEncodings})))}return r})}function ee(e){if(!("object"==typeof e&&e.RTCRtpSender))return;let t=e.RTCRtpSender.prototype.getParameters;t&&(e.RTCRtpSender.prototype.getParameters=function(){let e=t.apply(this,arguments);return"encodings"in e||(e.encodings=[].concat(this.sendEncodings||[{}])),e})}function et(e){if(!("object"==typeof e&&e.RTCPeerConnection))return;let t=e.RTCPeerConnection.prototype.createOffer;e.RTCPeerConnection.prototype.createOffer=function(){return this.setParametersPromises&&this.setParametersPromises.length?Promise.all(this.setParametersPromises).then(()=>t.apply(this,arguments)).finally(()=>{this.setParametersPromises=[]}):t.apply(this,arguments)}}function en(e){if(!("object"==typeof e&&e.RTCPeerConnection))return;let t=e.RTCPeerConnection.prototype.createAnswer;e.RTCPeerConnection.prototype.createAnswer=function(){return this.setParametersPromises&&this.setParametersPromises.length?Promise.all(this.setParametersPromises).then(()=>t.apply(this,arguments)).finally(()=>{this.setParametersPromises=[]}):t.apply(this,arguments)}}e(V,"shimOnTrack",()=>H),e(V,"shimPeerConnection",()=>Y),e(V,"shimSenderGetStats",()=>K),e(V,"shimReceiverGetStats",()=>X),e(V,"shimRemoveStream",()=>q),e(V,"shimRTCDataChannel",()=>Q),e(V,"shimAddTransceiver",()=>Z),e(V,"shimGetParameters",()=>ee),e(V,"shimCreateOffer",()=>et),e(V,"shimCreateAnswer",()=>en),e(V,"shimGetUserMedia",()=>G),e(V,"shimGetDisplayMedia",()=>W);var er={};function ei(e){if("object"==typeof e&&e.RTCPeerConnection){if("getLocalStreams"in e.RTCPeerConnection.prototype||(e.RTCPeerConnection.prototype.getLocalStreams=function(){return this._localStreams||(this._localStreams=[]),this._localStreams}),!("addStream"in e.RTCPeerConnection.prototype)){let t=e.RTCPeerConnection.prototype.addTrack;e.RTCPeerConnection.prototype.addStream=function(e){this._localStreams||(this._localStreams=[]),this._localStreams.includes(e)||this._localStreams.push(e),e.getAudioTracks().forEach(n=>t.call(this,n,e)),e.getVideoTracks().forEach(n=>t.call(this,n,e))},e.RTCPeerConnection.prototype.addTrack=function(e,...n){return n&&n.forEach(e=>{this._localStreams?this._localStreams.includes(e)||this._localStreams.push(e):this._localStreams=[e]}),t.apply(this,arguments)}}"removeStream"in e.RTCPeerConnection.prototype||(e.RTCPeerConnection.prototype.removeStream=function(e){this._localStreams||(this._localStreams=[]);let t=this._localStreams.indexOf(e);if(-1===t)return;this._localStreams.splice(t,1);let n=e.getTracks();this.getSenders().forEach(e=>{n.includes(e.track)&&this.removeTrack(e)})})}}function eo(e){if("object"==typeof e&&e.RTCPeerConnection&&("getRemoteStreams"in e.RTCPeerConnection.prototype||(e.RTCPeerConnection.prototype.getRemoteStreams=function(){return this._remoteStreams?this._remoteStreams:[]}),!("onaddstream"in e.RTCPeerConnection.prototype))){Object.defineProperty(e.RTCPeerConnection.prototype,"onaddstream",{get(){return this._onaddstream},set(e){this._onaddstream&&(this.removeEventListener("addstream",this._onaddstream),this.removeEventListener("track",this._onaddstreampoly)),this.addEventListener("addstream",this._onaddstream=e),this.addEventListener("track",this._onaddstreampoly=e=>{e.streams.forEach(e=>{if(this._remoteStreams||(this._remoteStreams=[]),this._remoteStreams.includes(e))return;this._remoteStreams.push(e);let t=new Event("addstream");t.stream=e,this.dispatchEvent(t)})})}});let t=e.RTCPeerConnection.prototype.setRemoteDescription;e.RTCPeerConnection.prototype.setRemoteDescription=function(){let e=this;return this._onaddstreampoly||this.addEventListener("track",this._onaddstreampoly=function(t){t.streams.forEach(t=>{if(e._remoteStreams||(e._remoteStreams=[]),e._remoteStreams.indexOf(t)>=0)return;e._remoteStreams.push(t);let n=new Event("addstream");n.stream=t,e.dispatchEvent(n)})}),t.apply(e,arguments)}}}function es(e){if("object"!=typeof e||!e.RTCPeerConnection)return;let t=e.RTCPeerConnection.prototype,n=t.createOffer,r=t.createAnswer,i=t.setLocalDescription,o=t.setRemoteDescription,s=t.addIceCandidate;t.createOffer=function(e,t){let r=arguments.length>=2?arguments[2]:arguments[0],i=n.apply(this,[r]);return t?(i.then(e,t),Promise.resolve()):i},t.createAnswer=function(e,t){let n=arguments.length>=2?arguments[2]:arguments[0],i=r.apply(this,[n]);return t?(i.then(e,t),Promise.resolve()):i};let a=function(e,t,n){let r=i.apply(this,[e]);return n?(r.then(t,n),Promise.resolve()):r};t.setLocalDescription=a,a=function(e,t,n){let r=o.apply(this,[e]);return n?(r.then(t,n),Promise.resolve()):r},t.setRemoteDescription=a,a=function(e,t,n){let r=s.apply(this,[e]);return n?(r.then(t,n),Promise.resolve()):r},t.addIceCandidate=a}function ea(e){let t=e&&e.navigator;if(t.mediaDevices&&t.mediaDevices.getUserMedia){let e=t.mediaDevices,n=e.getUserMedia.bind(e);t.mediaDevices.getUserMedia=e=>n(ec(e))}!t.getUserMedia&&t.mediaDevices&&t.mediaDevices.getUserMedia&&(t.getUserMedia=(function(e,n,r){t.mediaDevices.getUserMedia(e).then(n,r)}).bind(t))}function ec(e){return e&&void 0!==e.video?Object.assign({},e,{video:function e(t){return g(t)?Object.keys(t).reduce(function(n,r){let i=g(t[r]),o=i?e(t[r]):t[r],s=i&&!Object.keys(o).length;return void 0===o||s?n:Object.assign(n,{[r]:o})},{}):t}(e.video)}):e}function el(e){if(!e.RTCPeerConnection)return;let t=e.RTCPeerConnection;e.RTCPeerConnection=function(e,n){if(e&&e.iceServers){let t=[];for(let n=0;n<e.iceServers.length;n++){let r=e.iceServers[n];void 0===r.urls&&r.url?(m("RTCIceServer.url","RTCIceServer.urls"),(r=JSON.parse(JSON.stringify(r))).urls=r.url,delete r.url,t.push(r)):t.push(e.iceServers[n])}e.iceServers=t}return new t(e,n)},e.RTCPeerConnection.prototype=t.prototype,"generateCertificate"in t&&Object.defineProperty(e.RTCPeerConnection,"generateCertificate",{get:()=>t.generateCertificate})}function ep(e){"object"==typeof e&&e.RTCTrackEvent&&"receiver"in e.RTCTrackEvent.prototype&&!("transceiver"in e.RTCTrackEvent.prototype)&&Object.defineProperty(e.RTCTrackEvent.prototype,"transceiver",{get(){return{receiver:this.receiver}}})}function ed(e){let t=e.RTCPeerConnection.prototype.createOffer;e.RTCPeerConnection.prototype.createOffer=function(e){if(e){void 0!==e.offerToReceiveAudio&&(e.offerToReceiveAudio=!!e.offerToReceiveAudio);let t=this.getTransceivers().find(e=>"audio"===e.receiver.track.kind);!1===e.offerToReceiveAudio&&t?"sendrecv"===t.direction?t.setDirection?t.setDirection("sendonly"):t.direction="sendonly":"recvonly"===t.direction&&(t.setDirection?t.setDirection("inactive"):t.direction="inactive"):!0!==e.offerToReceiveAudio||t||this.addTransceiver("audio",{direction:"recvonly"}),void 0!==e.offerToReceiveVideo&&(e.offerToReceiveVideo=!!e.offerToReceiveVideo);let n=this.getTransceivers().find(e=>"video"===e.receiver.track.kind);!1===e.offerToReceiveVideo&&n?"sendrecv"===n.direction?n.setDirection?n.setDirection("sendonly"):n.direction="sendonly":"recvonly"===n.direction&&(n.setDirection?n.setDirection("inactive"):n.direction="inactive"):!0!==e.offerToReceiveVideo||n||this.addTransceiver("video",{direction:"recvonly"})}return t.apply(this,arguments)}}function eh(e){"object"!=typeof e||e.AudioContext||(e.AudioContext=e.webkitAudioContext)}e(er,"shimLocalStreamsAPI",()=>ei),e(er,"shimRemoteStreamsAPI",()=>eo),e(er,"shimCallbacksAPI",()=>es),e(er,"shimGetUserMedia",()=>ea),e(er,"shimConstraints",()=>ec),e(er,"shimRTCIceServerUrls",()=>el),e(er,"shimTrackEventTransceiver",()=>ep),e(er,"shimCreateOfferLegacy",()=>ed),e(er,"shimAudioContext",()=>eh);var eu={};e(eu,"shimRTCIceCandidate",()=>eg),e(eu,"shimRTCIceCandidateRelayProtocol",()=>ey),e(eu,"shimMaxMessageSize",()=>e_),e(eu,"shimSendThrowTypeError",()=>eC),e(eu,"shimConnectionState",()=>eb),e(eu,"removeExtmapAllowMixed",()=>ev),e(eu,"shimAddIceCandidateNullOrEmpty",()=>ek),e(eu,"shimParameterlessSetLocalDescription",()=>eT);var ef={};let em={};function eg(e){if(!e.RTCIceCandidate||e.RTCIceCandidate&&"foundation"in e.RTCIceCandidate.prototype)return;let n=e.RTCIceCandidate;e.RTCIceCandidate=function(e){if("object"==typeof e&&e.candidate&&0===e.candidate.indexOf("a=")&&((e=JSON.parse(JSON.stringify(e))).candidate=e.candidate.substring(2)),e.candidate&&e.candidate.length){let r=new n(e),i=t(ef).parseCandidate(e.candidate);for(let e in i)e in r||Object.defineProperty(r,e,{value:i[e]});return r.toJSON=function(){return{candidate:r.candidate,sdpMid:r.sdpMid,sdpMLineIndex:r.sdpMLineIndex,usernameFragment:r.usernameFragment}},r}return new n(e)},e.RTCIceCandidate.prototype=n.prototype,d(e,"icecandidate",t=>(t.candidate&&Object.defineProperty(t,"candidate",{value:new e.RTCIceCandidate(t.candidate),writable:"false"}),t))}function ey(e){!e.RTCIceCandidate||e.RTCIceCandidate&&"relayProtocol"in e.RTCIceCandidate.prototype||d(e,"icecandidate",e=>{if(e.candidate){let n=t(ef).parseCandidate(e.candidate.candidate);"relay"===n.type&&(e.candidate.relayProtocol=({0:"tls",1:"tcp",2:"udp"})[n.priority>>24])}return e})}function e_(e,n){if(!e.RTCPeerConnection)return;"sctp"in e.RTCPeerConnection.prototype||Object.defineProperty(e.RTCPeerConnection.prototype,"sctp",{get(){return void 0===this._sctp?null:this._sctp}});let r=function(e){if(!e||!e.sdp)return!1;let n=t(ef).splitSections(e.sdp);return n.shift(),n.some(e=>{let n=t(ef).parseMLine(e);return n&&"application"===n.kind&&-1!==n.protocol.indexOf("SCTP")})},i=function(e){let t=e.sdp.match(/mozilla...THIS_IS_SDPARTA-(\d+)/);if(null===t||t.length<2)return -1;let n=parseInt(t[1],10);return n!=n?-1:n},o=function(e){let t=65536;return"firefox"===n.browser&&(t=n.version<57?-1===e?16384:2147483637:n.version<60?57===n.version?65535:65536:2147483637),t},s=function(e,r){let i=65536;"firefox"===n.browser&&57===n.version&&(i=65535);let o=t(ef).matchPrefix(e.sdp,"a=max-message-size:");return o.length>0?i=parseInt(o[0].substring(19),10):"firefox"===n.browser&&-1!==r&&(i=2147483637),i},a=e.RTCPeerConnection.prototype.setRemoteDescription;e.RTCPeerConnection.prototype.setRemoteDescription=function(){if(this._sctp=null,"chrome"===n.browser&&n.version>=76){let{sdpSemantics:e}=this.getConfiguration();"plan-b"===e&&Object.defineProperty(this,"sctp",{get(){return void 0===this._sctp?null:this._sctp},enumerable:!0,configurable:!0})}if(r(arguments[0])){let e;let t=i(arguments[0]),n=o(t),r=s(arguments[0],t);e=0===n&&0===r?Number.POSITIVE_INFINITY:0===n||0===r?Math.max(n,r):Math.min(n,r);let a={};Object.defineProperty(a,"maxMessageSize",{get:()=>e}),this._sctp=a}return a.apply(this,arguments)}}function eC(e){if(!(e.RTCPeerConnection&&"createDataChannel"in e.RTCPeerConnection.prototype))return;function t(e,t){let n=e.send;e.send=function(){let r=arguments[0],i=r.length||r.size||r.byteLength;if("open"===e.readyState&&t.sctp&&i>t.sctp.maxMessageSize)throw TypeError("Message too large (can send a maximum of "+t.sctp.maxMessageSize+" bytes)");return n.apply(e,arguments)}}let n=e.RTCPeerConnection.prototype.createDataChannel;e.RTCPeerConnection.prototype.createDataChannel=function(){let e=n.apply(this,arguments);return t(e,this),e},d(e,"datachannel",e=>(t(e.channel,e.target),e))}function eb(e){if(!e.RTCPeerConnection||"connectionState"in e.RTCPeerConnection.prototype)return;let t=e.RTCPeerConnection.prototype;Object.defineProperty(t,"connectionState",{get(){return({completed:"connected",checking:"connecting"})[this.iceConnectionState]||this.iceConnectionState},enumerable:!0,configurable:!0}),Object.defineProperty(t,"onconnectionstatechange",{get(){return this._onconnectionstatechange||null},set(e){this._onconnectionstatechange&&(this.removeEventListener("connectionstatechange",this._onconnectionstatechange),delete this._onconnectionstatechange),e&&this.addEventListener("connectionstatechange",this._onconnectionstatechange=e)},enumerable:!0,configurable:!0}),["setLocalDescription","setRemoteDescription"].forEach(e=>{let n=t[e];t[e]=function(){return this._connectionstatechangepoly||(this._connectionstatechangepoly=e=>{let t=e.target;if(t._lastConnectionState!==t.connectionState){t._lastConnectionState=t.connectionState;let n=new Event("connectionstatechange",e);t.dispatchEvent(n)}return e},this.addEventListener("iceconnectionstatechange",this._connectionstatechangepoly)),n.apply(this,arguments)}})}function ev(e,t){if(!e.RTCPeerConnection||"chrome"===t.browser&&t.version>=71||"safari"===t.browser&&t.version>=605)return;let n=e.RTCPeerConnection.prototype.setRemoteDescription;e.RTCPeerConnection.prototype.setRemoteDescription=function(t){if(t&&t.sdp&&-1!==t.sdp.indexOf("\na=extmap-allow-mixed")){let n=t.sdp.split("\n").filter(e=>"a=extmap-allow-mixed"!==e.trim()).join("\n");e.RTCSessionDescription&&t instanceof e.RTCSessionDescription?arguments[0]=new e.RTCSessionDescription({type:t.type,sdp:n}):t.sdp=n}return n.apply(this,arguments)}}function ek(e,t){if(!(e.RTCPeerConnection&&e.RTCPeerConnection.prototype))return;let n=e.RTCPeerConnection.prototype.addIceCandidate;n&&0!==n.length&&(e.RTCPeerConnection.prototype.addIceCandidate=function(){return arguments[0]?("chrome"===t.browser&&t.version<78||"firefox"===t.browser&&t.version<68||"safari"===t.browser)&&arguments[0]&&""===arguments[0].candidate?Promise.resolve():n.apply(this,arguments):(arguments[1]&&arguments[1].apply(null),Promise.resolve())})}function eT(e,t){if(!(e.RTCPeerConnection&&e.RTCPeerConnection.prototype))return;let n=e.RTCPeerConnection.prototype.setLocalDescription;n&&0!==n.length&&(e.RTCPeerConnection.prototype.setLocalDescription=function(){let e=arguments[0]||{};if("object"!=typeof e||e.type&&e.sdp)return n.apply(this,arguments);if(!(e={type:e.type,sdp:e.sdp}).type)switch(this.signalingState){case"stable":case"have-local-offer":case"have-remote-pranswer":e.type="offer";break;default:e.type="answer"}return e.sdp||"offer"!==e.type&&"answer"!==e.type?n.apply(this,[e]):("offer"===e.type?this.createOffer:this.createAnswer).apply(this).then(e=>n.apply(this,[e]))})}em.generateIdentifier=function(){return Math.random().toString(36).substring(2,12)},em.localCName=em.generateIdentifier(),em.splitLines=function(e){return e.trim().split("\n").map(e=>e.trim())},em.splitSections=function(e){return e.split("\nm=").map((e,t)=>(t>0?"m="+e:e).trim()+"\r\n")},em.getDescription=function(e){let t=em.splitSections(e);return t&&t[0]},em.getMediaSections=function(e){let t=em.splitSections(e);return t.shift(),t},em.matchPrefix=function(e,t){return em.splitLines(e).filter(e=>0===e.indexOf(t))},em.parseCandidate=function(e){let t;let n={foundation:(t=0===e.indexOf("a=candidate:")?e.substring(12).split(" "):e.substring(10).split(" "))[0],component:{1:"rtp",2:"rtcp"}[t[1]]||t[1],protocol:t[2].toLowerCase(),priority:parseInt(t[3],10),ip:t[4],address:t[4],port:parseInt(t[5],10),type:t[7]};for(let e=8;e<t.length;e+=2)switch(t[e]){case"raddr":n.relatedAddress=t[e+1];break;case"rport":n.relatedPort=parseInt(t[e+1],10);break;case"tcptype":n.tcpType=t[e+1];break;case"ufrag":n.ufrag=t[e+1],n.usernameFragment=t[e+1];break;default:void 0===n[t[e]]&&(n[t[e]]=t[e+1])}return n},em.writeCandidate=function(e){let t=[];t.push(e.foundation);let n=e.component;"rtp"===n?t.push(1):"rtcp"===n?t.push(2):t.push(n),t.push(e.protocol.toUpperCase()),t.push(e.priority),t.push(e.address||e.ip),t.push(e.port);let r=e.type;return t.push("typ"),t.push(r),"host"!==r&&e.relatedAddress&&e.relatedPort&&(t.push("raddr"),t.push(e.relatedAddress),t.push("rport"),t.push(e.relatedPort)),e.tcpType&&"tcp"===e.protocol.toLowerCase()&&(t.push("tcptype"),t.push(e.tcpType)),(e.usernameFragment||e.ufrag)&&(t.push("ufrag"),t.push(e.usernameFragment||e.ufrag)),"candidate:"+t.join(" ")},em.parseIceOptions=function(e){return e.substring(14).split(" ")},em.parseRtpMap=function(e){let t=e.substring(9).split(" "),n={payloadType:parseInt(t.shift(),10)};return t=t[0].split("/"),n.name=t[0],n.clockRate=parseInt(t[1],10),n.channels=3===t.length?parseInt(t[2],10):1,n.numChannels=n.channels,n},em.writeRtpMap=function(e){let t=e.payloadType;void 0!==e.preferredPayloadType&&(t=e.preferredPayloadType);let n=e.channels||e.numChannels||1;return"a=rtpmap:"+t+" "+e.name+"/"+e.clockRate+(1!==n?"/"+n:"")+"\r\n"},em.parseExtmap=function(e){let t=e.substring(9).split(" ");return{id:parseInt(t[0],10),direction:t[0].indexOf("/")>0?t[0].split("/")[1]:"sendrecv",uri:t[1],attributes:t.slice(2).join(" ")}},em.writeExtmap=function(e){return"a=extmap:"+(e.id||e.preferredId)+(e.direction&&"sendrecv"!==e.direction?"/"+e.direction:"")+" "+e.uri+(e.attributes?" "+e.attributes:"")+"\r\n"},em.parseFmtp=function(e){let t;let n={},r=e.substring(e.indexOf(" ")+1).split(";");for(let e=0;e<r.length;e++)n[(t=r[e].trim().split("="))[0].trim()]=t[1];return n},em.writeFmtp=function(e){let t="",n=e.payloadType;if(void 0!==e.preferredPayloadType&&(n=e.preferredPayloadType),e.parameters&&Object.keys(e.parameters).length){let r=[];Object.keys(e.parameters).forEach(t=>{void 0!==e.parameters[t]?r.push(t+"="+e.parameters[t]):r.push(t)}),t+="a=fmtp:"+n+" "+r.join(";")+"\r\n"}return t},em.parseRtcpFb=function(e){let t=e.substring(e.indexOf(" ")+1).split(" ");return{type:t.shift(),parameter:t.join(" ")}},em.writeRtcpFb=function(e){let t="",n=e.payloadType;return void 0!==e.preferredPayloadType&&(n=e.preferredPayloadType),e.rtcpFeedback&&e.rtcpFeedback.length&&e.rtcpFeedback.forEach(e=>{t+="a=rtcp-fb:"+n+" "+e.type+(e.parameter&&e.parameter.length?" "+e.parameter:"")+"\r\n"}),t},em.parseSsrcMedia=function(e){let t=e.indexOf(" "),n={ssrc:parseInt(e.substring(7,t),10)},r=e.indexOf(":",t);return r>-1?(n.attribute=e.substring(t+1,r),n.value=e.substring(r+1)):n.attribute=e.substring(t+1),n},em.parseSsrcGroup=function(e){let t=e.substring(13).split(" ");return{semantics:t.shift(),ssrcs:t.map(e=>parseInt(e,10))}},em.getMid=function(e){let t=em.matchPrefix(e,"a=mid:")[0];if(t)return t.substring(6)},em.parseFingerprint=function(e){let t=e.substring(14).split(" ");return{algorithm:t[0].toLowerCase(),value:t[1].toUpperCase()}},em.getDtlsParameters=function(e,t){return{role:"auto",fingerprints:em.matchPrefix(e+t,"a=fingerprint:").map(em.parseFingerprint)}},em.writeDtlsParameters=function(e,t){let n="a=setup:"+t+"\r\n";return e.fingerprints.forEach(e=>{n+="a=fingerprint:"+e.algorithm+" "+e.value+"\r\n"}),n},em.parseCryptoLine=function(e){let t=e.substring(9).split(" ");return{tag:parseInt(t[0],10),cryptoSuite:t[1],keyParams:t[2],sessionParams:t.slice(3)}},em.writeCryptoLine=function(e){return"a=crypto:"+e.tag+" "+e.cryptoSuite+" "+("object"==typeof e.keyParams?em.writeCryptoKeyParams(e.keyParams):e.keyParams)+(e.sessionParams?" "+e.sessionParams.join(" "):"")+"\r\n"},em.parseCryptoKeyParams=function(e){if(0!==e.indexOf("inline:"))return null;let t=e.substring(7).split("|");return{keyMethod:"inline",keySalt:t[0],lifeTime:t[1],mkiValue:t[2]?t[2].split(":")[0]:void 0,mkiLength:t[2]?t[2].split(":")[1]:void 0}},em.writeCryptoKeyParams=function(e){return e.keyMethod+":"+e.keySalt+(e.lifeTime?"|"+e.lifeTime:"")+(e.mkiValue&&e.mkiLength?"|"+e.mkiValue+":"+e.mkiLength:"")},em.getCryptoParameters=function(e,t){return em.matchPrefix(e+t,"a=crypto:").map(em.parseCryptoLine)},em.getIceParameters=function(e,t){let n=em.matchPrefix(e+t,"a=ice-ufrag:")[0],r=em.matchPrefix(e+t,"a=ice-pwd:")[0];return n&&r?{usernameFragment:n.substring(12),password:r.substring(10)}:null},em.writeIceParameters=function(e){let t="a=ice-ufrag:"+e.usernameFragment+"\r\na=ice-pwd:"+e.password+"\r\n";return e.iceLite&&(t+="a=ice-lite\r\n"),t},em.parseRtpParameters=function(e){let t={codecs:[],headerExtensions:[],fecMechanisms:[],rtcp:[]},n=em.splitLines(e)[0].split(" ");t.profile=n[2];for(let r=3;r<n.length;r++){let i=n[r],o=em.matchPrefix(e,"a=rtpmap:"+i+" ")[0];if(o){let n=em.parseRtpMap(o),r=em.matchPrefix(e,"a=fmtp:"+i+" ");switch(n.parameters=r.length?em.parseFmtp(r[0]):{},n.rtcpFeedback=em.matchPrefix(e,"a=rtcp-fb:"+i+" ").map(em.parseRtcpFb),t.codecs.push(n),n.name.toUpperCase()){case"RED":case"ULPFEC":t.fecMechanisms.push(n.name.toUpperCase())}}}em.matchPrefix(e,"a=extmap:").forEach(e=>{t.headerExtensions.push(em.parseExtmap(e))});let r=em.matchPrefix(e,"a=rtcp-fb:* ").map(em.parseRtcpFb);return t.codecs.forEach(e=>{r.forEach(t=>{e.rtcpFeedback.find(e=>e.type===t.type&&e.parameter===t.parameter)||e.rtcpFeedback.push(t)})}),t},em.writeRtpDescription=function(e,t){let n="";n+="m="+e+" "+(t.codecs.length>0?"9":"0")+" "+(t.profile||"UDP/TLS/RTP/SAVPF")+" "+t.codecs.map(e=>void 0!==e.preferredPayloadType?e.preferredPayloadType:e.payloadType).join(" ")+"\r\nc=IN IP4 0.0.0.0\r\na=rtcp:9 IN IP4 0.0.0.0\r\n",t.codecs.forEach(e=>{n+=em.writeRtpMap(e)+em.writeFmtp(e)+em.writeRtcpFb(e)});let r=0;return t.codecs.forEach(e=>{e.maxptime>r&&(r=e.maxptime)}),r>0&&(n+="a=maxptime:"+r+"\r\n"),t.headerExtensions&&t.headerExtensions.forEach(e=>{n+=em.writeExtmap(e)}),n},em.parseRtpEncodingParameters=function(e){let t;let n=[],r=em.parseRtpParameters(e),i=-1!==r.fecMechanisms.indexOf("RED"),o=-1!==r.fecMechanisms.indexOf("ULPFEC"),s=em.matchPrefix(e,"a=ssrc:").map(e=>em.parseSsrcMedia(e)).filter(e=>"cname"===e.attribute),a=s.length>0&&s[0].ssrc,c=em.matchPrefix(e,"a=ssrc-group:FID").map(e=>e.substring(17).split(" ").map(e=>parseInt(e,10)));c.length>0&&c[0].length>1&&c[0][0]===a&&(t=c[0][1]),r.codecs.forEach(e=>{if("RTX"===e.name.toUpperCase()&&e.parameters.apt){let r={ssrc:a,codecPayloadType:parseInt(e.parameters.apt,10)};a&&t&&(r.rtx={ssrc:t}),n.push(r),i&&((r=JSON.parse(JSON.stringify(r))).fec={ssrc:a,mechanism:o?"red+ulpfec":"red"},n.push(r))}}),0===n.length&&a&&n.push({ssrc:a});let l=em.matchPrefix(e,"b=");return l.length&&(l=0===l[0].indexOf("b=TIAS:")?parseInt(l[0].substring(7),10):0===l[0].indexOf("b=AS:")?950*parseInt(l[0].substring(5),10)-16e3:void 0,n.forEach(e=>{e.maxBitrate=l})),n},em.parseRtcpParameters=function(e){let t={},n=em.matchPrefix(e,"a=ssrc:").map(e=>em.parseSsrcMedia(e)).filter(e=>"cname"===e.attribute)[0];n&&(t.cname=n.value,t.ssrc=n.ssrc);let r=em.matchPrefix(e,"a=rtcp-rsize");t.reducedSize=r.length>0,t.compound=0===r.length;let i=em.matchPrefix(e,"a=rtcp-mux");return t.mux=i.length>0,t},em.writeRtcpParameters=function(e){let t="";return e.reducedSize&&(t+="a=rtcp-rsize\r\n"),e.mux&&(t+="a=rtcp-mux\r\n"),void 0!==e.ssrc&&e.cname&&(t+="a=ssrc:"+e.ssrc+" cname:"+e.cname+"\r\n"),t},em.parseMsid=function(e){let t;let n=em.matchPrefix(e,"a=msid:");if(1===n.length)return{stream:(t=n[0].substring(7).split(" "))[0],track:t[1]};let r=em.matchPrefix(e,"a=ssrc:").map(e=>em.parseSsrcMedia(e)).filter(e=>"msid"===e.attribute);if(r.length>0)return{stream:(t=r[0].value.split(" "))[0],track:t[1]}},em.parseSctpDescription=function(e){let t;let n=em.parseMLine(e),r=em.matchPrefix(e,"a=max-message-size:");r.length>0&&(t=parseInt(r[0].substring(19),10)),isNaN(t)&&(t=65536);let i=em.matchPrefix(e,"a=sctp-port:");if(i.length>0)return{port:parseInt(i[0].substring(12),10),protocol:n.fmt,maxMessageSize:t};let o=em.matchPrefix(e,"a=sctpmap:");if(o.length>0){let e=o[0].substring(10).split(" ");return{port:parseInt(e[0],10),protocol:e[1],maxMessageSize:t}}},em.writeSctpDescription=function(e,t){let n=[];return n="DTLS/SCTP"!==e.protocol?["m="+e.kind+" 9 "+e.protocol+" "+t.protocol+"\r\n","c=IN IP4 0.0.0.0\r\n","a=sctp-port:"+t.port+"\r\n"]:["m="+e.kind+" 9 "+e.protocol+" "+t.port+"\r\n","c=IN IP4 0.0.0.0\r\n","a=sctpmap:"+t.port+" "+t.protocol+" 65535\r\n"],void 0!==t.maxMessageSize&&n.push("a=max-message-size:"+t.maxMessageSize+"\r\n"),n.join("")},em.generateSessionId=function(){return Math.random().toString().substr(2,22)},em.writeSessionBoilerplate=function(e,t,n){return"v=0\r\no="+(n||"thisisadapterortc")+" "+(e||em.generateSessionId())+" "+(void 0!==t?t:2)+" IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\n"},em.getDirection=function(e,t){let n=em.splitLines(e);for(let e=0;e<n.length;e++)switch(n[e]){case"a=sendrecv":case"a=sendonly":case"a=recvonly":case"a=inactive":return n[e].substring(2)}return t?em.getDirection(t):"sendrecv"},em.getKind=function(e){return em.splitLines(e)[0].split(" ")[0].substring(2)},em.isRejected=function(e){return"0"===e.split(" ",2)[1]},em.parseMLine=function(e){let t=em.splitLines(e)[0].substring(2).split(" ");return{kind:t[0],port:parseInt(t[1],10),protocol:t[2],fmt:t.slice(3).join(" ")}},em.parseOLine=function(e){let t=em.matchPrefix(e,"o=")[0].substring(2).split(" ");return{username:t[0],sessionId:t[1],sessionVersion:parseInt(t[2],10),netType:t[3],addressType:t[4],address:t[5]}},em.isValidSDP=function(e){if("string"!=typeof e||0===e.length)return!1;let t=em.splitLines(e);for(let e=0;e<t.length;e++)if(t[e].length<2||"="!==t[e].charAt(1))return!1;return!0},ef=em;let eS=function({window:e}={},t={shimChrome:!0,shimFirefox:!0,shimSafari:!0}){let n=function(e){let t={browser:null,version:null};if(void 0===e||!e.navigator||!e.navigator.userAgent)return t.browser="Not a browser.",t;let{navigator:n}=e;if(n.userAgentData&&n.userAgentData.brands){let e=n.userAgentData.brands.find(e=>"Chromium"===e.brand);if(e)return{browser:"chrome",version:parseInt(e.version,10)}}return n.mozGetUserMedia?(t.browser="firefox",t.version=p(n.userAgent,/Firefox\/(\d+)\./,1)):n.webkitGetUserMedia||!1===e.isSecureContext&&e.webkitRTCPeerConnection?(t.browser="chrome",t.version=p(n.userAgent,/Chrom(e|ium)\/(\d+)\./,2)):e.RTCPeerConnection&&n.userAgent.match(/AppleWebKit\/(\d+)\./)?(t.browser="safari",t.version=p(n.userAgent,/AppleWebKit\/(\d+)\./,1),t.supportsUnifiedPlan=e.RTCRtpTransceiver&&"currentDirection"in e.RTCRtpTransceiver.prototype):t.browser="Not a supported browser.",t}(e),r={browserDetails:n,commonShim:eu,extractVersion:p,disableLog:h,disableWarnings:u,sdp:ef};switch(n.browser){case"chrome":if(!j||!j.shimPeerConnection||!t.shimChrome){f("Chrome shim is not included in this adapter release.");break}if(null===n.version){f("Chrome shim can not determine version, not shimming.");break}f("adapter.js shimming chrome."),r.browserShim=j,ek(e,n),eT(e,n),j.shimGetUserMedia(e,n),j.shimMediaStream(e,n),j.shimPeerConnection(e,n),j.shimOnTrack(e,n),j.shimAddTrackRemoveTrack(e,n),j.shimGetSendersWithDtmf(e,n),j.shimSenderReceiverGetStats(e,n),j.fixNegotiationNeeded(e,n),eg(e,n),ey(e,n),eb(e,n),e_(e,n),eC(e,n),ev(e,n);break;case"firefox":if(!V||!V.shimPeerConnection||!t.shimFirefox){f("Firefox shim is not included in this adapter release.");break}f("adapter.js shimming firefox."),r.browserShim=V,ek(e,n),eT(e,n),V.shimGetUserMedia(e,n),V.shimPeerConnection(e,n),V.shimOnTrack(e,n),V.shimRemoveStream(e,n),V.shimSenderGetStats(e,n),V.shimReceiverGetStats(e,n),V.shimRTCDataChannel(e,n),V.shimAddTransceiver(e,n),V.shimGetParameters(e,n),V.shimCreateOffer(e,n),V.shimCreateAnswer(e,n),eg(e,n),eb(e,n),e_(e,n),eC(e,n);break;case"safari":if(!er||!t.shimSafari){f("Safari shim is not included in this adapter release.");break}f("adapter.js shimming safari."),r.browserShim=er,ek(e,n),eT(e,n),er.shimRTCIceServerUrls(e,n),er.shimCreateOfferLegacy(e,n),er.shimCallbacksAPI(e,n),er.shimLocalStreamsAPI(e,n),er.shimRemoteStreamsAPI(e,n),er.shimTrackEventTransceiver(e,n),er.shimGetUserMedia(e,n),er.shimAudioContext(e,n),eg(e,n),ey(e,n),e_(e,n),eC(e,n),ev(e,n);break;default:f("Unsupported browser!")}return r}({window:"undefined"==typeof window?void 0:window}),eR=eS.default||eS,eP=new class{isWebRTCSupported(){return"undefined"!=typeof RTCPeerConnection}isBrowserSupported(){let e=this.getBrowser(),t=this.getVersion();return!!this.supportedBrowsers.includes(e)&&("chrome"===e?t>=this.minChromeVersion:"firefox"===e?t>=this.minFirefoxVersion:"safari"===e&&!this.isIOS&&t>=this.minSafariVersion)}getBrowser(){return eR.browserDetails.browser}getVersion(){return eR.browserDetails.version||0}isUnifiedPlanSupported(){let e;let t=this.getBrowser(),n=eR.browserDetails.version||0;if("chrome"===t&&n<this.minChromeVersion)return!1;if("firefox"===t&&n>=this.minFirefoxVersion)return!0;if(!window.RTCRtpTransceiver||!("currentDirection"in RTCRtpTransceiver.prototype))return!1;let r=!1;try{(e=new RTCPeerConnection).addTransceiver("audio"),r=!0}catch(e){}finally{e&&e.close()}return r}toString(){return`Supports:
+    browser:${this.getBrowser()}
+    version:${this.getVersion()}
+    isIOS:${this.isIOS}
+    isWebRTCSupported:${this.isWebRTCSupported()}
+    isBrowserSupported:${this.isBrowserSupported()}
+    isUnifiedPlanSupported:${this.isUnifiedPlanSupported()}`}constructor(){this.isIOS="undefined"!=typeof navigator&&["iPad","iPhone","iPod"].includes(navigator.platform),this.supportedBrowsers=["firefox","chrome","safari"],this.minFirefoxVersion=59,this.minChromeVersion=72,this.minSafariVersion=605}},ew=e=>!e||/^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$/.test(e),eE=()=>Math.random().toString(36).slice(2),eD={iceServers:[{urls:"stun:stun.l.google.com:19302"},{urls:["turn:eu-0.turn.peerjs.com:3478","turn:us-0.turn.peerjs.com:3478"],username:"peerjs",credential:"peerjsp"}],sdpSemantics:"unified-plan"},ex=new class extends n{noop(){}blobToArrayBuffer(e,t){let n=new FileReader;return n.onload=function(e){e.target&&t(e.target.result)},n.readAsArrayBuffer(e),n}binaryStringToArrayBuffer(e){let t=new Uint8Array(e.length);for(let n=0;n<e.length;n++)t[n]=255&e.charCodeAt(n);return t.buffer}isSecure(){return"https:"===location.protocol}constructor(...e){super(...e),this.CLOUD_HOST="0.peerjs.com",this.CLOUD_PORT=443,this.chunkedBrowsers={Chrome:1,chrome:1},this.defaultConfig=eD,this.browser=eP.getBrowser(),this.browserVersion=eP.getVersion(),this.pack=o,this.unpack=i,this.supports=function(){let e;let t={browser:eP.isBrowserSupported(),webRTC:eP.isWebRTCSupported(),audioVideo:!1,data:!1,binaryBlob:!1,reliable:!1};if(!t.webRTC)return t;try{let n;e=new RTCPeerConnection(eD),t.audioVideo=!0;try{n=e.createDataChannel("_PEERJSTEST",{ordered:!0}),t.data=!0,t.reliable=!!n.ordered;try{n.binaryType="blob",t.binaryBlob=!eP.isIOS}catch(e){}}catch(e){}finally{n&&n.close()}}catch(e){}finally{e&&e.close()}return t}(),this.validateId=ew,this.randomToken=eE}};(_=P||(P={}))[_.Disabled=0]="Disabled",_[_.Errors=1]="Errors",_[_.Warnings=2]="Warnings",_[_.All=3]="All";var eI=new class{get logLevel(){return this._logLevel}set logLevel(e){this._logLevel=e}log(...e){this._logLevel>=3&&this._print(3,...e)}warn(...e){this._logLevel>=2&&this._print(2,...e)}error(...e){this._logLevel>=1&&this._print(1,...e)}setLogFunction(e){this._print=e}_print(e,...t){let n=["PeerJS: ",...t];for(let e in n)n[e]instanceof Error&&(n[e]="("+n[e].name+") "+n[e].message);e>=3?console.log(...n):e>=2?console.warn("WARNING",...n):e>=1&&console.error("ERROR",...n)}constructor(){this._logLevel=0}},eM={},eO=Object.prototype.hasOwnProperty,ej="~";function eL(){}function eA(e,t,n){this.fn=e,this.context=t,this.once=n||!1}function eB(e,t,n,r,i){if("function"!=typeof n)throw TypeError("The listener must be a function");var o=new eA(n,r||e,i),s=ej?ej+t:t;return e._events[s]?e._events[s].fn?e._events[s]=[e._events[s],o]:e._events[s].push(o):(e._events[s]=o,e._eventsCount++),e}function eF(e,t){0==--e._eventsCount?e._events=new eL:delete e._events[t]}function eU(){this._events=new eL,this._eventsCount=0}Object.create&&(eL.prototype=Object.create(null),new eL().__proto__||(ej=!1)),eU.prototype.eventNames=function(){var e,t,n=[];if(0===this._eventsCount)return n;for(t in e=this._events)eO.call(e,t)&&n.push(ej?t.slice(1):t);return Object.getOwnPropertySymbols?n.concat(Object.getOwnPropertySymbols(e)):n},eU.prototype.listeners=function(e){var t=ej?ej+e:e,n=this._events[t];if(!n)return[];if(n.fn)return[n.fn];for(var r=0,i=n.length,o=Array(i);r<i;r++)o[r]=n[r].fn;return o},eU.prototype.listenerCount=function(e){var t=ej?ej+e:e,n=this._events[t];return n?n.fn?1:n.length:0},eU.prototype.emit=function(e,t,n,r,i,o){var s=ej?ej+e:e;if(!this._events[s])return!1;var a,c,l=this._events[s],p=arguments.length;if(l.fn){switch(l.once&&this.removeListener(e,l.fn,void 0,!0),p){case 1:return l.fn.call(l.context),!0;case 2:return l.fn.call(l.context,t),!0;case 3:return l.fn.call(l.context,t,n),!0;case 4:return l.fn.call(l.context,t,n,r),!0;case 5:return l.fn.call(l.context,t,n,r,i),!0;case 6:return l.fn.call(l.context,t,n,r,i,o),!0}for(c=1,a=Array(p-1);c<p;c++)a[c-1]=arguments[c];l.fn.apply(l.context,a)}else{var d,h=l.length;for(c=0;c<h;c++)switch(l[c].once&&this.removeListener(e,l[c].fn,void 0,!0),p){case 1:l[c].fn.call(l[c].context);break;case 2:l[c].fn.call(l[c].context,t);break;case 3:l[c].fn.call(l[c].context,t,n);break;case 4:l[c].fn.call(l[c].context,t,n,r);break;default:if(!a)for(d=1,a=Array(p-1);d<p;d++)a[d-1]=arguments[d];l[c].fn.apply(l[c].context,a)}}return!0},eU.prototype.on=function(e,t,n){return eB(this,e,t,n,!1)},eU.prototype.once=function(e,t,n){return eB(this,e,t,n,!0)},eU.prototype.removeListener=function(e,t,n,r){var i=ej?ej+e:e;if(!this._events[i])return this;if(!t)return eF(this,i),this;var o=this._events[i];if(o.fn)o.fn!==t||r&&!o.once||n&&o.context!==n||eF(this,i);else{for(var s=0,a=[],c=o.length;s<c;s++)(o[s].fn!==t||r&&!o[s].once||n&&o[s].context!==n)&&a.push(o[s]);a.length?this._events[i]=1===a.length?a[0]:a:eF(this,i)}return this},eU.prototype.removeAllListeners=function(e){var t;return e?(t=ej?ej+e:e,this._events[t]&&eF(this,t)):(this._events=new eL,this._eventsCount=0),this},eU.prototype.off=eU.prototype.removeListener,eU.prototype.addListener=eU.prototype.on,eU.prefixed=ej,eU.EventEmitter=eU,eM=eU,(C=w||(w={})).Data="data",C.Media="media",(b=E||(E={})).BrowserIncompatible="browser-incompatible",b.Disconnected="disconnected",b.InvalidID="invalid-id",b.InvalidKey="invalid-key",b.Network="network",b.PeerUnavailable="peer-unavailable",b.SslUnavailable="ssl-unavailable",b.ServerError="server-error",b.SocketError="socket-error",b.SocketClosed="socket-closed",b.UnavailableID="unavailable-id",b.WebRTC="webrtc",(v=D||(D={})).NegotiationFailed="negotiation-failed",v.ConnectionClosed="connection-closed",(k=x||(x={})).NotOpenYet="not-open-yet",k.MessageToBig="message-too-big",(T=I||(I={})).Binary="binary",T.BinaryUTF8="binary-utf8",T.JSON="json",T.None="raw",(S=M||(M={})).Message="message",S.Disconnected="disconnected",S.Error="error",S.Close="close",(R=O||(O={})).Heartbeat="HEARTBEAT",R.Candidate="CANDIDATE",R.Offer="OFFER",R.Answer="ANSWER",R.Open="OPEN",R.Error="ERROR",R.IdTaken="ID-TAKEN",R.InvalidKey="INVALID-KEY",R.Leave="LEAVE",R.Expire="EXPIRE";var ez={};ez=JSON.parse('{"name":"peerjs","version":"1.5.4","keywords":["peerjs","webrtc","p2p","rtc"],"description":"PeerJS client","homepage":"https://peerjs.com","bugs":{"url":"https://github.com/peers/peerjs/issues"},"repository":{"type":"git","url":"https://github.com/peers/peerjs"},"license":"MIT","contributors":["Michelle Bu <michelle@michellebu.com>","afrokick <devbyru@gmail.com>","ericz <really.ez@gmail.com>","Jairo <kidandcat@gmail.com>","Jonas Gloning <34194370+jonasgloning@users.noreply.github.com>","Jairo Caro-Accino Viciana <jairo@galax.be>","Carlos Caballero <carlos.caballero.gonzalez@gmail.com>","hc <hheennrryy@gmail.com>","Muhammad Asif <capripio@gmail.com>","PrashoonB <prashoonbhattacharjee@gmail.com>","Harsh Bardhan Mishra <47351025+HarshCasper@users.noreply.github.com>","akotynski <aleksanderkotbury@gmail.com>","lmb <i@lmb.io>","Jairooo <jairocaro@msn.com>","Moritz Stückler <moritz.stueckler@gmail.com>","Simon <crydotsnakegithub@gmail.com>","Denis Lukov <denismassters@gmail.com>","Philipp Hancke <fippo@andyet.net>","Hans Oksendahl <hansoksendahl@gmail.com>","Jess <jessachandler@gmail.com>","khankuan <khankuan@gmail.com>","DUODVK <kurmanov.work@gmail.com>","XiZhao <kwang1imsa@gmail.com>","Matthias Lohr <matthias@lohr.me>","=frank tree <=frnktrb@googlemail.com>","Andre Eckardt <aeckardt@outlook.com>","Chris Cowan <agentme49@gmail.com>","Alex Chuev <alex@chuev.com>","alxnull <alxnull@e.mail.de>","Yemel Jardi <angel.jardi@gmail.com>","Ben Parnell <benjaminparnell.94@gmail.com>","Benny Lichtner <bennlich@gmail.com>","fresheneesz <bitetrudpublic@gmail.com>","bob.barstead@exaptive.com <bob.barstead@exaptive.com>","chandika <chandika@gmail.com>","emersion <contact@emersion.fr>","Christopher Van <cvan@users.noreply.github.com>","eddieherm <edhermoso@gmail.com>","Eduardo Pinho <enet4mikeenet@gmail.com>","Evandro Zanatta <ezanatta@tray.net.br>","Gardner Bickford <gardner@users.noreply.github.com>","Gian Luca <gianluca.cecchi@cynny.com>","PatrickJS <github@gdi2290.com>","jonnyf <github@jonathanfoss.co.uk>","Hizkia Felix <hizkifw@gmail.com>","Hristo Oskov <hristo.oskov@gmail.com>","Isaac Madwed <i.madwed@gmail.com>","Ilya Konanykhin <ilya.konanykhin@gmail.com>","jasonbarry <jasbarry@me.com>","Jonathan Burke <jonathan.burke.1311@googlemail.com>","Josh Hamit <josh.hamit@gmail.com>","Jordan Austin <jrax86@gmail.com>","Joel Wetzell <jwetzell@yahoo.com>","xizhao <kevin.wang@cloudera.com>","Alberto Torres <kungfoobar@gmail.com>","Jonathan Mayol <mayoljonathan@gmail.com>","Jefferson Felix <me@jsfelix.dev>","Rolf Erik Lekang <me@rolflekang.com>","Kevin Mai-Husan Chia <mhchia@users.noreply.github.com>","Pepijn de Vos <pepijndevos@gmail.com>","JooYoung <qkdlql@naver.com>","Tobias Speicher <rootcommander@gmail.com>","Steve Blaurock <sblaurock@gmail.com>","Kyrylo Shegeda <shegeda@ualberta.ca>","Diwank Singh Tomer <singh@diwank.name>","Sören Balko <Soeren.Balko@gmail.com>","Arpit Solanki <solankiarpit1997@gmail.com>","Yuki Ito <yuki@gnnk.net>","Artur Zayats <zag2art@gmail.com>"],"funding":{"type":"opencollective","url":"https://opencollective.com/peer"},"collective":{"type":"opencollective","url":"https://opencollective.com/peer"},"files":["dist/*"],"sideEffects":["lib/global.ts","lib/supports.ts"],"main":"dist/bundler.cjs","module":"dist/bundler.mjs","browser-minified":"dist/peerjs.min.js","browser-unminified":"dist/peerjs.js","browser-minified-msgpack":"dist/serializer.msgpack.mjs","types":"dist/types.d.ts","engines":{"node":">= 14"},"targets":{"types":{"source":"lib/exports.ts"},"main":{"source":"lib/exports.ts","sourceMap":{"inlineSources":true}},"module":{"source":"lib/exports.ts","includeNodeModules":["eventemitter3"],"sourceMap":{"inlineSources":true}},"browser-minified":{"context":"browser","outputFormat":"global","optimize":true,"engines":{"browsers":"chrome >= 83, edge >= 83, firefox >= 80, safari >= 15"},"source":"lib/global.ts"},"browser-unminified":{"context":"browser","outputFormat":"global","optimize":false,"engines":{"browsers":"chrome >= 83, edge >= 83, firefox >= 80, safari >= 15"},"source":"lib/global.ts"},"browser-minified-msgpack":{"context":"browser","outputFormat":"esmodule","isLibrary":true,"optimize":true,"engines":{"browsers":"chrome >= 83, edge >= 83, firefox >= 102, safari >= 15"},"source":"lib/dataconnection/StreamConnection/MsgPack.ts"}},"scripts":{"contributors":"git-authors-cli --print=false && prettier --write package.json && git add package.json package-lock.json && git commit -m \\"chore(contributors): update and sort contributors list\\"","check":"tsc --noEmit && tsc -p e2e/tsconfig.json --noEmit","watch":"parcel watch","build":"rm -rf dist && parcel build","prepublishOnly":"npm run build","test":"jest","test:watch":"jest --watch","coverage":"jest --coverage --collectCoverageFrom=\\"./lib/**\\"","format":"prettier --write .","format:check":"prettier --check .","semantic-release":"semantic-release","e2e":"wdio run e2e/wdio.local.conf.ts","e2e:bstack":"wdio run e2e/wdio.bstack.conf.ts"},"devDependencies":{"@parcel/config-default":"^2.9.3","@parcel/packager-ts":"^2.9.3","@parcel/transformer-typescript-tsc":"^2.9.3","@parcel/transformer-typescript-types":"^2.9.3","@semantic-release/changelog":"^6.0.1","@semantic-release/git":"^10.0.1","@swc/core":"^1.3.27","@swc/jest":"^0.2.24","@types/jasmine":"^4.3.4","@wdio/browserstack-service":"^8.11.2","@wdio/cli":"^8.11.2","@wdio/globals":"^8.11.2","@wdio/jasmine-framework":"^8.11.2","@wdio/local-runner":"^8.11.2","@wdio/spec-reporter":"^8.11.2","@wdio/types":"^8.10.4","http-server":"^14.1.1","jest":"^29.3.1","jest-environment-jsdom":"^29.3.1","mock-socket":"^9.0.0","parcel":"^2.9.3","prettier":"^3.0.0","semantic-release":"^21.0.0","ts-node":"^10.9.1","typescript":"^5.0.0","wdio-geckodriver-service":"^5.0.1"},"dependencies":{"@msgpack/msgpack":"^2.8.0","eventemitter3":"^4.0.7","peerjs-js-binarypack":"^2.1.0","webrtc-adapter":"^9.0.0"},"alias":{"process":false,"buffer":false}}');class eN extends eM.EventEmitter{start(e,t){this._id=e;let n=`${this._baseUrl}&id=${e}&token=${t}`;!this._socket&&this._disconnected&&(this._socket=new WebSocket(n+"&version="+ez.version),this._disconnected=!1,this._socket.onmessage=e=>{let t;try{t=JSON.parse(e.data),eI.log("Server message received:",t)}catch(t){eI.log("Invalid server message",e.data);return}this.emit(M.Message,t)},this._socket.onclose=e=>{this._disconnected||(eI.log("Socket closed.",e),this._cleanup(),this._disconnected=!0,this.emit(M.Disconnected))},this._socket.onopen=()=>{this._disconnected||(this._sendQueuedMessages(),eI.log("Socket open"),this._scheduleHeartbeat())})}_scheduleHeartbeat(){this._wsPingTimer=setTimeout(()=>{this._sendHeartbeat()},this.pingInterval)}_sendHeartbeat(){if(!this._wsOpen()){eI.log("Cannot send heartbeat, because socket closed");return}let e=JSON.stringify({type:O.Heartbeat});this._socket.send(e),this._scheduleHeartbeat()}_wsOpen(){return!!this._socket&&1===this._socket.readyState}_sendQueuedMessages(){let e=[...this._messagesQueue];for(let t of(this._messagesQueue=[],e))this.send(t)}send(e){if(this._disconnected)return;if(!this._id){this._messagesQueue.push(e);return}if(!e.type){this.emit(M.Error,"Invalid message");return}if(!this._wsOpen())return;let t=JSON.stringify(e);this._socket.send(t)}close(){this._disconnected||(this._cleanup(),this._disconnected=!0)}_cleanup(){this._socket&&(this._socket.onopen=this._socket.onmessage=this._socket.onclose=null,this._socket.close(),this._socket=void 0),clearTimeout(this._wsPingTimer)}constructor(e,t,n,r,i,o=5e3){super(),this.pingInterval=o,this._disconnected=!0,this._messagesQueue=[],this._baseUrl=(e?"wss://":"ws://")+t+":"+n+r+"peerjs?key="+i}}class e${startConnection(e){let t=this._startPeerConnection();if(this.connection.peerConnection=t,this.connection.type===w.Media&&e._stream&&this._addTracksToConnection(e._stream,t),e.originator){let n=this.connection,r={ordered:!!e.reliable},i=t.createDataChannel(n.label,r);n._initializeDataChannel(i),this._makeOffer()}else this.handleSDP("OFFER",e.sdp)}_startPeerConnection(){eI.log("Creating RTCPeerConnection.");let e=new RTCPeerConnection(this.connection.provider.options.config);return this._setupListeners(e),e}_setupListeners(e){let t=this.connection.peer,n=this.connection.connectionId,r=this.connection.type,i=this.connection.provider;eI.log("Listening for ICE candidates."),e.onicecandidate=e=>{e.candidate&&e.candidate.candidate&&(eI.log(`Received ICE candidates for ${t}:`,e.candidate),i.socket.send({type:O.Candidate,payload:{candidate:e.candidate,type:r,connectionId:n},dst:t}))},e.oniceconnectionstatechange=()=>{switch(e.iceConnectionState){case"failed":eI.log("iceConnectionState is failed, closing connections to "+t),this.connection.emitError(D.NegotiationFailed,"Negotiation of connection to "+t+" failed."),this.connection.close();break;case"closed":eI.log("iceConnectionState is closed, closing connections to "+t),this.connection.emitError(D.ConnectionClosed,"Connection to "+t+" closed."),this.connection.close();break;case"disconnected":eI.log("iceConnectionState changed to disconnected on the connection with "+t);break;case"completed":e.onicecandidate=()=>{}}this.connection.emit("iceStateChanged",e.iceConnectionState)},eI.log("Listening for data channel"),e.ondatachannel=e=>{eI.log("Received data channel");let r=e.channel;i.getConnection(t,n)._initializeDataChannel(r)},eI.log("Listening for remote stream"),e.ontrack=e=>{eI.log("Received remote stream");let r=e.streams[0],o=i.getConnection(t,n);o.type===w.Media&&this._addStreamToMediaConnection(r,o)}}cleanup(){eI.log("Cleaning up PeerConnection to "+this.connection.peer);let e=this.connection.peerConnection;if(!e)return;this.connection.peerConnection=null,e.onicecandidate=e.oniceconnectionstatechange=e.ondatachannel=e.ontrack=()=>{};let t="closed"!==e.signalingState,n=!1,r=this.connection.dataChannel;r&&(n=!!r.readyState&&"closed"!==r.readyState),(t||n)&&e.close()}async _makeOffer(){let e=this.connection.peerConnection,t=this.connection.provider;try{let n=await e.createOffer(this.connection.options.constraints);eI.log("Created offer."),this.connection.options.sdpTransform&&"function"==typeof this.connection.options.sdpTransform&&(n.sdp=this.connection.options.sdpTransform(n.sdp)||n.sdp);try{await e.setLocalDescription(n),eI.log("Set localDescription:",n,`for:${this.connection.peer}`);let r={sdp:n,type:this.connection.type,connectionId:this.connection.connectionId,metadata:this.connection.metadata};if(this.connection.type===w.Data){let e=this.connection;r={...r,label:e.label,reliable:e.reliable,serialization:e.serialization}}t.socket.send({type:O.Offer,payload:r,dst:this.connection.peer})}catch(e){"OperationError: Failed to set local offer sdp: Called in wrong state: kHaveRemoteOffer"!=e&&(t.emitError(E.WebRTC,e),eI.log("Failed to setLocalDescription, ",e))}}catch(e){t.emitError(E.WebRTC,e),eI.log("Failed to createOffer, ",e)}}async _makeAnswer(){let e=this.connection.peerConnection,t=this.connection.provider;try{let n=await e.createAnswer();eI.log("Created answer."),this.connection.options.sdpTransform&&"function"==typeof this.connection.options.sdpTransform&&(n.sdp=this.connection.options.sdpTransform(n.sdp)||n.sdp);try{await e.setLocalDescription(n),eI.log("Set localDescription:",n,`for:${this.connection.peer}`),t.socket.send({type:O.Answer,payload:{sdp:n,type:this.connection.type,connectionId:this.connection.connectionId},dst:this.connection.peer})}catch(e){t.emitError(E.WebRTC,e),eI.log("Failed to setLocalDescription, ",e)}}catch(e){t.emitError(E.WebRTC,e),eI.log("Failed to create answer, ",e)}}async handleSDP(e,t){t=new RTCSessionDescription(t);let n=this.connection.peerConnection,r=this.connection.provider;eI.log("Setting remote description",t);try{await n.setRemoteDescription(t),eI.log(`Set remoteDescription:${e} for:${this.connection.peer}`),"OFFER"===e&&await this._makeAnswer()}catch(e){r.emitError(E.WebRTC,e),eI.log("Failed to setRemoteDescription, ",e)}}async handleCandidate(e){eI.log("handleCandidate:",e);try{await this.connection.peerConnection.addIceCandidate(e),eI.log(`Added ICE candidate for:${this.connection.peer}`)}catch(e){this.connection.provider.emitError(E.WebRTC,e),eI.log("Failed to handleCandidate, ",e)}}_addTracksToConnection(e,t){if(eI.log(`add tracks from stream ${e.id} to peer connection`),!t.addTrack)return eI.error("Your browser does't support RTCPeerConnection#addTrack. Ignored.");e.getTracks().forEach(n=>{t.addTrack(n,e)})}_addStreamToMediaConnection(e,t){eI.log(`add stream ${e.id} to media connection ${t.connectionId}`),t.addStream(e)}constructor(e){this.connection=e}}class eJ extends eM.EventEmitter{emitError(e,t){eI.error("Error:",t),this.emit("error",new eV(`${e}`,t))}}class eV extends Error{constructor(e,t){"string"==typeof t?super(t):(super(),Object.assign(this,t)),this.type=e}}class eG extends eJ{get open(){return this._open}constructor(e,t,n){super(),this.peer=e,this.provider=t,this.options=n,this._open=!1,this.metadata=n.metadata}}class eW extends eG{get type(){return w.Media}get localStream(){return this._localStream}get remoteStream(){return this._remoteStream}_initializeDataChannel(e){this.dataChannel=e,this.dataChannel.onopen=()=>{eI.log(`DC#${this.connectionId} dc connection success`),this.emit("willCloseOnRemote")},this.dataChannel.onclose=()=>{eI.log(`DC#${this.connectionId} dc closed for:`,this.peer),this.close()}}addStream(e){eI.log("Receiving stream",e),this._remoteStream=e,super.emit("stream",e)}handleMessage(e){let t=e.type,n=e.payload;switch(e.type){case O.Answer:this._negotiator.handleSDP(t,n.sdp),this._open=!0;break;case O.Candidate:this._negotiator.handleCandidate(n.candidate);break;default:eI.warn(`Unrecognized message type:${t} from peer:${this.peer}`)}}answer(e,t={}){if(this._localStream){eI.warn("Local stream already exists on this MediaConnection. Are you answering a call twice?");return}for(let n of(this._localStream=e,t&&t.sdpTransform&&(this.options.sdpTransform=t.sdpTransform),this._negotiator.startConnection({...this.options._payload,_stream:e}),this.provider._getMessages(this.connectionId)))this.handleMessage(n);this._open=!0}close(){this._negotiator&&(this._negotiator.cleanup(),this._negotiator=null),this._localStream=null,this._remoteStream=null,this.provider&&(this.provider._removeConnection(this),this.provider=null),this.options&&this.options._stream&&(this.options._stream=null),this.open&&(this._open=!1,super.emit("close"))}constructor(e,t,n){super(e,t,n),this._localStream=this.options._stream,this.connectionId=this.options.connectionId||eW.ID_PREFIX+ex.randomToken(),this._negotiator=new e$(this),this._localStream&&this._negotiator.startConnection({_stream:this._localStream,originator:!0})}}eW.ID_PREFIX="mc_";class eH{_buildRequest(e){let t=this._options.secure?"https":"http",{host:n,port:r,path:i,key:o}=this._options,s=new URL(`${t}://${n}:${r}${i}${o}/${e}`);return s.searchParams.set("ts",`${Date.now()}${Math.random()}`),s.searchParams.set("version",ez.version),fetch(s.href,{referrerPolicy:this._options.referrerPolicy})}async retrieveId(){try{let e=await this._buildRequest("id");if(200!==e.status)throw Error(`Error. Status:${e.status}`);return e.text()}catch(t){eI.error("Error retrieving ID",t);let e="";throw"/"===this._options.path&&this._options.host!==ex.CLOUD_HOST&&(e=" If you passed in a `path` to your self-hosted PeerServer, you'll also need to pass in that same path when creating a new Peer."),Error("Could not get an ID from the server."+e)}}async listAllPeers(){try{let e=await this._buildRequest("peers");if(200!==e.status){if(401===e.status){let e="";throw e=this._options.host===ex.CLOUD_HOST?"It looks like you're using the cloud server. You can email team@peerjs.com to enable peer listing for your API key.":"You need to enable `allow_discovery` on your self-hosted PeerServer to use this feature.",Error("It doesn't look like you have permission to list peers IDs. "+e)}throw Error(`Error. Status:${e.status}`)}return e.json()}catch(e){throw eI.error("Error retrieving list peers",e),Error("Could not get list peers from the server."+e)}}constructor(e){this._options=e}}class eY extends eG{get type(){return w.Data}_initializeDataChannel(e){this.dataChannel=e,this.dataChannel.onopen=()=>{eI.log(`DC#${this.connectionId} dc connection success`),this._open=!0,this.emit("open")},this.dataChannel.onmessage=e=>{eI.log(`DC#${this.connectionId} dc onmessage:`,e.data)},this.dataChannel.onclose=()=>{eI.log(`DC#${this.connectionId} dc closed for:`,this.peer),this.close()}}close(e){if(e?.flush){this.send({__peerData:{type:"close"}});return}this._negotiator&&(this._negotiator.cleanup(),this._negotiator=null),this.provider&&(this.provider._removeConnection(this),this.provider=null),this.dataChannel&&(this.dataChannel.onopen=null,this.dataChannel.onmessage=null,this.dataChannel.onclose=null,this.dataChannel=null),this.open&&(this._open=!1,super.emit("close"))}send(e,t=!1){if(!this.open){this.emitError(x.NotOpenYet,"Connection is not open. You should listen for the `open` event before sending messages.");return}return this._send(e,t)}async handleMessage(e){let t=e.payload;switch(e.type){case O.Answer:await this._negotiator.handleSDP(e.type,t.sdp);break;case O.Candidate:await this._negotiator.handleCandidate(t.candidate);break;default:eI.warn("Unrecognized message type:",e.type,"from peer:",this.peer)}}constructor(e,t,n){super(e,t,n),this.connectionId=this.options.connectionId||eY.ID_PREFIX+eE(),this.label=this.options.label||this.connectionId,this.reliable=!!this.options.reliable,this._negotiator=new e$(this),this._negotiator.startConnection(this.options._payload||{originator:!0,reliable:this.reliable})}}eY.ID_PREFIX="dc_",eY.MAX_BUFFERED_AMOUNT=8388608;class eK extends eY{get bufferSize(){return this._bufferSize}_initializeDataChannel(e){super._initializeDataChannel(e),this.dataChannel.binaryType="arraybuffer",this.dataChannel.addEventListener("message",e=>this._handleDataMessage(e))}_bufferedSend(e){(this._buffering||!this._trySend(e))&&(this._buffer.push(e),this._bufferSize=this._buffer.length)}_trySend(e){if(!this.open)return!1;if(this.dataChannel.bufferedAmount>eY.MAX_BUFFERED_AMOUNT)return this._buffering=!0,setTimeout(()=>{this._buffering=!1,this._tryBuffer()},50),!1;try{this.dataChannel.send(e)}catch(e){return eI.error(`DC#:${this.connectionId} Error when sending:`,e),this._buffering=!0,this.close(),!1}return!0}_tryBuffer(){if(!this.open||0===this._buffer.length)return;let e=this._buffer[0];this._trySend(e)&&(this._buffer.shift(),this._bufferSize=this._buffer.length,this._tryBuffer())}close(e){if(e?.flush){this.send({__peerData:{type:"close"}});return}this._buffer=[],this._bufferSize=0,super.close()}constructor(...e){super(...e),this._buffer=[],this._bufferSize=0,this._buffering=!1}}class eX extends eK{close(e){super.close(e),this._chunkedData={}}_handleDataMessage({data:e}){let t=i(e),n=t.__peerData;if(n){if("close"===n.type){this.close();return}this._handleChunk(t);return}this.emit("data",t)}_handleChunk(e){let t=e.__peerData,n=this._chunkedData[t]||{data:[],count:0,total:e.total};if(n.data[e.n]=new Uint8Array(e.data),n.count++,this._chunkedData[t]=n,n.total===n.count){delete this._chunkedData[t];let e=function(e){let t=0;for(let n of e)t+=n.byteLength;let n=new Uint8Array(t),r=0;for(let t of e)n.set(t,r),r+=t.byteLength;return n}(n.data);this._handleDataMessage({data:e})}}_send(e,t){let n=o(e);if(n instanceof Promise)return this._send_blob(n);if(!t&&n.byteLength>this.chunker.chunkedMTU){this._sendChunks(n);return}this._bufferedSend(n)}async _send_blob(e){let t=await e;if(t.byteLength>this.chunker.chunkedMTU){this._sendChunks(t);return}this._bufferedSend(t)}_sendChunks(e){let t=this.chunker.chunk(e);for(let e of(eI.log(`DC#${this.connectionId} Try to send ${t.length} chunks...`),t))this.send(e,!0)}constructor(e,t,r){super(e,t,r),this.chunker=new n,this.serialization=I.Binary,this._chunkedData={}}}class eq extends eK{_handleDataMessage({data:e}){super.emit("data",e)}_send(e,t){this._bufferedSend(e)}constructor(...e){super(...e),this.serialization=I.None}}class eQ extends eK{_handleDataMessage({data:e}){let t=this.parse(this.decoder.decode(e)),n=t.__peerData;if(n&&"close"===n.type){this.close();return}this.emit("data",t)}_send(e,t){let n=this.encoder.encode(this.stringify(e));if(n.byteLength>=ex.chunkedMTU){this.emitError(x.MessageToBig,"Message too big for JSON channel");return}this._bufferedSend(n)}constructor(...e){super(...e),this.serialization=I.JSON,this.encoder=new TextEncoder,this.decoder=new TextDecoder,this.stringify=JSON.stringify,this.parse=JSON.parse}}class eZ extends eJ{get id(){return this._id}get options(){return this._options}get open(){return this._open}get socket(){return this._socket}get connections(){let e=Object.create(null);for(let[t,n]of this._connections)e[t]=n;return e}get destroyed(){return this._destroyed}get disconnected(){return this._disconnected}_createServerConnection(){let e=new eN(this._options.secure,this._options.host,this._options.port,this._options.path,this._options.key,this._options.pingInterval);return e.on(M.Message,e=>{this._handleMessage(e)}),e.on(M.Error,e=>{this._abort(E.SocketError,e)}),e.on(M.Disconnected,()=>{this.disconnected||(this.emitError(E.Network,"Lost connection to server."),this.disconnect())}),e.on(M.Close,()=>{this.disconnected||this._abort(E.SocketClosed,"Underlying socket is already closed.")}),e}_initialize(e){this._id=e,this.socket.start(e,this._options.token)}_handleMessage(e){let t=e.type,n=e.payload,r=e.src;switch(t){case O.Open:this._lastServerId=this.id,this._open=!0,this.emit("open",this.id);break;case O.Error:this._abort(E.ServerError,n.msg);break;case O.IdTaken:this._abort(E.UnavailableID,`ID "${this.id}" is taken`);break;case O.InvalidKey:this._abort(E.InvalidKey,`API KEY "${this._options.key}" is invalid`);break;case O.Leave:eI.log(`Received leave message from ${r}`),this._cleanupPeer(r),this._connections.delete(r);break;case O.Expire:this.emitError(E.PeerUnavailable,`Could not connect to peer ${r}`);break;case O.Offer:{let e=n.connectionId,t=this.getConnection(r,e);if(t&&(t.close(),eI.warn(`Offer received for existing Connection ID:${e}`)),n.type===w.Media){let i=new eW(r,this,{connectionId:e,_payload:n,metadata:n.metadata});t=i,this._addConnection(r,t),this.emit("call",i)}else if(n.type===w.Data){let i=new this._serializers[n.serialization](r,this,{connectionId:e,_payload:n,metadata:n.metadata,label:n.label,serialization:n.serialization,reliable:n.reliable});t=i,this._addConnection(r,t),this.emit("connection",i)}else{eI.warn(`Received malformed connection type:${n.type}`);return}for(let n of this._getMessages(e))t.handleMessage(n);break}default:{if(!n){eI.warn(`You received a malformed message from ${r} of type ${t}`);return}let i=n.connectionId,o=this.getConnection(r,i);o&&o.peerConnection?o.handleMessage(e):i?this._storeMessage(i,e):eI.warn("You received an unrecognized message:",e)}}}_storeMessage(e,t){this._lostMessages.has(e)||this._lostMessages.set(e,[]),this._lostMessages.get(e).push(t)}_getMessages(e){let t=this._lostMessages.get(e);return t?(this._lostMessages.delete(e),t):[]}connect(e,t={}){if(t={serialization:"default",...t},this.disconnected){eI.warn("You cannot connect to a new Peer because you called .disconnect() on this Peer and ended your connection with the server. You can create a new Peer to reconnect, or call reconnect on this peer if you believe its ID to still be available."),this.emitError(E.Disconnected,"Cannot connect to new Peer after disconnecting from server.");return}let n=new this._serializers[t.serialization](e,this,t);return this._addConnection(e,n),n}call(e,t,n={}){if(this.disconnected){eI.warn("You cannot connect to a new Peer because you called .disconnect() on this Peer and ended your connection with the server. You can create a new Peer to reconnect."),this.emitError(E.Disconnected,"Cannot connect to new Peer after disconnecting from server.");return}if(!t){eI.error("To call a peer, you must provide a stream from your browser's `getUserMedia`.");return}let r=new eW(e,this,{...n,_stream:t});return this._addConnection(e,r),r}_addConnection(e,t){eI.log(`add connection ${t.type}:${t.connectionId} to peerId:${e}`),this._connections.has(e)||this._connections.set(e,[]),this._connections.get(e).push(t)}_removeConnection(e){let t=this._connections.get(e.peer);if(t){let n=t.indexOf(e);-1!==n&&t.splice(n,1)}this._lostMessages.delete(e.connectionId)}getConnection(e,t){let n=this._connections.get(e);if(!n)return null;for(let e of n)if(e.connectionId===t)return e;return null}_delayedAbort(e,t){setTimeout(()=>{this._abort(e,t)},0)}_abort(e,t){eI.error("Aborting!"),this.emitError(e,t),this._lastServerId?this.disconnect():this.destroy()}destroy(){this.destroyed||(eI.log(`Destroy peer with ID:${this.id}`),this.disconnect(),this._cleanup(),this._destroyed=!0,this.emit("close"))}_cleanup(){for(let e of this._connections.keys())this._cleanupPeer(e),this._connections.delete(e);this.socket.removeAllListeners()}_cleanupPeer(e){let t=this._connections.get(e);if(t)for(let e of t)e.close()}disconnect(){if(this.disconnected)return;let e=this.id;eI.log(`Disconnect peer with ID:${e}`),this._disconnected=!0,this._open=!1,this.socket.close(),this._lastServerId=e,this._id=null,this.emit("disconnected",e)}reconnect(){if(this.disconnected&&!this.destroyed)eI.log(`Attempting reconnection to server with ID ${this._lastServerId}`),this._disconnected=!1,this._initialize(this._lastServerId);else if(this.destroyed)throw Error("This peer cannot reconnect to the server. It has already been destroyed.");else if(this.disconnected||this.open)throw Error(`Peer ${this.id} cannot reconnect because it is not disconnected from the server!`);else eI.error("In a hurry? We're still trying to make the initial connection!")}listAllPeers(e=e=>{}){this._api.listAllPeers().then(t=>e(t)).catch(e=>this._abort(E.ServerError,e))}constructor(e,t){let n;if(super(),this._serializers={raw:eq,json:eQ,binary:eX,"binary-utf8":eX,default:eX},this._id=null,this._lastServerId=null,this._destroyed=!1,this._disconnected=!1,this._open=!1,this._connections=new Map,this._lostMessages=new Map,e&&e.constructor==Object?t=e:e&&(n=e.toString()),t={debug:0,host:ex.CLOUD_HOST,port:ex.CLOUD_PORT,path:"/",key:eZ.DEFAULT_KEY,token:ex.randomToken(),config:ex.defaultConfig,referrerPolicy:"strict-origin-when-cross-origin",serializers:{},...t},this._options=t,this._serializers={...this._serializers,...this.options.serializers},"/"===this._options.host&&(this._options.host=window.location.hostname),this._options.path&&("/"!==this._options.path[0]&&(this._options.path="/"+this._options.path),"/"!==this._options.path[this._options.path.length-1]&&(this._options.path+="/")),void 0===this._options.secure&&this._options.host!==ex.CLOUD_HOST?this._options.secure=ex.isSecure():this._options.host==ex.CLOUD_HOST&&(this._options.secure=!0),this._options.logFunction&&eI.setLogFunction(this._options.logFunction),eI.logLevel=this._options.debug||0,this._api=new eH(t),this._socket=this._createServerConnection(),!ex.supports.audioVideo&&!ex.supports.data){this._delayedAbort(E.BrowserIncompatible,"The current browser does not support WebRTC");return}if(n&&!ex.validateId(n)){this._delayedAbort(E.InvalidID,`ID "${n}" is invalid`);return}n?this._initialize(n):this._api.retrieveId().then(e=>this._initialize(e)).catch(e=>this._abort(E.ServerError,e))}}eZ.DEFAULT_KEY="peerjs",window.peerjs={Peer:eZ,util:ex},window.Peer=eZ})();
+//# sourceMappingURL=peerjs.min.js.map
+
+</script>
+<script>
 'use strict';
-/* 《明日债 · Tomorrow's Debt》 v0.2.0「凶契」
-   v0.2 改版（按玩家反馈）：恐怖主题，废除射击。
-   新核心战斗：朱砂绕圈封印——你的移动拖出朱砂轨迹，走满一圈合拢成印，
-   圈内的邪祟被封杀。圈越大、圈住的越多，收益越高，风险也越大。
-   保留并恐怖化的原创机制：向「死去的未来的自己」借命三咒，
-   每借一次，约 22 秒后讨债影带着你借的那一咒来讨债；
-   最终 Boss 的咒组 = 你全程借过的咒集合。 */
+/* 联机传输层：PeerJS（WebRTC 点对点）+ 免费公共信令。
+   房主权威：房主跑全部游戏逻辑，客人只发输入、收状态快照渲染。
+   库文件 peerjs.min.js 与游戏同源托管，不依赖第三方 CDN。 */
+window.TDNet = {
+  role: 'solo',           // solo | host | guest
+  peer: null, conn: null, code: null,
+  guestInput: { mx: 0, my: 0 },
+  guestBorrow: [],
+  guestDash: false,
+  onMsg: null,            // game.js 注册：收到对方消息
+  onStatus: null,         // game.js 注册：状态文案回调
+  onPeerJoin: null,       // 房主：客人连入
+  onPeerLeave: null,      // 任一端：连接断开
+
+  _status: function (s) { if (this.onStatus) this.onStatus(s); },
+
+  makeCode: function () {
+    const abc = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+    let c = '';
+    for (let i = 0; i < 4; i++) c += abc[Math.floor(Math.random() * abc.length)];
+    return c;
+  },
+
+  host: function () {
+    if (typeof Peer === 'undefined') { this._status('联机组件未加载，只能同屏双人'); return; }
+    this.close();
+    this.role = 'host';
+    this.code = this.makeCode();
+    const self = this;
+    this.peer = new Peer('td3-' + this.code);
+    this.peer.on('open', function () {
+      self._status('房间已建 · 把房码告诉同行者： ' + self.code);
+    });
+    this.peer.on('connection', function (conn) {
+      if (self.conn && self.conn.open) { conn.close(); return; } // 只收一位同行者
+      self.conn = conn;
+      self._bindConn();
+      conn.on('open', function () {
+        self._status('同行者已连入 · 房码 ' + self.code);
+        if (self.onPeerJoin) self.onPeerJoin();
+      });
+    });
+    this.peer.on('error', function (err) {
+      if (err.type === 'unavailable-id') { self.host(); return; } // 房码撞了，换一个
+      self._status('联机出错：' + err.type + '（可改用同屏双人）');
+    });
+  },
+
+  join: function (code) {
+    if (typeof Peer === 'undefined') { this._status('联机组件未加载，只能同屏双人'); return; }
+    code = (code || '').trim().toUpperCase();
+    if (code.length !== 4) { this._status('房码是 4 位字符'); return; }
+    this.close();
+    this.role = 'guest';
+    this.code = code;
+    const self = this;
+    this.peer = new Peer();
+    this.peer.on('open', function () {
+      self.conn = self.peer.connect('td3-' + code, { reliable: true });
+      self._bindConn();
+      self.conn.on('open', function () { self._status('已连入房间 ' + code + ' · 等待房主开始'); });
+    });
+    this.peer.on('error', function (err) {
+      if (err.type === 'peer-unavailable') self._status('找不到这个房间，核对房码或等房主先建房');
+      else self._status('联机出错：' + err.type);
+    });
+  },
+
+  _bindConn: function () {
+    const self = this;
+    this.conn.on('data', function (d) { if (self.onMsg) self.onMsg(d); });
+    this.conn.on('close', function () {
+      self._status('连接已断开');
+      if (self.onPeerLeave) self.onPeerLeave();
+    });
+  },
+
+  send: function (obj) {
+    if (this.conn && this.conn.open) { try { this.conn.send(obj); } catch (e) { /* 断连静默 */ } }
+  },
+
+  close: function () {
+    try { if (this.conn) this.conn.close(); } catch (e) {}
+    try { if (this.peer) this.peer.destroy(); } catch (e) {}
+    this.conn = null; this.peer = null; this.role = 'solo';
+    this.guestInput = { mx: 0, my: 0 }; this.guestBorrow = []; this.guestDash = false;
+  }
+};
+
+</script>
+<script>
+'use strict';
+/* 《明日债 · Tomorrow's Debt》 v0.3.0「同行」
+   v0.3 新增（按玩家要求）：可联机 + 有解谜。
+   联机：双人合作三种进入方式——单人 / 同屏双人（Enter 加入，随时离线可玩）/
+        在线双人（PeerJS WebRTC 房间码，房主权威：房主跑逻辑，客人发输入收快照）。
+   解谜：每幕一个，嵌在波次之间——
+        一幕「踏符阵」记序踏符；二幕「双生祟」必须同一道印同时封住双生；
+        三幕「契文三问」站圈答题，答错会给最终 Boss 上强度。
+   合作机制：各自拖朱砂/青砂轨迹绕圈封印；队友倒地后，绕着他合印可救回。
+   核心战斗与借债/讨债影沿用 v0.2。 */
 
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
@@ -174,8 +297,13 @@ function polyArea(poly) {
   for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) a += (poly[j].x + poly[i].x) * (poly[j].y - poly[i].y);
   return Math.abs(a / 2);
 }
+function centroid(poly) {
+  let x = 0, y = 0;
+  poly.forEach(p => { x += p.x; y += p.y; });
+  return { x: x / poly.length, y: y / poly.length };
+}
 
-/* ---------------- 音效（低沉合成，无外部文件） ---------------- */
+/* ---------------- 音效 ---------------- */
 let muted = false, audioCtx = null;
 function beep(freq, dur, type, vol) {
   if (muted) return;
@@ -190,7 +318,7 @@ function beep(freq, dur, type, vol) {
   } catch (e) { /* 静默 */ }
 }
 
-/* ---------------- 三幕（恐怖题材各异，一条主线） ---------------- */
+/* ---------------- 三幕 ---------------- */
 const SCENES = [
   {
     name: '第一幕 · 雨夜凶宅', theme: 'house',
@@ -224,51 +352,80 @@ const SCENES = [
   }
 ];
 
-/* ---------------- 升级池（全部围绕步法与封印） ---------------- */
 const UPGRADES = [
-  { name: '镇煞契', desc: '封印伤害 +30%', apply: p => { p.sealDmg *= 1.30; } },
-  { name: '朱砂契', desc: '朱砂轨迹存留时间 +40%，能绕更大的圈', apply: p => { p.trailLife *= 1.40; } },
-  { name: '疾风契', desc: '移动速度 +13%', apply: p => { p.speed *= 1.13; } },
-  { name: '扩命契', desc: '生命上限 +25，并回复 40', apply: p => { p.maxHp += 25; p.hp = Math.min(p.maxHp, p.hp + 40); } },
-  { name: '破煞契', desc: '封印暴击率 +15%（暴击造成双倍封印伤害）', apply: p => { p.crit += 0.15; } },
-  { name: '磁石契', desc: '拾取范围 +70%', apply: p => { p.magnet *= 1.7; } },
-  { name: '疾影契', desc: '冲刺冷却 -30%，冲刺后短暂加速', apply: p => { p.dashCdMax *= 0.7; p.dashBoost = true; } },
-  { name: '连环契', desc: '每次封印后 3 秒内，下一次封印伤害 +60%', apply: p => { p.chainSeal = true; } }
+  { name: '镇煞契', desc: '全队封印伤害 +30%', apply: p => { p.sealDmg *= 1.30; } },
+  { name: '朱砂契', desc: '全队轨迹存留时间 +40%，能绕更大的圈', apply: p => { p.trailLife *= 1.40; } },
+  { name: '疾风契', desc: '全队移动速度 +13%', apply: p => { p.speed *= 1.13; } },
+  { name: '扩命契', desc: '全队生命上限 +25，并回复 40', apply: p => { p.maxHp += 25; p.hp = Math.min(p.maxHp, p.hp + 40); } },
+  { name: '破煞契', desc: '全队封印暴击率 +15%', apply: p => { p.crit += 0.15; } },
+  { name: '磁石契', desc: '全队拾取范围 +70%', apply: p => { p.magnet *= 1.7; } },
+  { name: '疾影契', desc: '全队冲刺冷却 -30%，冲刺后短暂加速', apply: p => { p.dashCdMax *= 0.7; p.dashBoost = true; } },
+  { name: '连环契', desc: '全队每次封印后 3 秒内，下一次封印伤害 +60%', apply: p => { p.chainSeal = true; } }
 ];
 
-/* ---------------- 游戏状态 ---------------- */
+/* ---------------- 状态 ---------------- */
 const SKILL_CD = { nova: 7, blades: 12, chrono: 14 };
 const SKILL_NAME = { nova: '阴爆', blades: '纸人', chrono: '凝时' };
 const DEBT_DELAY = 22;
+const PUZZLE_AT = [1, 1, 2]; // 每幕在第几波之后出谜题
 
 let state = 'menu';
 let endless = false;
-let player, enemies, shadows, parts, drops, debts, ebullets, trail, sealFx;
+let players = [], player = null;
+let enemies = [], shadows = [], parts = [], drops = [], debts = [], ebullets = [], sealFx = [];
 let sceneIdx = 0, waveIdx = 0, spawnQueue = [], spawnTimer = 0, waveActive = false;
 let score = 0, kills = 0, seals = 0, debtsTotal = 0, debtsRepaid = 0, runTime = 0;
 let borrowedSet = new Set(), borrowedHistory = [];
 let slowTimer = 0, shake = 0, bossRef = null;
+let puzzle = null, puzzleDone = [false, false, false], bossBuff = 0; // bossBuff: -1 弱化 / +1 强化
 let keys = {};
 let joy = { active: false, id: null, ox: 0, oy: 0, dx: 0, dy: 0 };
+let rings = [];
 
-function newPlayer() {
+function newPlayer(kind, idx) {
   return {
-    x: W / 2, y: H / 2, r: 14, hp: 100, maxHp: 100,
+    kind, idx,
+    x: W / 2 + (idx === 1 ? 70 : -10), y: H / 2 + (idx === 1 ? 40 : 0), r: 14,
+    hp: 100, maxHp: 100, downed: false, reviveTimer: 0,
     speed: 242, sealDmg: 85, trailLife: 7, crit: 0.05, magnet: 60, chainSeal: false,
     dashTimer: 0, dashCd: 0, dashCdMax: 2.6, dashBoost: false, boostTimer: 0, face: 1,
     skillCd: { nova: 0, blades: 0, chrono: 0 },
-    paperTimer: 0, paperAngle: 0, invuln: 0, sealBuffTimer: 0
+    paperTimer: 0, paperAngle: 0, invuln: 0, sealBuffTimer: 0,
+    trail: [], input: { mx: 0, my: 0 }
   };
 }
 
 function resetRun(isEndless) {
   endless = isEndless;
-  player = newPlayer();
-  enemies = []; shadows = []; parts = []; drops = []; debts = []; ebullets = []; trail = []; sealFx = [];
+  player = newPlayer('local1', 0);
+  players = [player];
+  // 在线客人或同屏 P2 若在开局前已加入，保留席位
+  if (window.TDNet && TDNet.role === 'host' && TDNet.conn && TDNet.conn.open) addPlayer('remote');
+  enemies = []; shadows = []; parts = []; drops = []; debts = []; ebullets = []; sealFx = []; rings = [];
   sceneIdx = 0; waveIdx = 0; score = 0; kills = 0; seals = 0;
   debtsTotal = 0; debtsRepaid = 0; runTime = 0;
   borrowedSet = new Set(); borrowedHistory = [];
   slowTimer = 0; bossRef = null; spawnQueue = []; waveActive = false;
+  puzzle = null; puzzleDone = [false, false, false]; bossBuff = 0;
+}
+
+function addPlayer(kind) {
+  if (players.length >= 2) return null;
+  const p = newPlayer(kind, 1);
+  players.push(p);
+  updateP2HudVisibility();
+  return p;
+}
+
+function viewPl() {
+  if (window.TDNet && TDNet.role === 'guest') return players[1] || players[0] || player;
+  return player;
+}
+function alivePlayers() { return players.filter(p => !p.downed); }
+function nearestPlayer(x, y) {
+  let best = null, bd = Infinity;
+  alivePlayers().forEach(p => { const d = dist2(p, { x, y }); if (d < bd) { bd = d; best = p; } });
+  return best;
 }
 
 /* ---------------- DOM ---------------- */
@@ -276,26 +433,34 @@ const $ = id => document.getElementById(id);
 const els = {
   hud: $('hud'), skills: $('skills'), menu: $('menu'), chapter: $('chapter'),
   upgrade: $('upgrade'), end: $('end'), pause: $('pause'),
-  hpFill: $('hpfill'), hpText: $('hptext'), scene: $('scene-label'), wave: $('wave-label'),
+  hpFill: $('hpfill'), hpText: $('hptext'), p2wrap: $('p2wrap'), p2fill: $('p2fill'), p2text: $('p2text'),
+  scene: $('scene-label'), wave: $('wave-label'),
   debtCount: $('debt-count'), scoreCount: $('score-count'), debtAlert: $('debt-alert'),
   chapterTitle: $('chapter-title'), chapterText: $('chapter-text'),
   endTitle: $('end-title'), endStats: $('end-stats'), best: $('best-line'),
-  endlessBtn: $('btn-endless')
+  endlessBtn: $('btn-endless'), netStatus: $('net-status')
 };
-
 function show(el, on) { el.classList.toggle('hidden', !on); }
+function updateP2HudVisibility() { show(els.p2wrap, players.length > 1); }
 function refreshBest() {
   const best = JSON.parse(localStorage.getItem('td_best') || 'null');
   els.best.textContent = best ? ('最佳：时尘 ' + best.score + ' · 封印 ' + (best.seals || 0) + ' 次 · 总借债 ' + best.debts) : '';
   show(els.endlessBtn, !!localStorage.getItem('td_won'));
 }
 refreshBest();
+function alertText(txt, ms) {
+  els.debtAlert.textContent = txt;
+  show(els.debtAlert, true);
+  setTimeout(() => show(els.debtAlert, false), ms || 1700);
+}
 
 /* ---------------- 流程 ---------------- */
 function startRun(isEndless) {
+  if (window.TDNet && TDNet.role === 'guest') { TDNet._status('你是客人，等房主点「开始送契」'); return; }
   resetRun(isEndless);
   show(els.menu, false); show(els.end, false);
   show(els.hud, true); show(els.skills, true);
+  updateP2HudVisibility();
   showChapter();
 }
 
@@ -330,7 +495,10 @@ function waveCleared() {
   if (waveIdx >= s.waves.length) {
     sceneIdx++; waveIdx = 0;
     if (!endless && sceneIdx >= SCENES.length) return victory();
-    showChapter();
+    return showChapter();
+  }
+  if (!endless && !puzzleDone[sceneIdx % SCENES.length] && waveIdx === PUZZLE_AT[sceneIdx % SCENES.length]) {
+    startPuzzle(sceneIdx % SCENES.length);
   } else {
     openUpgrade();
   }
@@ -344,7 +512,11 @@ function openUpgrade() {
     const b = document.createElement('button');
     b.className = 'up-card';
     b.innerHTML = '<div class="up-name">' + u.name + '</div><div class="up-desc">' + u.desc + '</div>';
-    b.onclick = () => { u.apply(player); beep(392, 0.14, 'triangle', 0.05); show(els.upgrade, false); beginWave(); };
+    b.onclick = () => {
+      players.forEach(pl => u.apply(pl));
+      beep(392, 0.14, 'triangle', 0.05);
+      show(els.upgrade, false); beginWave();
+    };
     box.appendChild(b);
   });
   show(els.upgrade, true);
@@ -352,8 +524,8 @@ function openUpgrade() {
 
 function gameOver() {
   state = 'over';
-  els.endTitle.textContent = '你留在了那边';
-  els.endStats.textContent = statsText('走廊的灯全灭了。契，从你手里飘了出去。');
+  els.endTitle.textContent = '你们留在了那边';
+  els.endStats.textContent = statsText('走廊的灯全灭了。契，从手里飘了出去。');
   show(els.end, true); show(els.skills, false);
   saveBest(false);
 }
@@ -379,12 +551,125 @@ function saveBest(won) {
   }
 }
 
+/* ---------------- 解谜 ---------------- */
+function startPuzzle(idx) {
+  puzzleDone[idx] = true;
+  state = 'playing';
+  if (idx === 0) {
+    const pts = [];
+    const spots = [[0.24, 0.3], [0.76, 0.28], [0.7, 0.74], [0.28, 0.72]];
+    spots.forEach(s => pts.push({ x: W * s[0] + rand(-24, 24), y: H * s[1] + rand(-24, 24) }));
+    puzzle = { kind: 'sigils', pts, next: 0, showUntil: runTime + 4, timeLeft: 45, label: '' };
+    alertText('踏符阵 · 记住符亮起的顺序', 2200);
+  } else if (idx === 1) {
+    puzzle = { kind: 'twins', timeLeft: 75, label: '' };
+    spawnTwin(W * 0.3, H * 0.35); spawnTwin(W * 0.7, H * 0.65);
+    alertText('双生祟 · 必须同一道印同时封住两个', 2400);
+  } else {
+    puzzle = {
+      kind: 'riddle', standT: 0, cur: -1, label: '',
+      circles: [
+        { x: W * 0.22, y: H * 0.66, label: '死去的未来的你', correct: true },
+        { x: W * 0.5, y: H * 0.74, label: '三年前的契主', correct: false },
+        { x: W * 0.78, y: H * 0.66, label: '时契行掌柜', correct: false }
+      ]
+    };
+    alertText('契文三问 · 站进圈里，停满两息作答', 2400);
+  }
+}
+
+function endPuzzle(success, msg) {
+  puzzle = null;
+  if (success) {
+    score += 150;
+    players.forEach(pl => { if (!pl.downed) pl.hp = Math.min(pl.maxHp, pl.hp + 30); });
+    alertText(msg || '谜解开了 · 全队回复 30', 2000);
+    beep(523, 0.25, 'triangle', 0.06);
+  } else if (msg) {
+    alertText(msg, 2200);
+  }
+  openUpgrade();
+}
+
+function spawnTwin(x, y) {
+  enemies.push({
+    type: 'twin', twin: true, x, y, r: 18, hp: 9999, maxHp: 9999,
+    speed: 40, dmg: 10, score: 100, wob: rand(0, 6), mode: 'stalk', modeTimer: 2, shardTick: 0
+  });
+}
+
+function updatePuzzle(dt) {
+  if (!puzzle) return;
+  if (puzzle.kind === 'sigils') {
+    puzzle.timeLeft -= dt;
+    const showing = runTime < puzzle.showUntil;
+    puzzle.label = showing ? '踏符阵 · 记顺序！' : ('踏符阵 · 已踏 ' + puzzle.next + ' / 4 · ' + Math.ceil(puzzle.timeLeft) + 's');
+    if (!showing) {
+      const target = puzzle.pts[puzzle.next];
+      let steppedWrong = false;
+      alivePlayers().forEach(pl => {
+        puzzle.pts.forEach((pt, j) => {
+          if (Math.hypot(pl.x - pt.x, pl.y - pt.y) < 32) {
+            if (j === puzzle.next) {
+              puzzle.next++; beep(660 + puzzle.next * 60, 0.12, 'sine', 0.05);
+              burst(pt.x, pt.y, 14, '#ffd76e');
+            } else if (j > puzzle.next) steppedWrong = true;
+          }
+        });
+      });
+      if (puzzle.next >= 4) { endPuzzle(true, '踏符阵 · 解开了'); return; }
+      if (steppedWrong) {
+        spawnEnemy('chaser'); spawnEnemy('chaser');
+        endPuzzle(false, '顺序错了 · 有东西被惊醒了');
+        return;
+      }
+    }
+    if (puzzle.timeLeft <= 0) endPuzzle(false, '符光熄了 · 谜没解开');
+  } else if (puzzle.kind === 'twins') {
+    puzzle.timeLeft -= dt;
+    const twinsAlive = enemies.filter(e => e.twin).length;
+    puzzle.label = '双生祟 · 还剩 ' + twinsAlive + ' 个 · 须同印双封 · ' + Math.ceil(puzzle.timeLeft) + 's';
+    if (twinsAlive === 0) { score += 100; endPuzzle(true, '双生同封 · 解开了'); return; }
+    if (puzzle.timeLeft <= 0) {
+      enemies = enemies.filter(e => !e.twin);
+      const m = spawnPos();
+      const t = { type: 'tank', x: m.x, y: m.y, r: 27, hp: 320, maxHp: 320, speed: 46, dmg: 18, score: 30, wob: 0, mode: 'stalk', modeTimer: 2, shardTick: 0, mergeTank: true };
+      enemies.push(t);
+      puzzle = { kind: 'twinsMerged', label: '它们合成了一个 · 打碎它' };
+      alertText('双生合为一 · 打碎它', 2000);
+      return;
+    }
+  } else if (puzzle.kind === 'twinsMerged') {
+    puzzle.label = '打碎合体祟';
+    if (!enemies.some(e => e.mergeTank)) { endPuzzle(false, null); return; }
+  } else if (puzzle.kind === 'riddle') {
+    puzzle.label = '三问：祭坛上等你交契的，是谁？站圈停满两息';
+    let inside = -1;
+    puzzle.circles.forEach((c, i) => {
+      if (alivePlayers().some(pl => Math.hypot(pl.x - c.x, pl.y - c.y) < 46)) inside = i;
+    });
+    if (inside >= 0) {
+      if (puzzle.cur === inside) puzzle.standT += dt; else { puzzle.cur = inside; puzzle.standT = 0; }
+      if (puzzle.standT >= 2.2) {
+        const c = puzzle.circles[inside];
+        if (c.correct) { bossBuff = -1; endPuzzle(true, '答对了 · 他收契的手抖了一下（终局弱化）'); }
+        else {
+          bossBuff = 1;
+          spawnShadow(borrowedSet.size ? [...borrowedSet][0] : 'nova');
+          endPuzzle(false, '答错了 · 祭坛的力量涨了一截（终局强化）');
+        }
+        return;
+      }
+    } else { puzzle.cur = -1; puzzle.standT = 0; }
+  }
+}
+
 /* ---------------- 敌人 ---------------- */
 const ENEMY_DEF = {
-  chaser: { hp: 55,  speed: 88,  r: 15, dmg: 10, score: 10 },  /* 爬行者 */
-  dart:   { hp: 30,  speed: 172, r: 11, dmg: 8,  score: 14 },  /* 掠影 */
-  tank:   { hp: 260, speed: 44,  r: 27, dmg: 18, score: 30 },  /* 缝合巨怪 */
-  lurker: { hp: 70,  speed: 76,  r: 14, dmg: 14, score: 24 }   /* 裂喉者：伏行后扑咬 */
+  chaser: { hp: 55,  speed: 88,  r: 15, dmg: 10, score: 10 },
+  dart:   { hp: 30,  speed: 172, r: 11, dmg: 8,  score: 14 },
+  tank:   { hp: 260, speed: 44,  r: 27, dmg: 18, score: 30 },
+  lurker: { hp: 70,  speed: 76,  r: 14, dmg: 14, score: 24 }
 };
 
 function spawnPos() {
@@ -413,16 +698,16 @@ function spawnShadow(skill) {
     speed: skill === 'chrono' ? 208 : 116, dmg: 12, castTimer: 2.2,
     paperAngle: 0, telegraph: 0, shardTick: 0, spinUntil: 0
   });
-  show(els.debtAlert, true);
-  setTimeout(() => show(els.debtAlert, false), 1700);
+  alertText('它来讨债了', 1700);
   beep(98, 0.4, 'sawtooth', 0.06);
 }
 
 function spawnBoss() {
   const skills = borrowedSet.size ? [...borrowedSet] : ['nova'];
+  const mult = bossBuff > 0 ? 1.25 : bossBuff < 0 ? 0.72 : 1;
   bossRef = {
     boss: true, x: W / 2, y: -50, r: 42,
-    hp: 1700 + skills.length * 300, maxHp: 1700 + skills.length * 300,
+    hp: (1700 + skills.length * 300) * mult, maxHp: (1700 + skills.length * 300) * mult,
     speed: 80, dmg: 22, score: 500, skills, skillIdx: 0,
     castTimer: 3.5, paperAngle: 0, papersUntil: 0, phase: 'enter', shardTick: 0
   };
@@ -430,29 +715,33 @@ function spawnBoss() {
 }
 
 /* ---------------- 借命三咒 ---------------- */
-function borrow(skill, btn) {
-  if (state !== 'playing' || !player) return;
-  if (player.skillCd[skill] > 0) return;
-  player.skillCd[skill] = SKILL_CD[skill];
+function borrow(pl, skill, btn) {
+  if (state !== 'playing' || !pl || pl.downed) return;
+  if (pl.skillCd[skill] > 0) return;
+  pl.skillCd[skill] = SKILL_CD[skill];
   debts.push({ skill, due: DEBT_DELAY });
   debtsTotal++;
   borrowedSet.add(skill); borrowedHistory.push(skill);
   if (btn) { btn.classList.remove('flash'); void btn.offsetWidth; btn.classList.add('flash'); }
 
-  if (skill === 'nova') {           /* 阴爆：以自身为心的煞气爆裂 */
-    ring(player.x, player.y, 195, '#ff6a5e');
-    enemies.slice().forEach(e => { if (dist2(e, player) < 195 * 195) hurtEnemy(e, 100, player); });
-    shadows.slice().forEach(s => { if (dist2(s, player) < 195 * 195) hurtShadow(s, 100); });
+  if (skill === 'nova') {
+    ring(pl.x, pl.y, 195, '#ff6a5e');
+    enemies.slice().forEach(e => { if (dist2(e, pl) < 195 * 195) hurtEnemy(e, 100, pl, false); });
+    shadows.slice().forEach(s => { if (dist2(s, pl) < 195 * 195) hurtShadow(s, 100); });
     shake = 9; beep(70, 0.4, 'sawtooth', 0.07);
-  } else if (skill === 'blades') {  /* 纸人环：三个纸人绕身绞杀 */
-    player.paperTimer = 8; beep(330, 0.18, 'triangle', 0.05);
-  } else if (skill === 'chrono') {  /* 凝时：万物滞缓，唯你独行 */
+  } else if (skill === 'blades') {
+    pl.paperTimer = 8; beep(330, 0.18, 'triangle', 0.05);
+  } else if (skill === 'chrono') {
     slowTimer = 5; beep(587, 0.3, 'sine', 0.05);
   }
-  burst(player.x, player.y, 10, '#ff6a5e');
+  burst(pl.x, pl.y, 10, '#ff6a5e');
 }
 
-function hurtEnemy(e, dmg, from) {
+function hurtEnemy(e, dmg, from, viaSeal) {
+  if (e.twin && !viaSeal) { /* 双生祟免疫一切非封印伤害 */
+    if (!e._hintT || runTime - e._hintT > 2.5) { e._hintT = runTime; alertText('双生不可分 · 只能同印双封', 1300); }
+    return;
+  }
   e.hp -= dmg;
   if (from) { e.x += (e.x - from.x) * 0.012; e.y += (e.y - from.y) * 0.012; }
   burst(e.x, e.y, 3, '#e6e1d5');
@@ -488,20 +777,31 @@ function onBossDown() {
   else victory();
 }
 
-/* ---------------- 朱砂封印（核心战斗） ---------------- */
-function trySeal(poly) {
-  const crit = Math.random() < player.crit;
-  let dmg = player.sealDmg * (crit ? 2 : 1);
-  if (player.chainSeal && player.sealBuffTimer > 0) dmg *= 1.6;
+/* ---------------- 朱砂封印 ---------------- */
+function trySeal(pl, poly) {
+  const twinsIn = enemies.filter(e => e.twin && pointInPoly(e.x, e.y, poly));
+  const crit = Math.random() < pl.crit;
+  let dmg = pl.sealDmg * (crit ? 2 : 1);
+  if (pl.chainSeal && pl.sealBuffTimer > 0) dmg *= 1.6;
   let hit = 0;
   enemies.slice().forEach(e => {
-    if (pointInPoly(e.x, e.y, poly)) { hurtEnemy(e, e.boss ? dmg * 0.6 : dmg, null); hit++; }
+    if (!pointInPoly(e.x, e.y, poly)) return;
+    if (e.twin && twinsIn.length < 2) return; /* 只圈住一个双生：封不住 */
+    hurtEnemy(e, e.boss ? dmg * 0.6 : (e.twin ? 99999 : dmg), null, true);
+    hit++;
   });
-  shadows.slice().forEach(s => {
-    if (pointInPoly(s.x, s.y, poly)) { hurtShadow(s, dmg); hit++; }
+  shadows.slice().forEach(s => { if (pointInPoly(s.x, s.y, poly)) { hurtShadow(s, dmg); hit++; } });
+  /* 救援：圈住倒地的队友，把他从那边拉回来 */
+  players.forEach(o => {
+    if (o.downed && pointInPoly(o.x, o.y, poly)) {
+      o.downed = false; o.hp = Math.floor(o.maxHp * 0.5); o.invuln = 1;
+      score += 100; burst(o.x, o.y, 26, '#37e0c8');
+      alertText('把他从那边拉回来了', 1600);
+      beep(523, 0.2, 'triangle', 0.06);
+    }
   });
   seals++;
-  if (player.chainSeal) player.sealBuffTimer = 3;
+  if (pl.chainSeal) pl.sealBuffTimer = 3;
   score += hit * 15 + Math.floor(polyArea(poly) / 600);
   sealFx.push({ poly, t: 0, crit });
   shake = Math.max(shake, hit ? 5 : 2);
@@ -510,27 +810,39 @@ function trySeal(poly) {
   burst(c.x, c.y, hit ? 22 : 8, crit ? '#ffd76e' : '#ff4b3e');
 }
 
-function centroid(poly) {
-  let x = 0, y = 0;
-  poly.forEach(p => { x += p.x; y += p.y; });
-  return { x: x / poly.length, y: y / poly.length };
-}
-
-function updateTrail(dt) {
-  trail.forEach(p => { p.age += dt; });
-  trail = trail.filter(p => p.age < player.trailLife);
-  const last = trail[trail.length - 1];
-  if (!last || Math.hypot(player.x - last.x, player.y - last.y) >= 13) {
-    trail.push({ x: player.x, y: player.y, age: 0 });
-    if (trail.length > 300) trail.shift();
-    /* 闭合检测：当前位置碰到足够久以前的轨迹点，且圈面积达标 */
-    for (let i = 0; i < trail.length - 22; i++) {
-      const p = trail[i];
-      if (Math.hypot(player.x - p.x, player.y - p.y) < 26) {
-        const poly = trail.slice(i);
-        if (polyArea(poly) > 3200) { trySeal(poly); trail = []; }
+function updateTrail(pl, dt) {
+  pl.trail.forEach(p => { p.age += dt; });
+  pl.trail = pl.trail.filter(p => p.age < pl.trailLife);
+  if (pl.downed) { pl.trail = []; return; }
+  const last = pl.trail[pl.trail.length - 1];
+  if (!last || Math.hypot(pl.x - last.x, pl.y - last.y) >= 13) {
+    pl.trail.push({ x: pl.x, y: pl.y, age: 0 });
+    if (pl.trail.length > 300) pl.trail.shift();
+    for (let i = 0; i < pl.trail.length - 22; i++) {
+      const p = pl.trail[i];
+      if (Math.hypot(pl.x - p.x, pl.y - p.y) < 26) {
+        const poly = pl.trail.slice(i);
+        if (polyArea(poly) > 3200) { trySeal(pl, poly); pl.trail = []; }
         break;
       }
+    }
+  }
+}
+
+/* ---------------- 伤害与倒地 ---------------- */
+function damagePlayer(pl, dmg) {
+  if (!pl || pl.downed || pl.invuln > 0 || state !== 'playing') return;
+  pl.hp -= dmg; pl.invuln = 0.55; shake = Math.max(shake, 5);
+  burst(pl.x, pl.y, 8, '#ff5d7a');
+  beep(82, 0.16, 'sawtooth', 0.06);
+  if (pl.hp <= 0) {
+    pl.hp = 0;
+    const partnerAlive = players.some(o => o !== pl && !o.downed);
+    if (partnerAlive) {
+      pl.downed = true; pl.reviveTimer = 35; pl.trail = [];
+      alertText('同行者倒下了 · 绕着他合印，把他拉回来', 2400);
+    } else {
+      gameOver();
     }
   }
 }
@@ -542,29 +854,56 @@ function burst(x, y, n, color) {
     parts.push({ x, y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, life: rand(0.25, 0.6), t: 0, color, r: rand(1.5, 3.5) });
   }
 }
-let rings = [];
 function ring(x, y, r, color) { rings.push({ x, y, r, color, t: 0 }); }
 
 /* ---------------- 输入 ---------------- */
+function isGuest() { return window.TDNet && TDNet.role === 'guest'; }
+function isHost() { return window.TDNet && TDNet.role === 'host'; }
+
 window.addEventListener('keydown', e => {
   keys[e.code] = true;
   if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space'].includes(e.code)) e.preventDefault();
-  if (e.code === 'KeyJ') borrow('nova', document.querySelector('[data-skill="nova"]'));
-  if (e.code === 'KeyK') borrow('blades', document.querySelector('[data-skill="blades"]'));
-  if (e.code === 'KeyL') borrow('chrono', document.querySelector('[data-skill="chrono"]'));
+  if (isGuest()) {
+    if (e.code === 'KeyJ') TDNet.send({ t: 'act', a: 'nova' });
+    if (e.code === 'KeyK') TDNet.send({ t: 'act', a: 'blades' });
+    if (e.code === 'KeyL') TDNet.send({ t: 'act', a: 'chrono' });
+    if (e.code === 'Space') TDNet.send({ t: 'act', a: 'dash' });
+    return;
+  }
+  if (e.code === 'KeyJ') borrow(player, 'nova', document.querySelector('[data-skill="nova"]'));
+  if (e.code === 'KeyK') borrow(player, 'blades', document.querySelector('[data-skill="blades"]'));
+  if (e.code === 'KeyL') borrow(player, 'chrono', document.querySelector('[data-skill="chrono"]'));
+  if (e.code === 'Enter' && state === 'playing' && !isHost() && players.length < 2) {
+    addPlayer('local2');
+    alertText('同行者加入 · P2：方向键移动，小键盘 1/2/3 借咒，右 Shift 冲刺', 2600);
+  }
+  const p2 = players.find(p => p.kind === 'local2');
+  if (p2) {
+    if (e.code === 'Numpad1' || e.code === 'Comma') borrow(p2, 'nova', null);
+    if (e.code === 'Numpad2' || e.code === 'Period') borrow(p2, 'blades', null);
+    if (e.code === 'Numpad3' || e.code === 'Slash') borrow(p2, 'chrono', null);
+    if (e.code === 'ShiftRight') tryDash(p2);
+  }
   if (e.code === 'Escape' && state === 'playing') pauseGame();
 });
 window.addEventListener('keyup', e => { keys[e.code] = false; });
 
 document.querySelectorAll('.skill-btn[data-skill]').forEach(b => {
-  b.addEventListener('pointerdown', e => { e.preventDefault(); borrow(b.dataset.skill, b); });
+  b.addEventListener('pointerdown', e => {
+    e.preventDefault();
+    if (isGuest()) { TDNet.send({ t: 'act', a: b.dataset.skill }); return; }
+    borrow(player, b.dataset.skill, b);
+  });
 });
-$('btn-dash').addEventListener('pointerdown', e => { e.preventDefault(); tryDash(); });
+$('btn-dash').addEventListener('pointerdown', e => {
+  e.preventDefault();
+  if (isGuest()) { TDNet.send({ t: 'act', a: 'dash' }); return; }
+  tryDash(player);
+});
 
 canvas.addEventListener('touchstart', handleTouch, { passive: false });
 canvas.addEventListener('touchmove', handleTouch, { passive: false });
 canvas.addEventListener('touchend', endTouch, { passive: false });
-
 function handleTouch(e) {
   e.preventDefault();
   for (const t of e.changedTouches) {
@@ -581,37 +920,135 @@ function endTouch(e) {
   for (const t of e.changedTouches) if (t.identifier === joy.id) { joy.active = false; joy.dx = 0; joy.dy = 0; }
 }
 
-function tryDash() {
-  if (state !== 'playing' || !player || player.dashCd > 0) return;
-  player.dashTimer = 0.16; player.dashCd = player.dashCdMax; player.invuln = Math.max(player.invuln, 0.2);
-  trail = []; /* 冲刺会断印：想封印，就别乱冲 */
+function tryDash(pl) {
+  if (state !== 'playing' || !pl || pl.downed || pl.dashCd > 0) return;
+  pl.dashTimer = 0.16; pl.dashCd = pl.dashCdMax; pl.invuln = Math.max(pl.invuln, 0.2);
+  pl.trail = []; /* 冲刺断印 */
   beep(349, 0.09, 'sine', 0.04);
 }
 
-/* ---------------- 按钮 ---------------- */
+/* ---------------- 按钮与联机菜单 ---------------- */
 $('btn-start').onclick = () => startRun(false);
 els.endlessBtn.onclick = () => startRun(true);
-$('btn-chapter').onclick = () => beginWave();
+$('btn-chapter').onclick = () => { if (!isGuest()) beginWave(); };
 $('btn-retry').onclick = () => startRun(endless);
 $('btn-tomenu').onclick = () => location.reload();
 $('btn-pause').onclick = () => pauseGame();
 $('btn-resume').onclick = () => { show(els.pause, false); state = 'playing'; };
 $('btn-quit').onclick = () => location.reload();
 $('btn-mute').onclick = e => { muted = !muted; e.target.textContent = muted ? '×' : '♪'; };
-function pauseGame() { if (state !== 'playing') return; state = 'paused'; show(els.pause, true); }
+function pauseGame() { if (state !== 'playing' || isGuest()) return; state = 'paused'; show(els.pause, true); }
+
+if (window.TDNet) {
+  TDNet.onStatus = s => { els.netStatus.textContent = s; };
+  $('btn-host').onclick = () => TDNet.host();
+  $('btn-join').onclick = () => TDNet.join($('room-input').value);
+  TDNet.onPeerJoin = () => {
+    if (state === 'menu') { /* 等房主开局，resetRun 会自动给客人留席 */ }
+    else if (players.length < 2 && (state === 'playing' || state === 'chapter')) addPlayer('remote');
+  };
+  TDNet.onPeerLeave = () => {
+    if (isHost()) {
+      const rp = players.find(p => p.kind === 'remote');
+      if (rp) { players = players.filter(p => p !== rp); updateP2HudVisibility(); alertText('同行者离开了', 1800); }
+    }
+  };
+}
 
 /* ---------------- 主循环 ---------------- */
-let lastTs = 0;
+let lastTs = 0, snapTimer = 0, guestInputTimer = 0;
 function loop(ts) {
   requestAnimationFrame(loop);
   const dt = Math.min((ts - lastTs) / 1000 || 0, 0.05);
   lastTs = ts;
+  if (isGuest()) {
+    cosmetic(dt);
+    guestInputTimer -= dt;
+    if (guestInputTimer <= 0) { guestInputTimer = 0.07; sendGuestInput(); }
+    render();
+    return;
+  }
   if (state === 'playing') update(dt);
+  if (isHost() && TDNet.conn && TDNet.conn.open) {
+    snapTimer -= dt;
+    if (snapTimer <= 0) { snapTimer = 0.085; TDNet.send({ t: 'state', s: snapshot() }); }
+  }
   render();
 }
 requestAnimationFrame(loop);
 
+function cosmetic(dt) {
+  parts = parts.filter(p => { p.t += dt; p.x += p.vx * dt; p.y += p.vy * dt; return p.t < p.life; });
+  rings = rings.filter(r => { r.t += dt * 2.4; return r.t < 1; });
+  sealFx = sealFx.filter(f => { f.t += dt * 2; return f.t < 1; });
+}
+
 function enemyTimeScale() { return slowTimer > 0 ? 0.38 : 1; }
+
+function readLocalInput(pl) {
+  let mx = 0, my = 0;
+  const hasLocal2 = players.some(p => p.kind === 'local2');
+  if (pl.kind === 'local1') {
+    if (keys.KeyW) my -= 1;
+    if (keys.KeyS) my += 1;
+    if (keys.KeyA) mx -= 1;
+    if (keys.KeyD) mx += 1;
+    if (!hasLocal2) {
+      if (keys.ArrowUp) my -= 1;
+      if (keys.ArrowDown) my += 1;
+      if (keys.ArrowLeft) mx -= 1;
+      if (keys.ArrowRight) mx += 1;
+    }
+    if (joy.active) { mx += joy.dx; my += joy.dy; }
+  } else if (pl.kind === 'local2') {
+    if (keys.ArrowUp) my -= 1;
+    if (keys.ArrowDown) my += 1;
+    if (keys.ArrowLeft) mx -= 1;
+    if (keys.ArrowRight) mx += 1;
+  }
+  return { mx, my };
+}
+
+function updatePlayer(pl, dt) {
+  if (pl.downed) {
+    pl.reviveTimer -= dt;
+    if (pl.reviveTimer <= 0) { gameOver(); }
+    return;
+  }
+  let inp;
+  if (pl.kind === 'remote') {
+    inp = TDNet.guestInput;
+    while (TDNet.guestBorrow.length) borrow(pl, TDNet.guestBorrow.shift(), null);
+    if (TDNet.guestDash) { TDNet.guestDash = false; tryDash(pl); }
+  } else {
+    inp = readLocalInput(pl);
+  }
+  let mx = inp.mx || 0, my = inp.my || 0;
+  const mm = Math.hypot(mx, my);
+  if (mm > 1) { mx /= mm; my /= mm; }
+  if (pl.kind === 'local1' && keys.Space) tryDash(pl);
+  let spd = pl.speed * (slowTimer > 0 ? 1.18 : 1);
+  if (pl.boostTimer > 0) { pl.boostTimer -= dt; spd *= 1.45; }
+  if (pl.dashTimer > 0) { pl.dashTimer -= dt; spd *= 3.1; if (pl.dashBoost && pl.dashTimer <= 0) pl.boostTimer = 0.5; }
+  pl.x = clamp(pl.x + mx * spd * dt, pl.r, W - pl.r);
+  pl.y = clamp(pl.y + my * spd * dt, pl.r, H - pl.r);
+  if (mx !== 0) pl.face = mx > 0 ? 1 : -1;
+  if (pl.dashCd > 0) pl.dashCd -= dt;
+  if (pl.invuln > 0) pl.invuln -= dt;
+  if (pl.sealBuffTimer > 0) pl.sealBuffTimer -= dt;
+  for (const k in pl.skillCd) if (pl.skillCd[k] > 0) pl.skillCd[k] -= dt;
+  if (pl.paperTimer > 0) { pl.paperTimer -= dt; pl.paperAngle += dt * 4.4; }
+  updateTrail(pl, dt);
+
+  if (pl.paperTimer > 0) {
+    for (let i = 0; i < 3; i++) {
+      const a = pl.paperAngle + i * (Math.PI * 2 / 3);
+      const bx = pl.x + Math.cos(a) * 52, by = pl.y + Math.sin(a) * 52;
+      enemies.slice().forEach(e => { if (dist2(e, { x: bx, y: by }) < (e.r + 13) * (e.r + 13) && (e.shardTick || 0) <= 0) { e.shardTick = 0.22; hurtEnemy(e, 26, pl, false); } });
+      shadows.slice().forEach(s => { if (dist2(s, { x: bx, y: by }) < (s.r + 13) * (s.r + 13) && (s.shardTick || 0) <= 0) { s.shardTick = 0.22; hurtShadow(s, 26); } });
+    }
+  }
+}
 
 function update(dt) {
   runTime += dt;
@@ -624,39 +1061,7 @@ function update(dt) {
     if (debts[i].due <= 0) { const d = debts.splice(i, 1)[0]; spawnShadow(d.skill); }
   }
 
-  /* 移动 */
-  let mx = 0, my = 0;
-  if (keys.KeyW || keys.ArrowUp) my -= 1;
-  if (keys.KeyS || keys.ArrowDown) my += 1;
-  if (keys.KeyA || keys.ArrowLeft) mx -= 1;
-  if (keys.KeyD || keys.ArrowRight) mx += 1;
-  if (joy.active) { mx += joy.dx; my += joy.dy; }
-  const mm = Math.hypot(mx, my);
-  if (mm > 1) { mx /= mm; my /= mm; }
-  if (keys.Space) tryDash();
-  let spd = player.speed * (slowTimer > 0 ? 1.18 : 1);
-  if (player.boostTimer > 0) { player.boostTimer -= dt; spd *= 1.45; }
-  if (player.dashTimer > 0) { player.dashTimer -= dt; spd *= 3.1; if (player.dashBoost && player.dashTimer <= 0) player.boostTimer = 0.5; }
-  player.x = clamp(player.x + mx * spd * dt, player.r, W - player.r);
-  player.y = clamp(player.y + my * spd * dt, player.r, H - player.r);
-  if (mx !== 0) player.face = mx > 0 ? 1 : -1;
-  if (player.dashCd > 0) player.dashCd -= dt;
-  if (player.invuln > 0) player.invuln -= dt;
-  if (player.sealBuffTimer > 0) player.sealBuffTimer -= dt;
-  for (const k in player.skillCd) if (player.skillCd[k] > 0) player.skillCd[k] -= dt;
-  if (player.paperTimer > 0) { player.paperTimer -= dt; player.paperAngle += dt * 4.4; }
-
-  updateTrail(dt);
-
-  /* 纸人环绞杀 */
-  if (player.paperTimer > 0) {
-    for (let i = 0; i < 3; i++) {
-      const a = player.paperAngle + i * (Math.PI * 2 / 3);
-      const bx = player.x + Math.cos(a) * 52, by = player.y + Math.sin(a) * 52;
-      enemies.slice().forEach(e => { if (dist2(e, { x: bx, y: by }) < (e.r + 13) * (e.r + 13) && (e.shardTick || 0) <= 0) { e.shardTick = 0.22; hurtEnemy(e, 26, player); } });
-      shadows.slice().forEach(s => { if (dist2(s, { x: bx, y: by }) < (s.r + 13) * (s.r + 13) && (s.shardTick || 0) <= 0) { s.shardTick = 0.22; hurtShadow(s, 26); } });
-    }
-  }
+  players.slice().forEach(pl => updatePlayer(pl, dt));
   enemies.forEach(e => { if (e.shardTick > 0) e.shardTick -= dt; });
   shadows.forEach(s => { if (s.shardTick > 0) s.shardTick -= dt; });
 
@@ -668,44 +1073,57 @@ function update(dt) {
   const edt = dt * ts;
   enemies.slice().forEach(e => updateEnemy(e, edt, dt));
   shadows.slice().forEach(s => updateShadow(s, edt, dt));
+  updatePuzzle(dt);
 
-  /* 敌方冥火（仅 Boss 与讨债影的咒术，玩家不再射击） */
   ebullets = ebullets.filter(b => {
     b.x += b.vx * edt; b.y += b.vy * edt; b.life -= dt;
     if (b.life <= 0) return false;
-    if (player.invuln <= 0 && dist2(b, player) < (player.r + 5) * (player.r + 5)) { damagePlayer(b.dmg); return false; }
+    const tp = nearestPlayer(b.x, b.y);
+    if (tp && tp.invuln <= 0 && dist2(b, tp) < (tp.r + 5) * (tp.r + 5)) { damagePlayer(tp, b.dmg); return false; }
     return true;
   });
 
   drops = drops.filter(d => {
-    const dd = Math.sqrt(dist2(d, player));
-    if (dd < player.magnet) { d.x += (player.x - d.x) * dt * 7; d.y += (player.y - d.y) * dt * 7; }
-    if (dd < player.r + 10) {
-      if (d.kind === 'xp') { score += d.v; beep(784, 0.05, 'sine', 0.02); }
-      else { player.hp = Math.min(player.maxHp, player.hp + d.v); beep(440, 0.09, 'sine', 0.04); }
-      return false;
-    }
-    return true;
+    let consumed = false;
+    alivePlayers().forEach(pl => {
+      if (consumed) return;
+      const dd = Math.sqrt(dist2(d, pl));
+      if (dd < pl.magnet) { d.x += (pl.x - d.x) * dt * 7; d.y += (pl.y - d.y) * dt * 7; }
+      if (dd < pl.r + 10) {
+        if (d.kind === 'xp') { score += d.v; beep(784, 0.05, 'sine', 0.02); }
+        else { pl.hp = Math.min(pl.maxHp, pl.hp + d.v); beep(440, 0.09, 'sine', 0.04); }
+        consumed = true;
+      }
+    });
+    return !consumed;
   });
 
-  parts = parts.filter(p => { p.t += dt; p.x += p.vx * dt; p.y += p.vy * dt; return p.t < p.life; });
-  rings = rings.filter(r => { r.t += dt * 2.4; return r.t < 1; });
-  sealFx = sealFx.filter(f => { f.t += dt * 2; return f.t < 1; });
-
+  cosmetic(dt);
   if (waveActive && !spawnQueue.length && !enemies.length && !shadows.length) waveCleared();
   updateHud();
 }
 
 function updateEnemy(e, edt, rawDt) {
   if (e.boss) return updateBoss(e, edt, rawDt);
-  const a = Math.atan2(player.y - e.y, player.x - e.x);
+  const tp = nearestPlayer(e.x, e.y);
+  if (!tp) return;
+  const a = Math.atan2(tp.y - e.y, tp.x - e.x);
   e.wob += rawDt * 3;
-  if (e.type === 'lurker') {
+  if (e.twin) { /* 双生祟：彼此排斥、远远绕着人飘 */
+    const other = enemies.find(o => o.twin && o !== e);
+    let ax = Math.cos(a + Math.PI / 2) * 0.6, ay = Math.sin(a + Math.PI / 2) * 0.6;
+    if (other) {
+      const d = Math.hypot(e.x - other.x, e.y - other.y) || 1;
+      if (d < 260) { ax += (e.x - other.x) / d; ay += (e.y - other.y) / d; }
+    }
+    e.x += ax * e.speed * edt; e.y += ay * e.speed * edt;
+    e.x = clamp(e.x, 30, W - 30); e.y = clamp(e.y, 30, H - 30);
+  } else if (e.type === 'lurker') {
     e.modeTimer -= rawDt;
     if (e.mode === 'stalk') {
       e.x += Math.cos(a) * e.speed * edt; e.y += Math.sin(a) * e.speed * edt;
-      if (e.modeTimer <= 0 && Math.sqrt(dist2(e, player)) < 300) { e.mode = 'aim'; e.modeTimer = 0.6; }
-    } else if (e.mode === 'aim') {          /* 裂喉：伏地蓄扑，方向锁定 */
+      if (e.modeTimer <= 0 && Math.sqrt(dist2(e, tp)) < 300) { e.mode = 'aim'; e.modeTimer = 0.6; }
+    } else if (e.mode === 'aim') {
       if (e.modeTimer <= 0) {
         e.mode = 'lunge'; e.modeTimer = 0.34;
         e.lungeVx = Math.cos(a) * 540; e.lungeVy = Math.sin(a) * 540;
@@ -721,15 +1139,17 @@ function updateEnemy(e, edt, rawDt) {
   } else {
     e.x += Math.cos(a) * e.speed * edt; e.y += Math.sin(a) * e.speed * edt;
   }
-  if (player.invuln <= 0 && dist2(e, player) < (e.r + player.r) * (e.r + player.r)) {
-    damagePlayer(e.dmg);
+  if (tp.invuln <= 0 && dist2(e, tp) < (e.r + tp.r) * (e.r + tp.r)) {
+    damagePlayer(tp, e.dmg);
     e.x -= Math.cos(a) * 26; e.y -= Math.sin(a) * 26;
   }
 }
 
 function updateShadow(s, edt, rawDt) {
-  const a = Math.atan2(player.y - s.y, player.x - s.x);
-  const effDt = s.skill === 'chrono' ? rawDt : edt; /* 借了凝时的影子不受凝时影响 */
+  const tp = nearestPlayer(s.x, s.y);
+  if (!tp) return;
+  const a = Math.atan2(tp.y - s.y, tp.x - s.x);
+  const effDt = s.skill === 'chrono' ? rawDt : edt;
   s.x += Math.cos(a) * s.speed * effDt; s.y += Math.sin(a) * s.speed * effDt;
   s.castTimer -= effDt;
   if (s.skill === 'blades') {
@@ -738,7 +1158,9 @@ function updateShadow(s, edt, rawDt) {
     for (let i = 0; i < 3; i++) {
       const ba = s.paperAngle + i * (Math.PI * 2 / 3);
       const bx = s.x + Math.cos(ba) * rad, by = s.y + Math.sin(ba) * rad;
-      if (player.invuln <= 0 && dist2(player, { x: bx, y: by }) < (player.r + 12) * (player.r + 12)) damagePlayer(14);
+      alivePlayers().forEach(pl => {
+        if (pl.invuln <= 0 && dist2(pl, { x: bx, y: by }) < (pl.r + 12) * (pl.r + 12)) damagePlayer(pl, 14);
+      });
     }
   }
   if (s.castTimer <= 0) {
@@ -747,39 +1169,41 @@ function updateShadow(s, edt, rawDt) {
       setTimeout(() => {
         if (state !== 'playing' || !shadows.includes(s)) return;
         ring(s.x, s.y, 130, '#ff5d7a');
-        if (player.invuln <= 0 && dist2(player, s) < 130 * 130) damagePlayer(20);
+        alivePlayers().forEach(pl => { if (pl.invuln <= 0 && dist2(pl, s) < 130 * 130) damagePlayer(pl, 20); });
       }, 700);
     } else if (s.skill === 'chrono') {
       s.castTimer = 4;
       s.x += Math.cos(a) * 130; s.y += Math.sin(a) * 130;
       burst(s.x, s.y, 8, '#8cdcff');
     } else {
-      s.castTimer = 3.2; s.spinUntil = runTime + 1.6; /* 纸人环骤然扩张 */
+      s.castTimer = 3.2; s.spinUntil = runTime + 1.6;
     }
   }
-  if (player.invuln <= 0 && dist2(s, player) < (s.r + player.r) * (s.r + player.r)) {
-    damagePlayer(s.dmg);
+  if (tp.invuln <= 0 && dist2(s, tp) < (s.r + tp.r) * (s.r + tp.r)) {
+    damagePlayer(tp, s.dmg);
     s.x -= Math.cos(a) * 30; s.y -= Math.sin(a) * 30;
   }
 }
 
 function updateBoss(e, edt, rawDt) {
   if (e.phase === 'enter') { e.y += 86 * rawDt; if (e.y >= 112) e.phase = 'fight'; return; }
-  const a = Math.atan2(player.y - e.y, player.x - e.x);
+  const tp = nearestPlayer(e.x, e.y);
+  if (!tp) return;
+  const a = Math.atan2(tp.y - e.y, tp.x - e.x);
   e.x += Math.cos(a) * e.speed * edt; e.y += Math.sin(a) * e.speed * edt;
   e.castTimer -= rawDt;
   if (e.castTimer <= 0) {
     const skill = e.skills[e.skillIdx % e.skills.length];
     e.skillIdx++; e.castTimer = 4.2;
-    if (skill === 'nova') {           /* 阴爆 → 冥火环散 */
+    if (skill === 'nova') {
       ring(e.x, e.y, 170, '#ff5d7a');
       for (let i = 0; i < 14; i++) {
         const ba = (i / 14) * Math.PI * 2;
         ebullets.push({ x: e.x, y: e.y, vx: Math.cos(ba) * 185, vy: Math.sin(ba) * 185, dmg: 12, life: 3 });
       }
-    } else if (skill === 'blades') {  /* 纸人环 */
+    } else if (skill === 'blades') {
       e.papersUntil = runTime + 6;
-    } else if (skill === 'chrono') {  /* 凝时突进 */
+    } else if (skill === 'chrono') {
       e.x += Math.cos(a) * 175; e.y += Math.sin(a) * 175;
       burst(e.x, e.y, 16, '#8cdcff');
     }
@@ -790,44 +1214,145 @@ function updateBoss(e, edt, rawDt) {
     for (let i = 0; i < 4; i++) {
       const ba = e.paperAngle + i * (Math.PI / 2);
       const bx = e.x + Math.cos(ba) * 76, by = e.y + Math.sin(ba) * 76;
-      if (player.invuln <= 0 && dist2(player, { x: bx, y: by }) < (player.r + 14) * (player.r + 14)) damagePlayer(16);
+      alivePlayers().forEach(pl => { if (pl.invuln <= 0 && dist2(pl, { x: bx, y: by }) < (pl.r + 14) * (pl.r + 14)) damagePlayer(pl, 16); });
     }
   }
-  if (player.invuln <= 0 && dist2(e, player) < (e.r + player.r) * (e.r + player.r)) {
-    damagePlayer(e.dmg);
-    player.x -= Math.cos(a) * 34; player.y -= Math.sin(a) * 34;
+  if (tp.invuln <= 0 && dist2(e, tp) < (e.r + tp.r) * (e.r + tp.r)) {
+    damagePlayer(tp, e.dmg);
+    tp.x -= Math.cos(a) * 34; tp.y -= Math.sin(a) * 34;
   }
 }
 
-function damagePlayer(dmg) {
-  if (player.invuln > 0 || state !== 'playing') return;
-  player.hp -= dmg; player.invuln = 0.55; shake = Math.max(shake, 5);
-  burst(player.x, player.y, 8, '#ff5d7a');
-  beep(82, 0.16, 'sawtooth', 0.06);
-  if (player.hp <= 0) { player.hp = 0; gameOver(); }
+/* ---------------- 联机：快照与客人端 ---------------- */
+function snapshot() {
+  return {
+    st: state, sc: sceneIdx, wv: waveIdx, endless,
+    score, kills, seals, runTime: Math.floor(runTime),
+    debtN: debts.length + shadows.length,
+    chapter: { title: els.chapterTitle.textContent, text: els.chapterText.textContent },
+    end: { title: els.endTitle.textContent, stats: els.endStats.textContent },
+    pz: puzzle ? {
+      kind: puzzle.kind, label: puzzle.label || '',
+      pts: puzzle.pts || null, next: puzzle.next || 0, showNums: puzzle.kind === 'sigils' && runTime < puzzle.showUntil,
+      circles: puzzle.circles || null, standT: puzzle.standT || 0, cur: puzzle.cur === undefined ? -1 : puzzle.cur
+    } : null,
+    players: players.map(pl => ({
+      x: Math.round(pl.x), y: Math.round(pl.y), hp: Math.ceil(pl.hp), maxHp: pl.maxHp,
+      downed: pl.downed, face: pl.face, paperTimer: pl.paperTimer > 0 ? 1 : 0, paperAngle: pl.paperAngle,
+      reviveTimer: Math.ceil(pl.reviveTimer || 0),
+      trail: pl.trail.filter((_, i) => i % 2 === 0).map(p => [Math.round(p.x), Math.round(p.y)]),
+      skillCd: { nova: Math.max(0, pl.skillCd.nova), blades: Math.max(0, pl.skillCd.blades), chrono: Math.max(0, pl.skillCd.chrono) },
+      dashCd: Math.max(0, pl.dashCd), dashCdMax: pl.dashCdMax
+    })),
+    enemies: enemies.map(e => ({ x: Math.round(e.x), y: Math.round(e.y), r: e.r, hp: e.hp, maxHp: e.maxHp, type: e.type, boss: !!e.boss, twin: !!e.twin, mode: e.mode })),
+    shadows: shadows.map(s => ({ x: Math.round(s.x), y: Math.round(s.y), r: s.r, hp: s.hp, maxHp: s.maxHp, skill: s.skill, paperAngle: s.paperAngle, spinUntil: s.spinUntil, telegraph: s.telegraph })),
+    drops: drops.map(d => ({ x: Math.round(d.x), y: Math.round(d.y), kind: d.kind })),
+    ebullets: ebullets.map(b => ({ x: Math.round(b.x), y: Math.round(b.y) })),
+    sealFx: sealFx.map(f => ({ poly: f.poly, crit: f.crit, t: f.t }))
+  };
+}
+
+function ensureGuestPlayers(n) {
+  while (players.length < n) { const p = newPlayer(players.length === 0 ? 'local1' : 'remote', players.length); players.push(p); }
+  if (players.length > n) players = players.slice(0, n);
+  player = players[0];
+  updateP2HudVisibility();
+}
+
+function applySnapshot(s) {
+  const prevState = state;
+  state = s.st; sceneIdx = s.sc; waveIdx = s.wv; endless = s.endless;
+  score = s.score; kills = s.kills; seals = s.seals; runTime = s.runTime;
+  ensureGuestPlayers(s.players.length);
+  s.players.forEach((sp, i) => {
+    const pl = players[i];
+    Object.assign(pl, {
+      x: sp.x, y: sp.y, hp: sp.hp, maxHp: sp.maxHp, downed: sp.downed, face: sp.face,
+      paperTimer: sp.paperTimer, paperAngle: sp.paperAngle, reviveTimer: sp.reviveTimer,
+      skillCd: sp.skillCd, dashCd: sp.dashCd, dashCdMax: sp.dashCdMax
+    });
+    pl.trail = sp.trail.map(p => ({ x: p[0], y: p[1], age: 0 }));
+  });
+  updateHud._debtN = s.debtN;
+  enemies = s.enemies; shadows = s.shadows; drops = s.drops;
+  ebullets = s.ebullets.map(b => ({ x: b.x, y: b.y }));
+  sealFx = s.sealFx;
+  puzzle = s.pz;
+  bossRef = enemies.find(e => e.boss) || null;
+  show(els.menu, state === 'menu');
+  show(els.hud, state !== 'menu'); show(els.skills, state === 'playing');
+  if (state === 'chapter') {
+    els.chapterTitle.textContent = s.chapter.title;
+    els.chapterText.textContent = s.chapter.text + '\n（等房主进入）';
+    show(els.chapter, true);
+  } else show(els.chapter, false);
+  show(els.upgrade, state === 'upgrade');
+  if (state === 'upgrade') $('upgrade-cards').innerHTML = '<p style="opacity:.85;line-height:1.9">房主正在凝形……<br>升级对全队生效</p>';
+  if (state === 'over' || state === 'win') {
+    els.endTitle.textContent = s.end.title; els.endStats.textContent = s.end.stats;
+    show(els.end, true);
+  } else show(els.end, false);
+  if (state !== prevState && state === 'playing') show(els.chapter, false);
+  updateHud();
+}
+
+function sendGuestInput() {
+  const me = viewPl();
+  let mx = 0, my = 0;
+  if (keys.KeyW || keys.ArrowUp) my -= 1;
+  if (keys.KeyS || keys.ArrowDown) my += 1;
+  if (keys.KeyA || keys.ArrowLeft) mx -= 1;
+  if (keys.KeyD || keys.ArrowRight) mx += 1;
+  if (joy.active) { mx += joy.dx; my += joy.dy; }
+  TDNet.send({ t: 'input', mx, my });
+  void me;
+}
+
+if (window.TDNet) {
+  TDNet.onMsg = d => {
+    if (isHost()) {
+      if (d.t === 'input') TDNet.guestInput = { mx: clamp(d.mx || 0, -1, 1), my: clamp(d.my || 0, -1, 1) };
+      else if (d.t === 'act') {
+        if (d.a === 'dash') TDNet.guestDash = true;
+        else TDNet.guestBorrow.push(d.a);
+      }
+    } else if (isGuest()) {
+      if (d.t === 'state') applySnapshot(d.s);
+    }
+  };
 }
 
 /* ---------------- HUD ---------------- */
 const skillBtns = {};
 document.querySelectorAll('.skill-btn[data-skill]').forEach(b => { skillBtns[b.dataset.skill] = b; });
 function updateHud() {
+  if (!players.length) return;
+  const me = viewPl(); if (!me) return;
   const scene = SCENES[sceneIdx % SCENES.length];
-  els.hpFill.style.width = (player.hp / player.maxHp * 100) + '%';
-  els.hpText.textContent = Math.ceil(player.hp) + ' / ' + player.maxHp;
+  els.hpFill.style.width = (me.hp / me.maxHp * 100) + '%';
+  els.hpText.textContent = (me.downed ? '倒地 ' + Math.ceil(me.reviveTimer) + 's · ' : '') + Math.ceil(me.hp) + ' / ' + me.maxHp;
+  if (players.length > 1) {
+    const other = players.find(p => p !== me);
+    els.p2fill.style.width = (other.hp / other.maxHp * 100) + '%';
+    els.p2text.textContent = '同行 ' + (other.downed ? '倒地 ' + Math.ceil(other.reviveTimer) + 's' : Math.ceil(other.hp) + ' / ' + other.maxHp);
+  }
   els.scene.textContent = (endless && sceneIdx >= SCENES.length ? '无尽 · ' : '') + scene.name;
-  const w = scene.waves[waveIdx];
-  els.wave.textContent = w && w.boss ? '最终讨债' : ('第 ' + (waveIdx + 1) + ' / ' + scene.waves.length + ' 波 · 余祟 ' + (enemies.length + shadows.length + spawnQueue.length));
-  els.debtCount.textContent = debts.length + shadows.length;
+  if (puzzle && puzzle.label) els.wave.textContent = puzzle.label;
+  else {
+    const w = scene.waves[waveIdx];
+    els.wave.textContent = w && w.boss ? '最终讨债' : ('第 ' + (waveIdx + 1) + ' / ' + scene.waves.length + ' 波 · 余祟 ' + (enemies.length + shadows.length + spawnQueue.length));
+  }
+  els.debtCount.textContent = isGuest() ? (updateHud._debtN || 0) : (debts.length + shadows.length);
   els.scoreCount.textContent = score;
   for (const k in skillBtns) {
     const cd = skillBtns[k].querySelector('.sk-cd');
-    const remain = Math.max(0, player.skillCd[k]);
+    const remain = Math.max(0, me.skillCd[k]);
     cd.style.width = (remain / SKILL_CD[k] * 100) + '%';
     skillBtns[k].style.opacity = remain > 0 ? 0.55 : 1;
   }
   const dashBtn = $('btn-dash');
-  dashBtn.querySelector('.sk-cd').style.width = (Math.max(0, player.dashCd) / player.dashCdMax * 100) + '%';
-  dashBtn.style.opacity = player.dashCd > 0 ? 0.55 : 1;
+  dashBtn.querySelector('.sk-cd').style.width = (Math.max(0, me.dashCd) / (me.dashCdMax || 2.6) * 100) + '%';
+  dashBtn.style.opacity = me.dashCd > 0 ? 0.55 : 1;
 }
 
 /* ---------------- 渲染 ---------------- */
@@ -843,19 +1368,19 @@ function render() {
   g.addColorStop(0, scene.top); g.addColorStop(1, scene.bottom);
   ctx.fillStyle = g; ctx.fillRect(-12, -12, W + 24, H + 24);
 
-  if (scene.theme === 'house') {            /* 雨 */
+  if (scene.theme === 'house') {
     ctx.strokeStyle = 'rgba(159,183,255,0.25)'; ctx.lineWidth = 1;
     decor.forEach(d => {
       const y = ((d.y + t * 0.55 * (0.5 + d.r * 0.3)) % 1) * H, x = d.x * W + y * 0.06;
       ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x - 3, y + 13); ctx.stroke();
     });
-  } else if (scene.theme === 'ward') {      /* 浮尘 + 灯闪 */
+  } else if (scene.theme === 'ward') {
     decor.forEach(d => {
       ctx.fillStyle = 'rgba(180,230,190,0.14)';
       ctx.beginPath(); ctx.arc(d.x * W + Math.sin(t * 0.4 + d.p) * 12, d.y * H, d.r * 1.8, 0, 7); ctx.fill();
     });
     if (Math.sin(t * 1.7) > 0.995 || Math.sin(t * 4.3) > 0.998) { ctx.fillStyle = 'rgba(200,255,210,0.05)'; ctx.fillRect(0, 0, W, H); }
-  } else {                                  /* 血月 + 余烬 */
+  } else {
     const mg = ctx.createRadialGradient(W * 0.8, H * 0.16, 8, W * 0.8, H * 0.16, 90);
     mg.addColorStop(0, 'rgba(255,90,70,0.85)'); mg.addColorStop(1, 'rgba(255,90,70,0)');
     ctx.fillStyle = mg; ctx.beginPath(); ctx.arc(W * 0.8, H * 0.16, 90, 0, 7); ctx.fill();
@@ -867,24 +1392,23 @@ function render() {
   }
   if (slowTimer > 0) { ctx.fillStyle = 'rgba(90,140,255,0.10)'; ctx.fillRect(-12, -12, W + 24, H + 24); }
 
-  if (!player) { ctx.restore(); return; }
+  drawPuzzle(t);
+  if (!players.length) { ctx.restore(); return; }
 
-  /* 朱砂轨迹 */
-  if (trail.length > 1) {
+  /* 双人轨迹：P1 朱砂，P2 青砂 */
+  players.forEach(pl => {
+    if (pl.trail.length < 2 || pl.downed) return;
+    const main = pl.idx === 0 ? '255,84,66' : '55,224,200';
     ctx.lineJoin = 'round'; ctx.lineCap = 'round';
     for (let pass = 0; pass < 2; pass++) {
       ctx.beginPath();
-      trail.forEach((p, i) => { if (i === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y); });
-      ctx.strokeStyle = pass === 0 ? 'rgba(255,59,48,0.20)' : 'rgba(255,84,66,0.85)';
+      pl.trail.forEach((p, i) => { if (i === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y); });
+      ctx.strokeStyle = 'rgba(' + main + (pass === 0 ? ',0.18)' : ',0.85)');
       ctx.lineWidth = pass === 0 ? 7 : 2.6;
       ctx.stroke();
     }
-    const head = trail[trail.length - 1];
-    ctx.fillStyle = 'rgba(255,120,100,0.9)';
-    ctx.beginPath(); ctx.arc(head.x, head.y, 3.4, 0, 7); ctx.fill();
-  }
+  });
 
-  /* 封印闪光 */
   sealFx.forEach(f => {
     ctx.globalAlpha = (1 - f.t) * 0.5;
     ctx.fillStyle = f.crit ? '#ffd76e' : '#ff4b3e';
@@ -909,22 +1433,7 @@ function render() {
     ctx.beginPath(); ctx.arc(b.x, b.y, 2, 0, 7); ctx.fill();
   });
 
-  if (player.paperTimer > 0) {
-    for (let i = 0; i < 3; i++) {
-      const a = player.paperAngle + i * (Math.PI * 2 / 3);
-      drawShard(player.x + Math.cos(a) * 52, player.y + Math.sin(a) * 52, '#f2ecd9');
-    }
-  }
-
-  const blink = player.invuln > 0 && Math.floor(t * 16) % 2 === 0;
-  if (!blink) {
-    ctx.fillStyle = '#e9e4d8';
-    ctx.beginPath(); ctx.arc(player.x, player.y, player.r, 0, 7); ctx.fill();
-    ctx.fillStyle = '#1a1a22';
-    ctx.beginPath(); ctx.arc(player.x + player.face * 5, player.y - 2, 5.5, 0, 7); ctx.fill();
-    ctx.strokeStyle = 'rgba(255,84,66,0.65)'; ctx.lineWidth = 1.6;
-    ctx.beginPath(); ctx.arc(player.x, player.y, player.r + 5 + Math.sin(t * 4) * 1.5, 0, 7); ctx.stroke();
-  }
+  players.forEach(pl => drawPlayer(pl, t));
 
   parts.forEach(p => {
     ctx.globalAlpha = 1 - p.t / p.life; ctx.fillStyle = p.color;
@@ -935,13 +1444,16 @@ function render() {
     ctx.beginPath(); ctx.arc(r.x, r.y, r.r * r.t, 0, 7); ctx.stroke(); ctx.globalAlpha = 1;
   });
 
-  /* 提灯视野：光圈之外，皆是暗处 */
-  const flick = Math.sin(t * 11) * 5 + Math.sin(t * 23.7) * 3;
-  const lg = ctx.createRadialGradient(player.x, player.y, 60, player.x, player.y, 265 + flick);
-  lg.addColorStop(0, 'rgba(0,0,0,0)');
-  lg.addColorStop(0.72, 'rgba(0,0,0,0.18)');
-  lg.addColorStop(1, 'rgba(0,0,0,0.66)');
-  ctx.fillStyle = lg; ctx.fillRect(-12, -12, W + 24, H + 24);
+  /* 提灯视野（以本地视角玩家为心） */
+  const vp = viewPl();
+  if (vp) {
+    const flick = Math.sin(t * 11) * 5 + Math.sin(t * 23.7) * 3;
+    const lg = ctx.createRadialGradient(vp.x, vp.y, 60, vp.x, vp.y, 265 + flick);
+    lg.addColorStop(0, 'rgba(0,0,0,0)');
+    lg.addColorStop(0.72, 'rgba(0,0,0,0.18)');
+    lg.addColorStop(1, 'rgba(0,0,0,0.66)');
+    ctx.fillStyle = lg; ctx.fillRect(-12, -12, W + 24, H + 24);
+  }
 
   if (joy.active) {
     ctx.strokeStyle = 'rgba(255,255,255,0.4)'; ctx.lineWidth = 2;
@@ -950,6 +1462,74 @@ function render() {
     ctx.beginPath(); ctx.arc(joy.ox + joy.dx * 34, joy.oy + joy.dy * 34, 18, 0, 7); ctx.fill();
   }
   ctx.restore();
+}
+
+function drawPlayer(pl, t) {
+  if (pl.paperTimer > 0 && !pl.downed) {
+    for (let i = 0; i < 3; i++) {
+      const a = pl.paperAngle + i * (Math.PI * 2 / 3);
+      drawShard(pl.x + Math.cos(a) * 52, pl.y + Math.sin(a) * 52, '#f2ecd9');
+    }
+  }
+  if (pl.downed) {
+    ctx.save(); ctx.translate(pl.x, pl.y);
+    ctx.globalAlpha = 0.45 + Math.sin(t * 5) * 0.15;
+    ctx.fillStyle = '#9fb7ff';
+    ctx.beginPath(); ctx.arc(0, 0, pl.r, 0, 7); ctx.fill();
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = '#dfe8ff'; ctx.font = 'bold 11px sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText('倒地 · ' + Math.ceil(pl.reviveTimer) + 's', 0, -pl.r - 8);
+    ctx.restore();
+    return;
+  }
+  const blink = pl.invuln > 0 && Math.floor(t * 16) % 2 === 0;
+  if (blink) return;
+  ctx.fillStyle = pl.idx === 0 ? '#e9e4d8' : '#c9f4ec';
+  ctx.beginPath(); ctx.arc(pl.x, pl.y, pl.r, 0, 7); ctx.fill();
+  ctx.fillStyle = '#1a1a22';
+  ctx.beginPath(); ctx.arc(pl.x + pl.face * 5, pl.y - 2, 5.5, 0, 7); ctx.fill();
+  ctx.strokeStyle = pl.idx === 0 ? 'rgba(255,84,66,0.65)' : 'rgba(55,224,200,0.7)';
+  ctx.lineWidth = 1.6;
+  ctx.beginPath(); ctx.arc(pl.x, pl.y, pl.r + 5 + Math.sin(t * 4) * 1.5, 0, 7); ctx.stroke();
+  if (pl.idx === 1) {
+    ctx.fillStyle = '#37e0c8'; ctx.font = 'bold 10px sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText('同行', pl.x, pl.y - pl.r - 8);
+  }
+}
+
+function drawPuzzle(t) {
+  if (!puzzle) return;
+  if (puzzle.kind === 'sigils' && puzzle.pts) {
+    puzzle.pts.forEach((pt, i) => {
+      const done = i < puzzle.next, isNext = i === puzzle.next;
+      ctx.save(); ctx.translate(pt.x, pt.y);
+      ctx.strokeStyle = done ? 'rgba(255,215,110,0.95)' : isNext ? 'rgba(255,120,100,0.95)' : 'rgba(200,200,220,0.5)';
+      ctx.lineWidth = 2.4;
+      ctx.beginPath(); ctx.arc(0, 0, 26 + (isNext ? Math.sin(t * 6) * 3 : 0), 0, 7); ctx.stroke();
+      ctx.rotate(Math.PI / 4);
+      ctx.strokeRect(-11, -11, 22, 22);
+      ctx.restore();
+      if (puzzle.showNums || isGuest()) {
+        ctx.fillStyle = '#ffe9a8'; ctx.font = 'bold 17px sans-serif'; ctx.textAlign = 'center';
+        ctx.fillText(puzzle.showNums ? String(i + 1) : (isNext ? '?' : ''), pt.x, pt.y + 6);
+      }
+    });
+  } else if (puzzle.kind === 'riddle' && puzzle.circles) {
+    puzzle.circles.forEach((c, i) => {
+      ctx.save();
+      ctx.strokeStyle = puzzle.cur === i ? 'rgba(255,215,110,0.95)' : 'rgba(190,200,255,0.55)';
+      ctx.lineWidth = 2.4;
+      ctx.beginPath(); ctx.arc(c.x, c.y, 46, 0, 7); ctx.stroke();
+      if (puzzle.cur === i && puzzle.standT) {
+        ctx.strokeStyle = '#ffd76e'; ctx.lineWidth = 4;
+        ctx.beginPath(); ctx.arc(c.x, c.y, 46, -Math.PI / 2, -Math.PI / 2 + (puzzle.standT / 2.2) * Math.PI * 2); ctx.stroke();
+      }
+      ctx.fillStyle = '#eef1ff'; ctx.font = 'bold 14.5px sans-serif'; ctx.textAlign = 'center';
+      const label = c.label || '';
+      for (let k = 0; k < label.length; k += 5) ctx.fillText(label.slice(k, k + 5), c.x, c.y - 4 + k / 5 * 17);
+      ctx.restore();
+    });
+  }
 }
 
 function hpBar(x, y, w, frac, color) {
@@ -979,6 +1559,19 @@ function drawEnemy(e, scene) {
     ctx.fillText('大讨债影 · 死去的你', e.x, e.y - e.r - 21);
     return;
   }
+  if (e.twin) {
+    ctx.save(); ctx.translate(e.x, e.y);
+    ctx.fillStyle = 'rgba(230,225,213,0.9)';
+    ctx.beginPath(); ctx.arc(0, 0, e.r, 0, 7); ctx.fill();
+    ctx.strokeStyle = '#37e0c8'; ctx.lineWidth = 2; ctx.setLineDash([4, 4]); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle = '#14141c';
+    ctx.beginPath(); ctx.arc(-5, -3, 2.6, 0, 7); ctx.arc(5, -3, 2.6, 0, 7); ctx.fill();
+    ctx.fillStyle = '#b8fff2'; ctx.font = 'bold 10.5px sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText('双生', 0, e.r + 14);
+    ctx.restore();
+    return;
+  }
+  const tp = nearestPlayer(e.x, e.y) || player || { x: e.x + 1, y: e.y };
   ctx.save(); ctx.translate(e.x, e.y);
   ctx.fillStyle = scene.enemy;
   if (e.type === 'tank') {
@@ -986,7 +1579,7 @@ function drawEnemy(e, scene) {
     ctx.strokeStyle = 'rgba(120,20,20,0.8)'; ctx.lineWidth = 2;
     ctx.beginPath(); ctx.moveTo(-e.r, -6); ctx.lineTo(e.r, 2); ctx.moveTo(-e.r, 12); ctx.lineTo(e.r, 6); ctx.stroke();
   } else if (e.type === 'dart') {
-    ctx.rotate(Math.atan2(player.y - e.y, player.x - e.x));
+    ctx.rotate(Math.atan2(tp.y - e.y, tp.x - e.x));
     ctx.beginPath(); ctx.moveTo(e.r + 4, 0); ctx.lineTo(-e.r, -e.r * 0.7); ctx.lineTo(-e.r, e.r * 0.7); ctx.closePath(); ctx.fill();
   } else if (e.type === 'lurker') {
     if (e.mode === 'aim') { ctx.strokeStyle = '#ff4b3e'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(0, 0, e.r + 6, 0, 7); ctx.stroke(); }
