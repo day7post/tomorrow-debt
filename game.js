@@ -844,7 +844,6 @@ function renderFx() {
   }
   if (myView === 'living' && !dark) {
     if (F('tvOn') && !F('videoSeen')) html += '<div class="tv-static" style="' + pct(640, 295, 118, 98) + '"></div>';
-    if (F('contractPlaced')) html += '<div class="paper" style="' + pct(492, 326, 62, 28) + '"></div>';
     if (F('sw_kitchen')) html += '<div class="sw-on" style="left:20.4%;top:49%;"></div>';
     if (F('sw_bath')) html += '<div class="sw-on" style="left:20.4%;top:55.8%;"></div>';
     const cd = G.candle;
@@ -855,7 +854,6 @@ function renderFx() {
       if (cd.phase === 'input' && cd.input.length) litSet.add(cd.input[cd.input.length - 1]);
     }
     litSet.forEach(i => { html += '<div class="flame" style="left:' + (54.6 + i * 2.8) + '%;top:45.4%;"></div>'; });
-    if (F('candlesDone') && !G.ended) html += '<div class="shadow-fig" style="left:46.5%;top:16.5%;width:8.5%;height:36%;"><div class="sf-body"></div><div class="sf-head"></div><div class="sf-eye" style="left:36%;"></div><div class="sf-eye" style="left:57%;"></div></div>';
     if (G.tvShow && G.tvShow !== closedTvShow && F('videoSeen')) { tvFull = true; html += '<div class="tv-full" id="tv-full"><img src="assets/tv.jpg" alt=""></div>'; }
   }
   fx.style.zIndex = tvFull ? 6 : 3;
