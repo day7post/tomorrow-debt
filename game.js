@@ -664,7 +664,7 @@ function endTouch(e) {
 function tryDash(pl) {
   if (state !== 'playing' || !pl || pl.downed || pl.dashCd > 0) return;
   pl.dashTimer = 0.16; pl.dashCd = pl.dashCdMax; pl.invuln = Math.max(pl.invuln, 0.2);
-  pl.trail = []; /* 冲刺断印 */
+  /* v0.3.1：冲刺不再清掉已有轨迹（玩家反馈原「冲刺断印」设计，改） */
   beep(349, 0.09, 'sine', 0.04);
 }
 
