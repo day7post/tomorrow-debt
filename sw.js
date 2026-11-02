@@ -1,5 +1,5 @@
 /* 明日债离线缓存：首次联网打开后，后续离线可玩 */
-const CACHE = 'tomorrow-debt-v5';
+const CACHE = 'tomorrow-debt-v6';
 const FILES = ['./', './index.html', './style.css', './game.js', './net.js', './peerjs.min.js', './manifest.webmanifest', './icon.svg'];
 
 self.addEventListener('install', e => {

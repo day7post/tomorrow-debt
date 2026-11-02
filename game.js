@@ -105,15 +105,15 @@ pumpDialog();
 
 /* ---------------- 提示 ---------------- */
 const STAGES = [
-{ id: 'door', hint: '先看看楼道里的信箱。死人的信箱，往往还塞着活人的线索。', strong: '明信片背面写着搬家的日子：1998 年 6 月 12 日。门锁密码就是 0612。'},
-{ id: 'power', hint: '屋里跳了闸。电闸不止一处——楼道电表箱、厨房墙、卫浴墙，人数越多，要同时合上的越多。', strong: '把所有分闸都合上（多人时要在 4.5 秒内先后合上，让同伴分头去拉）。'},
-{ id: 'tv', hint: '电视没声，先找遥控器；遥控器没电，先翻供桌下面的抽屉。', strong: '供桌抽屉里有电池和小钥匙。电池装上后看录像，记住他说的那个时辰：3 点 15 分。'},
-{ id: 'clock', hint: '录像里那句话不是怀旧。钟，认一个时刻。', strong: '把挂钟调到 03:15，再上弦。钟座的暗格会开。'},
-{ id: 'drawer',hint: '卧室床头柜的抽屉锁着。你身上应该有一把对得上的小钥匙。', strong: '小钥匙开床头柜抽屉，里面是病历本——入院日期 7 月 19 日，就是保险箱密码 0719。'},
-{ id: 'safe', hint: '保险箱的密码，是他这辈子最忘不掉的那一天。病历本里写着。', strong: '保险箱密码 0719（入院日期）。里面是契文的下半页。'},
-{ id: 'contract', hint: '两半页契文都到手了，把它们合上，再放到他遗像前。', strong: '点道具栏里的半页契文合上契，再点供桌遗像，把完整的契放上去。'},
-{ id: 'candles', hint: '点烛是行里的规矩：看着烛火亮起的顺序，再按同样的顺序点一遍。人数越多，顺序越长。', strong: '顺序只演一遍。可以重看：再点一次遗像，会重新演。记不住，就分工——一人记一半。'},
-{ id: 'ritual', hint: '影子不怕你，它只认印。画一个闭合的圈，把门中央的契纹整个圈进去。', strong: '圈要闭合、要够大、要圈住契纹。画之前先借命稳印也行——但那是你的命。'}
+{ id: 'door', hint: '先别敲门。这层楼里，还有别的东西在等你看。', strong: '明信片背面写着搬家的日子：1998 年 6 月 12 日。门锁密码就是 0612。'},
+{ id: 'power', hint: '黑着进一间死人的屋子，不合规矩。电，是一间屋子的命。', strong: '分闸在楼道电表箱、厨房墙、卫浴墙：人数几人就几处，多人时要在 4.5 秒内先后合上，分头去拉。'},
+{ id: 'tv', hint: '遥控器是死的。能让它活过来的东西，不在电视跟前。', strong: '供桌抽屉里有电池和小钥匙。电池装上后看录像，记住他说的那个时辰：3 点 15 分。'},
+{ id: 'clock', hint: '他留在录像里的那句话，不是怀旧。', strong: '把挂钟调到 03:15，再上弦。钟座的暗格会开。'},
+{ id: 'drawer',hint: '锁着的东西，钥匙多半也在这个家里。', strong: '小钥匙开床头柜抽屉，里面是病历本——入院日期 7 月 19 日，就是保险箱密码 0719。'},
+{ id: 'safe', hint: '密码是个日子。哪一天，得去纸上找。', strong: '保险箱密码 0719（入院日期）。里面是契文的下半页。'},
+{ id: 'contract', hint: '两半页都到手了。剩下的事，遗像前办。', strong: '点道具栏里的半页契文合上契，再点供桌遗像，把完整的契放上去。'},
+{ id: 'candles', hint: '烛，要按规矩点。规矩会先演给你看。', strong: '顺序只演一遍。可以重看：再点一次遗像，会重新演。记不住，就分工——一人记一半。'},
+{ id: 'ritual', hint: '它不怕你。它只认印。', strong: '圈要闭合、要够大、要圈住契纹。画之前先借命稳印也行——但那是你的命。'}
 ];
 function currentStage() {
 if (!G ||!G.started) return null;
@@ -227,6 +227,34 @@ showLines([{ who: it.name, text: it.desc}]);
 }
 function maybeCombine() { /* 已并入房主 actImpl 的 combine 动作（跨端一致） */ }
 
+/* ---------------- 人物形象 ---------------- */
+function porterFigure(x, y, s) {
+  /* 送契人：背影，深灰长褂，一手提灯，一手抱着白契 */
+  return `<g transform="translate(${x} ${y}) scale(${s})">
+    <ellipse cx="0" cy="118" rx="27" ry="6" fill="rgba(0,0,0,0.38)"/>
+    <path d="M-13 118 L-9.5 36 Q0 27 9.5 36 L13 118 Q0 124.5 -13 118Z" fill="#252b38"/>
+    <path d="M-9.5 36 Q0 27 9.5 36 L10.5 62 L-10.5 62Z" fill="#303847"/>
+    <line x1="0" y1="62" x2="0" y2="116" stroke="#171b24" stroke-width="2"/>
+    <circle cx="0" cy="15" r="11.5" fill="#15171e"/>
+    <path d="M-12 13 a12 10 0 0 1 24 0 l0 -4.5 -24 0Z" fill="#0c0d12"/>
+    <rect x="-19" y="50" width="13" height="17.5" rx="1.5" fill="#eae3d0" transform="rotate(-9 -12 58)"/>
+    <rect x="-19" y="50" width="13" height="17.5" rx="1.5" fill="none" stroke="#b3a67f" stroke-width="1" transform="rotate(-9 -12 58)"/>
+    <line x1="12" y1="44" x2="23" y2="64" stroke="#454c5e" stroke-width="3"/>
+    <rect x="17.5" y="64" width="12" height="16" rx="3" fill="#5d4a26"/>
+    <rect x="20" y="67" width="7" height="10" rx="2" fill="#ffca7a"/>
+  </g>`;
+}
+function shadowFigure(cx) {
+  /* 未来的周守义：黑影，红眼，只在点烛之后站在供桌后面 */
+  return `<g opacity="0.85">
+    <ellipse cx="${cx}" cy="332" rx="31" ry="7" fill="rgba(0,0,0,0.45)"/>
+    <path d="M${cx - 16} 332 L${cx - 12} 214 Q${cx} 203 ${cx + 12} 214 L${cx + 16} 332Z" fill="#06060b"/>
+    <circle cx="${cx}" cy="194" r="13.5" fill="#06060b"/>
+    <circle cx="${cx - 4.5}" cy="194" r="2.3" fill="#ff5d6e"/>
+    <circle cx="${cx + 4.5}" cy="194" r="2.3" fill="#ff5d6e"/>
+  </g>`;
+}
+
 /* ---------------- 场景美术（写实向矢量场景） ---------------- */
 function corridorSvg() {
   const doorOpen = F('doorOpen');
@@ -246,7 +274,7 @@ function corridorSvg() {
   <!-- 左下：信箱墙 -->
   <rect x="30" y="452" width="212" height="118" rx="6" fill="#39404f"/>
   ${[0,1,2,3,4,5,6,7].map(i => `<rect x="${42 + (i % 4) * 50}" y="${464 + Math.floor(i / 4) * 52}" width="42" height="44" rx="3" fill="#4a5265" stroke="#232833" stroke-width="2"/><circle cx="${63 + (i % 4) * 50}" cy="486" r="3.4" fill="#22262f"/>`).join('')}
-  <text x="136" y="588" font-size="13" fill="#77809480" text-anchor="middle" fill-opacity="0.75">信 箱</text>
+
   <!-- 307 门 -->
   <rect x="520" y="96" width="212" height="352" rx="4" fill="#10131d"/>
   <rect x="532" y="108" width="188" height="328" rx="3" fill="${doorOpen ? '#06070c' : '#4a3423'}"/>
@@ -258,15 +286,11 @@ function corridorSvg() {
   <!-- 右：电表箱与通知 -->
   <rect x="768" y="150" width="104" height="150" rx="5" fill="#2f3644" stroke="#454e61" stroke-width="2"/>
   <rect x="780" y="164" width="80" height="54" rx="3" fill="#171c28"/><circle cx="820" cy="191" r="17" fill="#232b3c" stroke="#4d5871" stroke-width="2"/>
-  <text x="820" y="240" font-size="12.5" fill="#96a0b5" text-anchor="middle">电表箱</text>
-  <text x="820" y="262" font-size="11" fill="#6d7688" text-anchor="middle">307 · 表尾 4407</text>
   <rect x="772" y="330" width="96" height="86" fill="#d8d3c3" opacity="0.92"/>
   <text x="820" y="354" font-size="13" fill="#333" text-anchor="middle" font-weight="bold">物业通知</text>
   <text x="820" y="376" font-size="10.5" fill="#444" text-anchor="middle">本楼 1998 年交付</text>
   <text x="820" y="394" font-size="10.5" fill="#444" text-anchor="middle">老楼改造 住户配合</text>
-  <rect x="330" y="470" width="240" height="66" rx="6" fill="#20242f" opacity="0.85"/>
-  <text x="450" y="496" font-size="13.5" fill="#7f879c" text-anchor="middle">楼道里有股淡淡的檀香味</text>
-  <text x="450" y="518" font-size="13.5" fill="#7f879c" text-anchor="middle">是从 307 门缝里出来的</text>
+  ${porterFigure(315, 338, 2.2)}
   </svg>`;
 }
 
@@ -289,6 +313,7 @@ function livingSvg() {
   <linearGradient id="lfl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4c4238"/><stop offset="1" stop-color="#191512"/></linearGradient></defs>
   <rect width="900" height="440" fill="url(#lw)"/><rect y="440" width="900" height="180" fill="url(#lfl)"/>
   ${[0,1,2,3,4,5,6].map(i => `<line x1="${i * 150}" y1="440" x2="${i * 150 - 40}" y2="620" stroke="#0f0d0a" stroke-width="3"/>`).join('')}
+  ${F('candlesDone') && !(G && G.ended) ? shadowFigure(338) : ''}
   <!-- 窗与对楼 -->
   <rect x="36" y="70" width="190" height="250" fill="#0a1224" stroke="#191512" stroke-width="10"/>
   <line x1="131" y1="70" x2="131" y2="320" stroke="#191512" stroke-width="7"/><line x1="36" y1="195" x2="226" y2="195" stroke="#191512" stroke-width="7"/>
@@ -306,24 +331,28 @@ function livingSvg() {
   <!-- 电视柜与电视 -->
   <rect x="560" y="300" width="300" height="96" fill="#2e2620"/><rect x="572" y="312" width="130" height="72" fill="#3a3128"/><rect x="716" y="312" width="130" height="72" fill="#3a3128"/>
   <rect x="616" y="150" width="216" height="140" rx="8" fill="#101014" stroke="#2c2c33" stroke-width="5"/>
-  ${tv === 'off' ? `<rect x="626" y="160" width="196" height="120" fill="#15181f"/>` : tv === 'static' ? `<rect x="626" y="160" width="196" height="120" fill="#3d434e"/><text x="724" y="228" font-size="15" fill="#cfd6df" text-anchor="middle">雪 花</text>` : `<rect x="626" y="160" width="196" height="120" fill="#1d2a3a"/><rect x="640" y="176" width="60" height="88" fill="#2c4258"/><circle cx="724" cy="200" r="17" fill="#8fa5bb"/><rect x="700" y="222" width="48" height="30" fill="#5d748c"/><text x="724" y="272" font-size="12.5" fill="#ffd76e" text-anchor="middle">2019-07-19 21:47 · 录像</text>`}
+  ${tv === 'off' ? `<rect x="626" y="160" width="196" height="120" fill="#15181f"/>` : tv === 'static' ? `<rect x="626" y="160" width="196" height="120" fill="#3d434e"/><text x="724" y="228" font-size="15" fill="#cfd6df" text-anchor="middle">雪 花</text>` : `<rect x="626" y="160" width="196" height="120" fill="#1d2a3a"/><rect x="640" y="176" width="60" height="88" fill="#2c4258"/><ellipse cx="718" cy="204" rx="13" ry="15" fill="#a8bccd"/><path d="M705 198 a13 11 0 0 1 26 0 l0 -4 -26 0Z" fill="#d8dde2"/><path d="M700 224 q18 -7 36 0 l3 34 -42 0Z" fill="#5d748c"/><g opacity="0.92"><path d="M782 262 L785 208 Q790 202 795 208 L798 262Z" fill="#0d1420"/><circle cx="790" cy="198" r="8.5" fill="#0d1420"/><rect x="771" y="228" width="9" height="12" fill="#cfd6df" transform="rotate(8 775 234)"/></g><text x="724" y="272" font-size="12.5" fill="#ffd76e" text-anchor="middle">2019-07-19 21:47 · 录像</text>`}
   <rect x="646" y="404" width="56" height="12" rx="3" fill="#191919"/>
   <!-- 沙发茶几 -->
   <rect x="60" y="392" width="250" height="86" rx="12" fill="#4b3f33"/><rect x="60" y="360" width="250" height="44" rx="12" fill="#584a3b"/>
   <rect x="352" y="420" width="170" height="16" rx="4" fill="#33291f"/><rect x="368" y="436" width="12" height="44" fill="#241c15"/><rect x="494" y="436" width="12" height="44" fill="#241c15"/>
   <ellipse cx="437" cy="414" rx="30" ry="6" fill="#6d5b45"/><rect x="560" y="402" width="34" height="20" rx="3" fill="#7a2d2d"/>
-  <text x="577" y="398" font-size="10.5" fill="#a99f8d" text-anchor="middle">遥控器</text>
   <!-- 供桌 -->
   <rect x="308" y="272" width="262" height="14" fill="#3a2b1c"/>
   <rect x="322" y="286" width="14" height="120" fill="#2c2015"/><rect x="542" y="286" width="14" height="120" fill="#2c2015"/>
   <rect x="404" y="182" width="72" height="90" fill="#241d16"/><rect x="412" y="190" width="56" height="74" fill="#585046"/>
-  <circle cx="440" cy="216" r="14" fill="#7d7264"/><path d="M422 264 a18 12 0 0 1 36 0 z" fill="#6d6355"/>
+  <ellipse cx="440" cy="218" rx="12.5" ry="14.5" fill="#9a8a74"/>
+  <path d="M427.5 212 a12.5 11 0 0 1 25 0 l0 -5 -25 0Z" fill="#cfc8ba"/>
+  <path d="M432.5 217 q2.8 1.8 5.6 0" stroke="#2e2a24" stroke-width="1.3" fill="none"/>
+  <path d="M441.9 217 q2.8 1.8 5.6 0" stroke="#2e2a24" stroke-width="1.3" fill="none"/>
+  <line x1="440" y1="219" x2="439.2" y2="225" stroke="#6d5f4c" stroke-width="1.2"/>
+  <path d="M435.5 230 q4.5 1.8 9 0" stroke="#4a4036" stroke-width="1.3" fill="none"/>
+  <path d="M422 264 a18 12 0 0 1 36 0 z" fill="#6d6355"/>
   <text x="440" y="180" font-size="11" fill="#cbbf9f" text-anchor="middle">周守义</text>
   ${agg ? `<rect x="416" y="252" width="48" height="18" fill="#e6ddc4" stroke="#b8ab84" stroke-width="1.5"/><text x="440" y="265" font-size="9.5" fill="#5a4a2a" text-anchor="middle">明日契</text>` : ''}
   <rect x="416" y="284" width="48" height="10" rx="4" fill="#5d5348"/>
   ${[0,1,2,3].map(candleBase).join('')}
   <rect x="322" y="330" width="236" height="52" fill="#33271a"/><rect x="428" y="352" width="24" height="8" rx="3" fill="#191008"/>
-  <text x="440" y="346" font-size="11" fill="#8d7c63" text-anchor="middle">供桌抽屉</text>
   <!-- 落地钟 -->
   <rect x="786" y="120" width="76" height="290" rx="8" fill="#33241a"/>
   <circle cx="824" cy="172" r="30" fill="#e6ddc4"/><circle cx="824" cy="172" r="3.5" fill="#222"/>
@@ -333,9 +362,8 @@ function livingSvg() {
   <rect x="238" y="150" width="86" height="256" fill="#241c15"/><circle cx="312" cy="286" r="6" fill="#b9bdc9"/>
   <text x="281" y="140" font-size="12" fill="#9a8f7a" text-anchor="middle">卧 室</text>
   <rect x="540" y="420" width="30" height="42" rx="3" fill="#d8d3c3"/><circle cx="555" cy="436" r="5" fill="${F('sw_kitchen') ? '#7dd87d' : '#8a8a8a'}"/>
-  <text x="555" y="480" font-size="10.5" fill="#8d8574" text-anchor="middle">厨房闸</text>
   <rect x="244" y="412" width="30" height="42" rx="3" fill="#d8d3c3"/><circle cx="259" cy="428" r="5" fill="${F('sw_bath') ? '#7dd87d' : '#8a8a8a'}"/>
-  <text x="259" y="472" font-size="10.5" fill="#8d8574" text-anchor="middle">卫浴闸</text>
+  ${porterFigure(128, 357, 2.1)}
   ${dark ? `<rect width="900" height="620" fill="#04050c" opacity="0.86"/><text x="450" y="300" font-size="19" fill="#5f6c8a" text-anchor="middle">屋里没电。只有窗外对楼的灯，和供桌上没点的烛。</text><text x="450" y="332" font-size="14.5" fill="#49536e" text-anchor="middle">先把闸合上——或者，借命。</text>` : ''}
   </svg>`;
 }
@@ -356,13 +384,11 @@ function bedroomSvg() {
   <rect x="76" y="252" width="120" height="44" rx="10" fill="#ddd5c2"/>
   <rect x="60" y="382" width="16" height="66" fill="#33291f"/><rect x="424" y="382" width="16" height="66" fill="#33291f"/>
   <rect x="196" y="300" width="228" height="30" rx="8" fill="#5d5344"/>
-  <text x="240" y="428" font-size="12" fill="#7d7264" text-anchor="middle">床铺得整齐，像在等主人回来睡</text>
   <!-- 床头柜 -->
   <rect x="470" y="318" width="120" height="110" fill="#3a2f23"/>
   <rect x="482" y="332" width="96" height="36" fill="#473827"/><circle cx="530" cy="350" r="4.5" fill="#c9ccd6"/>
   ${F('bedDrawerOpen') ? `<rect x="482" y="376" width="96" height="40" fill="#171008"/><text x="530" y="401" font-size="11.5" fill="#cbbf9f" text-anchor="middle">病历本</text>` : `<rect x="482" y="376" width="96" height="40" fill="#473827"/><circle cx="530" cy="396" r="4.5" fill="#c9ccd6"/>`}
   <rect x="492" y="296" width="20" height="22" rx="3" fill="#c8b98a"/><rect x="520" y="300" width="26" height="18" rx="4" fill="#d8d3c3"/>
-  <text x="530" y="290" font-size="10.5" fill="#9a8f7a" text-anchor="middle">药瓶 · 水杯</text>
   <!-- 书桌与车票 -->
   <rect x="96" y="470" width="220" height="14" fill="#33291f"/><rect x="110" y="484" width="12" height="56" fill="#241c15"/><rect x="290" y="484" width="12" height="56" fill="#241c15"/>
   <rect x="150" y="446" width="86" height="26" rx="3" fill="#e6ddc4" transform="rotate(-4 193 459)"/>
@@ -374,8 +400,8 @@ function bedroomSvg() {
   <circle cx="746" cy="436" r="15" fill="#171a21" stroke="#5a6274" stroke-width="2.5"/><circle cx="746" cy="436" r="4" fill="#9aa2b5"/>
   <text x="746" y="482" font-size="11" fill="#96a0b5" text-anchor="middle">保 险 箱</text>` :
   `<rect x="646" y="340" width="104" height="160" fill="#3a2c1e"/><rect x="752" y="340" width="104" height="160" fill="#3a2c1e"/><circle cx="742" cy="424" r="5" fill="#c9ccd6"/><circle cx="760" cy="424" r="5" fill="#c9ccd6"/>`}
-  <rect x="470" y="486" width="34" height="40" rx="3" fill="#d8d3c3"/><circle cx="487" cy="500" r="4.5" fill="${F('sw_bed') ? '#7dd87d' : '#8a8a8a'}"/>
-  <text x="487" y="540" font-size="10.5" fill="#8d8574" text-anchor="middle">卧室闸</text>
+  <rect x="470" y="486" width="34" height="40" rx="3" fill="#d8d3c3"/><circle cx="487" cy="500" r="4.5" fill="#8a8a8a"/>
+  ${porterFigure(408, 356, 2.05)}
   ${dark ? `<rect width="900" height="620" fill="#04050c" opacity="0.86"/><text x="450" y="306" font-size="18" fill="#5f6c8a" text-anchor="middle">卧室更暗。先把电送回来。</text>` : ''}
   </svg>`;
 }
@@ -654,13 +680,12 @@ const HOTSPOTS = [
   } },
   { view: 'corridor', id: 'meterbox', x: 768, y: 150, w: 104, h: 88, label: '电表箱', kind: 'act', onAct(actor) {
     say('', '电表箱里一排表。307 那块的玻璃蒙着灰，数字停在三年前——不对，还在极慢地走。没人用电，它走的是什么？');
-    say('送契人', '（箱子下半截是分闸。要进屋，先把电送回去。）');
   } },
   { view: 'corridor', id: 'sw_meter', x: 772, y: 242, w: 96, h: 56, label: '分闸 · 楼道', kind: 'act', onAct(actor) { toggleSwitch('meter', actor); } },
   { view: 'corridor', id: 'door307', x: 520, y: 96, w: 212, h: 352, label: '307 的门', kind: 'nav', target: 'living',
     guard: () => F('doorOpen'),
     guardFail() {
-      showLines([{ who: '', text: '防盗门，密码锁。门上的对联褪成粉红色，是三年前那一副。锁还活着——先输密码，或者，烧穿它。' }]);
+      showLines([{ who: '', text: '防盗门，密码锁。门上的对联褪成粉红色，是三年前那一副。锁还活着。' }]);
       dlgChoices = { for: myId(), list: [
         { label: '输入密码', local: 'kp:door' },
         { label: '借命 · 烧开这把锁（+1 命债）', borrow: true, act: { k: 'borrowDoor' } }
@@ -710,7 +735,7 @@ const HOTSPOTS = [
   } },
   { view: 'living', id: 'photo', x: 392, y: 88, w: 104, h: 88, label: '全家福', kind: 'act', onAct(actor) {
     setF('photoSeen');
-    say('', '全家福背面写着：「出院那天，儿子背我下楼。病历本放床头柜，莫乱翻。」——字是写给今晚的人看的。');
+    say('', '全家福背面写着：「出院那天，儿子背我下楼。楼道里那盏灯，那天是亮的。」');
   } },
   { view: 'living', id: 'clock', x: 782, y: 116, w: 84, h: 298, label: '落地挂钟', kind: 'modal', local: 'clock' },
   { view: 'living', id: 'bedroom_door', x: 234, y: 146, w: 94, h: 264, label: '卧室门', kind: 'nav', target: 'bedroom',
@@ -760,9 +785,44 @@ for (let i = 0; i < 4; i++) {
     onAct(actor) { actImpl({ k: 'candle', i }, actor); } });
 }
 
+/* 场景渲染：把矢量场景画到画布上（某些内置预览器不渲染内联 SVG，画布则与旧版同一通道）；
+   画布不可用时退回内联 SVG。 */
+const sceneImgCache = {};
+function paintScene(svgStr) {
+  const wrap = $('scene');
+  const stage = $('stage');
+  const w = stage && stage.clientWidth, h = stage && stage.clientHeight;
+  if (!w || !h || typeof Image === 'undefined' || !window.URL || !URL.createObjectURL) { wrap.innerHTML = svgStr; return; }
+  let cv = $('scene-canvas');
+  if (!cv || cv.parentNode !== wrap) { wrap.innerHTML = '<canvas id="scene-canvas"></canvas>'; cv = $('scene-canvas'); }
+  const dpr = Math.min(2, window.devicePixelRatio || 1);
+  cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
+  const draw = img => {
+    const ctx = cv.getContext('2d');
+    if (!ctx) { wrap.innerHTML = svgStr; return; }
+    const s = Math.max(cv.width / 900, cv.height / 620);
+    const dw = 900 * s, dh = 620 * s;
+    ctx.fillStyle = '#0a0c16'; ctx.fillRect(0, 0, cv.width, cv.height);
+    ctx.drawImage(img, (cv.width - dw) / 2, (cv.height - dh) / 2, dw, dh);
+  };
+  if (sceneImgCache[svgStr]) { draw(sceneImgCache[svgStr]); return; }
+  try {
+    const full = svgStr.replace('<svg ', '<svg width="900" height="620" xmlns="http://www.w3.org/2000/svg" ');
+    const url = URL.createObjectURL(new Blob([full], { type: 'image/svg+xml;charset=utf-8' }));
+    const img = new Image();
+    img.onload = () => { sceneImgCache[svgStr] = img; draw(img); URL.revokeObjectURL(url); };
+    img.onerror = () => { wrap.innerHTML = svgStr; };
+    img.src = url;
+  } catch (e) { wrap.innerHTML = svgStr; }
+}
+if (window.addEventListener) {
+  let rszT = null;
+  window.addEventListener('resize', () => { clearTimeout(rszT); rszT = setTimeout(() => { if (G) renderScene(); }, 180); });
+}
+
 function renderScene() {
   const svgFn = SCENE_SVG[myView] || blackSvg;
-  $('scene').innerHTML = svgFn();
+  paintScene(svgFn());
   const layer = $('hotspots'); layer.innerHTML = '';
   if (!G) return;
   HOTSPOTS.filter(h => h.view === myView && (!h.when || h.when())).forEach(h => {
@@ -992,6 +1052,17 @@ $('btn-again').addEventListener('click', () => { show($('end'), false); startGam
 $('btn-tomenu').addEventListener('click', () => location.reload());
 $('btn-mute2').addEventListener('click', e => { muted = !muted; e.target.textContent = muted ? '×' : '♪'; });
 $('navback').addEventListener('click', () => { myView = $('navback').dataset.to; renderScene(); });
+(function wireSense() {
+  const b = $('btn-sense'), st = $('stage');
+  if (!b || !st) return;
+  const on = e => { e.preventDefault(); st.classList.add('sensing'); };
+  const off = () => st.classList.remove('sensing');
+  b.addEventListener('pointerdown', on);
+  b.addEventListener('pointerup', off);
+  b.addEventListener('pointerleave', off);
+  b.addEventListener('pointercancel', off);
+  b.addEventListener('contextmenu', e => e.preventDefault());
+})();
 
 /* ---------------- 联机接线 ---------------- */
 if (window.TDNet) {
